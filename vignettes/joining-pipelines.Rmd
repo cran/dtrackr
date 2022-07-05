@@ -1,0 +1,64 @@
+---
+title: "dtrackr - Joining data pipelines"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{dtrackr - Joining data pipelines}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dtrackr)
+```
+
+# Joins across data sets
+
+Joining `dtrackr` tracked data is supported and allows us to combine linked data sets. In this toy example the data sets are characters from a popular film from my youth. 
+
+```{r}
+
+
+
+people = starwars %>% select(-films, -vehicles, -starships)
+vehicles = starwars %>% select(name,vehicles) %>% unnest(cols = c(vehicles))
+starships = starwars %>% select(name,starships) %>% unnest(cols = c(starships))
+films = starwars %>% select(name,films) %>% unnest(cols = c(films))
+
+tmp1 = people %>% track() %>% comment("People df {.total}")
+tmp2 = films %>% track() %>% comment("Films df {.total}") %>% comment("a test comment")
+
+tmp1 %>% inner_join(tmp2, by="name") %>% comment("joined {.total}") %>% flowchart()
+# The join message is configurable but defaults to 
+# {.count.lhs} on LHS
+# {.count.rhs} on RHS
+# {.count.out} in linked set
+
+```
+
+All join types are supported by `dtrackr` which will allow us to report on the numbers on either side of the join and on the resulting total. This can help detect if any data items are lost during the join. However we do not yet capture data that becomes excluded during joins, as the interpretation depends on the type of join employed.
+
+# Unions
+
+Another type of binary operator is a union. This is a simpler problem and works as expected. In this example the early part of the pipeline is detected to be the same on both branches of the data flow. This therefore results in a flow that splits then subsequently joins again during the union (`bind_rows`) operator.
+
+```{r}
+
+tmp = people %>% comment("start")
+
+tmp1 = tmp %>% include_any(
+  species == "Human" ~ "{.included} humans",
+  species == "Droid" ~ "{.included} droids"
+  )
+
+tmp2 = tmp %>% include_any(
+  species == "Gungan" ~ "{.included} gungans"
+) %>% comment("{.count} gungans")
+
+tmp3 = bind_rows(tmp1,tmp2) %>% comment("{.count} human,droids and gungans") 
+tmp3 %>% flowchart()
+
+```
+
+
