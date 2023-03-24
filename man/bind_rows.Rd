@@ -2,45 +2,88 @@
 % Please edit documentation in R/dtrackr.R
 \name{bind_rows}
 \alias{bind_rows}
-\title{Union of two or more data sets}
+\title{Set operations}
 \usage{
-bind_rows(
-  ...,
-  .id = NULL,
-  .messages = "{.count.out} in union",
-  .headline = "Union"
-)
+bind_rows(..., .messages = "{.count.out} in union", .headline = "Union")
 }
 \arguments{
-\item{...}{the data frames to bind}
+\item{...}{a collection of tracked data frames to combine}
 
-\item{.id}{Data frame identifier.
+\item{.messages}{a set of glue specs. The glue code can use any global
+variable, or \{.count.out\}}
 
-When \code{.id} is supplied, a new column of identifiers is
-created to link each row to its original data frame. The labels
-are taken from the named arguments to \code{bind_rows()}. When a
-list of data frames is supplied, the labels are taken from the
-names of the list. If no names are found a numeric sequence is
-used instead.}
-
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any global variable, or \{.count.out\}
-}}
-
-\item{.headline}{\itemize{
-\item a glue spec. The glue code can use any global variable, or \{.count.out\}
-}}
+\item{.headline}{a glue spec. The glue code can use any global variable, or
+\{.count.out\}}
 }
 \value{
-the logical union of the dataframes with the history graph updated.
+the dplyr output with the history graph updated.
 }
 \description{
-This merges the history of 2 dataframes and binds the rows. It calculates the total number of resulting rows as {.count.out}
-in other terms it performs exactly the same operation as dplyr::bind_rows. See \code{\link[dplyr:bind]{dplyr::bind_rows()}}.
+These perform set operations on tracked dataframes. It merges the history
+of 2 (or more) dataframes and combines the rows (or columns). It calculates the total number of
+resulting rows as \{.count.out\} in other terms it performs exactly the same
+operation as the equivalent \code{dplyr} operation. See \code{\link[dplyr:bind_rows]{dplyr::bind_rows()}},
+\code{\link[dplyr:bind_cols]{dplyr::bind_cols()}}, \code{\link[dplyr:setops]{dplyr::intersect()}}, \code{\link[dplyr:setops]{dplyr::union()}},
+\code{\link[dplyr:setops]{dplyr::setdiff()}},\code{\link[dplyr:setops]{dplyr::intersect()}}, or \code{\link[dplyr:setops]{dplyr::union_all()}} for the
+underlying function details.
 }
 \examples{
 library(dplyr)
-bind_rows( iris \%>\% comment("one"), iris \%>\% comment("two") ) \%>\% history()
+library(dtrackr)
+
+# Set operations
+people = starwars \%>\% select(-films, -vehicles, -starships)
+chrs = people \%>\% track("start")
+
+lhs = chrs \%>\% include_any(
+  species == "Human" ~ "{.included} humans",
+  species == "Droid" ~ "{.included} droids"
+)
+
+# these are different subsets of the same data
+rhs = chrs \%>\% include_any(
+  species == "Human" ~ "{.included} humans",
+  species == "Gungan" ~ "{.included} gungans"
+) \%>\% comment("{.count} gungans & humans")
+
+
+# Unions
+set = bind_rows(lhs,rhs) \%>\% comment("{.count} 2*human,droids and gungans")
+# display the history of the result:
+set \%>\% history()
+nrow(set)
+# not run - display the flowchart:
+# set \%>\% flowchart()
+
+set = union(lhs,rhs) \%>\% comment("{.count} human,droids and gungans")
+# display the history of the result:
+set \%>\% history()
+nrow(set)
+# not run - display the flowchart:
+# set \%>\% flowchart()
+
+set = union_all(lhs,rhs) \%>\% comment("{.count} 2*human,droids and gungans")
+# display the history of the result:
+set \%>\% history()
+nrow(set)
+# not run - display the flowchart:
+# set \%>\% flowchart()
+
+# Intersections and differences
+
+set = setdiff(lhs,rhs) \%>\% comment("{.count} droids and gungans")
+# display the history of the result:
+set \%>\% history()
+nrow(set)
+# not run - display the flowchart:
+# set \%>\% flowchart()
+
+set = intersect(lhs,rhs) \%>\% comment("{.count} humans")
+# display the history of the result:
+set \%>\% history()
+nrow(set)
+# not run - display the flowchart:
+# set \%>\% flowchart()
 }
 \seealso{
 dplyr::bind_rows()

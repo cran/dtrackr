@@ -7,8 +7,6 @@
 \method{group_by}{trackr_df}(
   .data,
   ...,
-  .add = FALSE,
-  .drop = dplyr::group_by_drop_default(.data),
   .messages = "stratify by {.cols}",
   .headline = NULL,
   .tag = NULL,
@@ -16,53 +14,49 @@
 )
 }
 \arguments{
-\item{.data}{\itemize{
-\item a dataframe which may be grouped
-}}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{a set of dplyr column expressions.}
+\item{...}{In \code{group_by()}, variables or computations to group by.
+Computations are always done on the ungrouped data frame.
+To perform computations on the grouped data, you need to use
+a separate \code{mutate()} step before the \code{group_by()}.
+Computations are not allowed in \code{nest_by()}.
+In \code{ungroup()}, variables to remove from the grouping.}
 
-\item{.add}{When \code{FALSE}, the default, \code{group_by()} will
-override existing groups. To add to the existing groups, use
-\code{.add = TRUE}.
+\item{.messages}{a set of glue specs. The glue code can use any global
+variable, or \{.cols\} which is the columns that are being grouped by.}
 
-This argument was previously called \code{add}, but that prevented
-creating a new grouping variable called \code{add}, and conflicts with
-our naming conventions.}
+\item{.headline}{a headline glue spec. The glue code can use any global
+variable, or \{.cols\}.}
 
-\item{.drop}{Drop groups formed by factor levels that don't appear in the
-data? The default is \code{TRUE} except when \code{.data} has been previously
-grouped with \code{.drop = FALSE}. See \code{\link[dplyr:group_by_drop_default]{group_by_drop_default()}} for details.}
+\item{.tag}{if you want the summary data from this step in the future then
+give it a name with .tag.}
 
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any global variable, or \{.cols\} which is the columns that are being grouped by.
-}}
-
-\item{.headline}{\itemize{
-\item a headline glue spec. The glue code can use any global variable, or \{.cols\}.
-}}
-
-\item{.tag}{\itemize{
-\item if you want the summary data from this step in the future then give it a name with .tag.
-}}
-
-\item{.maxgroups}{\itemize{
-\item the maximum number of subgroups allowed before the tracking is paused.
-}}
+\item{.maxgroups}{the maximum number of subgroups allowed before the tracking
+is paused.}
 }
 \value{
 the .data but grouped.
 }
 \description{
-Grouping a data set acts in the normal way. When tracking a dataframe sometimes a \code{group_by()} operation will create a lot of groups.
-This happens for example if you are doing a \code{group_by()}, \code{summarise()} step that is aggregating data on a fine scale, e.g. by day in a timeseries.
-This is generally a terrible idea when tracking a dataframe as the resulting flowchart will have many many branches. \code{dtrackr} will detect this issue
-and pause tracking the dataframe with a warning. It is up to the user to the \code{resume()} tracking when the large number of groups have been
-resolved e.g. using a \code{dplyr::ungroup()}. This limit is configurable with \code{options("dtrackr.max_supported_groupings"=XX)}. The default is 16.
-See \code{\link[dplyr:group_by]{dplyr::group_by()}}.
+Grouping a data set acts in the normal way. When tracking a dataframe
+sometimes a \code{group_by()} operation will create a lot of groups. This happens
+for example if you are doing a \code{group_by()}, \code{summarise()} step that is
+aggregating data on a fine scale, e.g. by day in a timeseries. This is
+generally a terrible idea when tracking a dataframe as the resulting
+flowchart will have many many branches and be illegible. \code{dtrackr} will detect this issue and
+pause tracking the dataframe with a warning. It is up to the user to the
+\code{resume()} tracking when the large number of groups have been resolved e.g.
+using a \code{dplyr::ungroup()}. This limit is configurable with
+\code{options("dtrackr.max_supported_groupings"=XX)}. The default is 16. See
+\code{\link[dplyr:group_by]{dplyr::group_by()}}.
 }
 \examples{
 library(dplyr)
+library(dtrackr)
+
 tmp = iris \%>\% track() \%>\% group_by(Species, .messages="stratify by {.cols}")
 tmp \%>\% comment("{.strata}") \%>\% history()
 }

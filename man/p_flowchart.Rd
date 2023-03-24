@@ -10,58 +10,58 @@ p_flowchart(
   size = std_size$half,
   maxWidth = size$width,
   maxHeight = size$height,
-  rot = size$rot,
   formats = c("dot", "png", "pdf", "svg"),
   defaultToHTML = TRUE,
+  landscape = size$rot != 0,
   ...
 )
 }
 \arguments{
-\item{.data}{\itemize{
-\item the tracked dataframes
-}}
+\item{.data}{the tracked dataframe(s) either as a single dataframe or as a
+list of dataframes.}
 
-\item{filename}{\itemize{
-\item a filename (without extension) which will be where the formatted flowcharts are saved
-}}
+\item{filename}{a file name which will be where the formatted flowcharts are
+saved. If no extension is specified the output formats are determined by
+the \code{formats} parameter.}
 
-\item{size}{\itemize{
-\item a list of length and width in inches e.g. a std_size
-}}
+\item{size}{a named list with 3 elements, length and width in inches and
+rotation. A predefined set of standard sizes are available in the
+\link{std_size} object.}
 
-\item{maxWidth}{\itemize{
-\item a width in inches is size is not defined
-}}
+\item{maxWidth}{a width (on the paper) in inches if \code{size} is not defined}
 
-\item{maxHeight}{\itemize{
-\item a height in inches if size is not defined
-}}
+\item{maxHeight}{a height (on the paper) in inches if \code{size} is not defined}
 
-\item{rot}{\itemize{
-\item an angle of rotation for the saved file if size is not defined
-}}
+\item{formats}{some of \code{pdf},\code{dot},\code{svg},\code{png},\code{ps}}
 
-\item{formats}{\itemize{
-\item some of "pdf","dot","svg","png","ps"
-}}
+\item{defaultToHTML}{if the correct output format is not easy to determine
+from the context, default providing \code{HTML} (TRUE) or to embedding the \code{PNG} (FALSE)}
 
-\item{defaultToHTML}{\itemize{
-\item if the correct output format is not easy to determine from the context, default providing HTML or to embedding the PNG
-}}
+\item{landscape}{rotate the output by 270 degrees into a landscape format.
+\code{maxWidth} and \code{maxHeight} still apply and refer to the paper width to fit
+the flowchart into after rotation. (you might need to flip width and height)}
 
-\item{...}{\itemize{
-\item other params passed onto p_get_as_dot, notable ones are fill, fontsize, colour, size, maxWidth and maxHeight
-}}
+\item{...}{other parameters passed onto either \code{p_get_as_dot()}, notable ones are
+\code{fill} (background colour e.g. \code{lightgrey}), \code{fontsize} (in points),
+\code{colour} (font colour)}
 }
 \value{
-the nature of the flowchart output depends on the context in which the function is called. It will be some form of browse-able html output if called from an interactive session
-or a PNG/PDG link if in knitr and knitting latex or word type outputs,
+the nature of the flowchart output depends on the context in which
+the function is called. It will be some form of browse-able html output if
+called from an interactive session or a \code{PNG}/\code{PDF} link if in \code{knitr} and
+knitting latex or word type outputs, if file name is specified the output
+will also be saved at the given location.
 }
 \description{
-Generate a flowchart of the history of the dataframe, with all the transformations as stages in the flowchart.
+Generate a flowchart of the history of the dataframe(s), with all the tracked
+data pipeline as stages in the flowchart. Multiple dataframes can be plotted
+together in which case an attempt is made to determine which parts are
+common.
 }
 \examples{
 library(dplyr)
+library(dtrackr)
+
 tmp = iris \%>\% track() \%>\% comment(.tag = "step1") \%>\% filter(Species!="versicolor")
 tmp \%>\% group_by(Species) \%>\% comment(.tag="step2") \%>\% flowchart()
 }

@@ -18,12 +18,12 @@ filename = "~/tmp/iris.csv"
 
 
 iris %>%
-  track() %>%
-  comment(
+  track(
     .headline = "Iris data:",
     .messages = c(
       "loaded from \"{filename}\"",
-      "starts with {.count} items")) %>%
+      "starts with {.count} items")
+  ) %>%
   group_by(Species) %>%
   comment(
     .headline = "{.strata}",
@@ -126,11 +126,6 @@ dataset2 %>% flowchart()
 
 ## -----------------------------------------------------------------------------
 
-p_flowchart(list(dataset1,dataset2))
-
-
-## -----------------------------------------------------------------------------
-
 tmp = iris %>%
   track() %>% 
   capture_exclusions() %>%
@@ -153,7 +148,6 @@ tmp = iris %>%
     Petal.Width > 2.1 ~ "{.excluded} wide ones"
   ) %>%
   comment("leaving {.count}")
-
 
 tmp %>% flowchart()
 

@@ -14,106 +14,103 @@
 
 <title>dtrackr - Consort statement example</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
 });
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -122,13 +119,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -139,6 +143,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+<style type="text/css">
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+}
+.hanging div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}
+</style>
 
 <style type="text/css">body {
 background-color: #fff;
@@ -338,243 +364,264 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div id="consort-statement" class="section level1">
 <h1>CONSORT statement</h1>
-<p>CONSORT diagrams are part of the requirements in reporting parallel group clinical trials or case control designs in observational studies. They are described in the updated 2010 CONSORT statement <span class="citation">(Schulz, Altman, and Moher 2010)</span>. They clarify how patients were recruited, selected, randomised and followed up. For observational studies an equivalent requirement is the STROBE statement <span class="citation">(von Elm et al. 2008)</span>. There are other similar requirements for other types of study such as the TRIPOD statement that are applicable for multivariate models <span class="citation">(Collins et al. 2015)</span>.</p>
-<p>As we don’t have to hand a randomised control trial the following example is more geared to reporting observational studies, and uses the Indian Liver Patients disease dataset <span class="citation">(Ramana, Venkateswarlu, and Pradesh, n.d.; Ramana, Babu, and Venkateswarlu 2011; Dua and Graff 2017)</span> as an example.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt; ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; ✔ ggplot2 3.3.5     ✔ purrr   0.3.4</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; ✔ tibble  3.1.6     ✔ dplyr   1.0.7</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; ✔ tidyr   1.2.0     ✔ stringr 1.4.0</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; ✔ readr   2.0.2     ✔ forcats 0.5.1</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">library</span>(dtrackr)</span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt; </span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt; Attaching package: &#39;dtrackr&#39;</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt; The following objects are masked from &#39;package:dplyr&#39;:</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt; </span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt;     add_count, add_tally, bind_rows</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt; The following object is masked from &#39;package:stats&#39;:</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt; </span></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt;     filter</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt; The following object is masked from &#39;package:utils&#39;:</span></span>
-<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt; </span></span>
-<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt;     history</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; The following object is masked from &#39;package:base&#39;:</span></span>
-<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt; </span></span>
-<span id="cb1-24"><a href="#cb1-24"></a><span class="co">#&gt;     comment</span></span></code></pre></div>
-<p>The Indian liver patients data set has some clinical data on a case control study of patients with and without liver disease. We can use to pretend we are conducting an observational study.</p>
-<p>Our study criteria are as follows:</p>
+<p>CONSORT diagrams are part of the requirements in reporting parallel
+group clinical trials or case control designs in observational studies.
+They are described in the updated 2010 CONSORT statement <span class="citation">(Schulz, Altman, and Moher 2010)</span>. They clarify
+how patients were recruited, selected, randomised and followed up. For
+observational studies an equivalent requirement is the STROBE statement
+<span class="citation">(von Elm et al. 2008)</span>. There are other
+similar requirements for other types of study such as the TRIPOD
+statement that are applicable for multivariate models <span class="citation">(Collins et al. 2015)</span>.</p>
+<p>For this demonstration we use the <code>cgd</code> data set from the
+<code>survival</code> package <span class="citation">(Terry M. Therneau
+and Patricia M. Grambsch 2000; Therneau 2022)</span>, which is from a
+placebo controlled trial of gamma interferon in Chronic Granulomatous
+Disease.</p>
+<p>In this example the <code>treatment</code> column contains the
+intervention.</p>
+<p>For the analysis we are considering only the first observations for
+each patient, and our study criteria are as follows:</p>
 <ul>
-<li>Entry criteria is having a total bilirubin &gt;= 0.7 for women or &gt;= 0.8 for men.</li>
-<li>Patients must be adults aged between the ages of 18 and 80 inclusive.</li>
+<li>Only patients from US based centres are considered</li>
+<li>Patients must not be on steroids at inception.</li>
+<li>Patients must be aged between the ages of 5 and 35 inclusive.</li>
 </ul>
-<p>This can be coded into the <code>dplyr</code> pipeline, with additional <code>dtrackr</code> functions:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Some useful formatting options</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>old =<span class="st"> </span><span class="kw">options</span>(</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">dtrackr.default_message =</span> <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">dtrackr.default_headline =</span> <span class="ot">NULL</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>)</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a>ilpd =<span class="st"> </span>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="st">  </span><span class="kw">track</span>() <span class="op">%&gt;%</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="st">  </span><span class="kw">capture_exclusions</span>() <span class="op">%&gt;%</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="st">  </span><span class="kw">include_any</span>(</span>
-<span id="cb2-13"><a href="#cb2-13"></a>    Gender <span class="op">==</span><span class="st"> &quot;Female&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Total_Bilirubin <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.7</span> <span class="op">~</span><span class="st"> &quot;{.included} women with bili&gt;0.7&quot;</span>,</span>
-<span id="cb2-14"><a href="#cb2-14"></a>    Gender <span class="op">==</span><span class="st"> &quot;Male&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Total_Bilirubin <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span> <span class="op">~</span><span class="st"> &quot;{.included} men with bili&gt;0.8&quot;</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="st">  </span><span class="kw">group_by</span>(Case_or_Control, <span class="dt">.messages=</span><span class="st">&quot;cases versus controls&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="st">  </span><span class="kw">comment</span>() <span class="op">%&gt;%</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="st">  </span><span class="kw">exclude_all</span>(</span>
-<span id="cb2-19"><a href="#cb2-19"></a>    Age<span class="op">&lt;</span><span class="dv">18</span> <span class="op">~</span><span class="st"> &quot;{.excluded} subjects under 18&quot;</span>,</span>
-<span id="cb2-20"><a href="#cb2-20"></a>    Age<span class="op">&gt;</span><span class="dv">80</span> <span class="op">~</span><span class="st"> &quot;{.excluded} subjects over 80&quot;</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="st">  </span><span class="kw">comment</span>(<span class="dt">.messages =</span> <span class="st">&quot;{.count} after exclusions&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="st">  </span><span class="kw">status</span>(</span>
-<span id="cb2-24"><a href="#cb2-24"></a>    <span class="dt">mean_bili =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="kw">mean</span>(Total_Bilirubin),<span class="kw">sd</span>(Total_Protein)),</span>
-<span id="cb2-25"><a href="#cb2-25"></a>    <span class="dt">mean_alb =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="kw">mean</span>(Albumin),<span class="kw">sd</span>(Albumin)),</span>
-<span id="cb2-26"><a href="#cb2-26"></a>    <span class="dt">.messages =</span> <span class="kw">c</span>(</span>
-<span id="cb2-27"><a href="#cb2-27"></a>      <span class="st">&quot;bilirubin: {mean_bili}&quot;</span>,</span>
-<span id="cb2-28"><a href="#cb2-28"></a>      <span class="st">&quot;albumin: {mean_alb}&quot;</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a>    )                    </span>
-<span id="cb2-30"><a href="#cb2-30"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="st">  </span><span class="kw">ungroup</span>(<span class="dt">.messages =</span> <span class="st">&quot;{.count} in final data set&quot;</span>)</span>
-<span id="cb2-32"><a href="#cb2-32"></a></span>
-<span id="cb2-33"><a href="#cb2-33"></a><span class="co"># restore to originals</span></span>
-<span id="cb2-34"><a href="#cb2-34"></a><span class="kw">options</span>(old)</span></code></pre></div>
-<p>With a bit of experimentation the flowchart needed for a STROBE/CONSORT checklist can be generated. One option to output the flowchart is <code>SVG</code> which can then be manually formatted as required, but for publication ready output <code>pdf</code> is usually preferred.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># saving this flowchart for the JOSS paper.</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># ilpd %&gt;% flowchart(filename = here::here(&quot;vignettes/joss/figure1-ilpd-consort.pdf&quot;))</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">flowchart</span>()</span></code></pre></div>
+<p>This can be coded into the <code>dplyr</code> pipeline, with
+additional <code>dtrackr</code> functions:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Some useful formatting options</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_message =</span> <span class="st">&quot;{.count} records&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="cn">NULL</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>demo_data <span class="ot">=</span> survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(enum <span class="sc">==</span> <span class="dv">1</span>, <span class="at">.type=</span><span class="st">&quot;inclusion&quot;</span>, <span class="at">.messages=</span><span class="st">&quot;{.count.out} first observation&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">include_any</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    hos.cat <span class="sc">==</span> <span class="st">&quot;US:NIH&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} NIH patients&quot;</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    hos.cat <span class="sc">==</span> <span class="st">&quot;US:other&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} other US patients&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, <span class="at">.messages=</span><span class="st">&quot;cases versus controls&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">capture_exclusions</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exclude_all</span>(</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    age<span class="sc">&lt;</span><span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} subjects under 5&quot;</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    age<span class="sc">&gt;</span><span class="dv">35</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} subjects over 35&quot;</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    steroids <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} on steroids at admission&quot;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="at">.messages =</span> <span class="st">&quot;{.count} after exclusions&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">status</span>(</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_height =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="fu">mean</span>(height),<span class="fu">sd</span>(height)),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_weight =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="fu">mean</span>(weight),<span class="fu">sd</span>(weight)),</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;average height: {mean_height}&quot;</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;average weight: {mean_weight}&quot;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    )                    </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>(<span class="at">.messages =</span> <span class="st">&quot;{.count} in final data set&quot;</span>)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># restore to originals</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<p>With a bit of experimentation the flowchart needed for a
+STROBE/CONSORT checklist can be generated. One option to output the
+flowchart is <code>svg</code> which can then be manually formatted as
+required, but for publication ready output <code>pdf</code> is usually
+preferred.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="353pt" height="336pt" viewBox="0.00 0.00 353.47 335.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 331.6)">
+<svg width="302.213pt" height="288.000pt" viewBox="0 0 302.213 288.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.748 0.748) rotate(0) translate(4 381.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-331.6 349.4692,-331.6 349.4692,4 -4,4"></polygon>
-<!-- 10&#45;&gt;12 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-381.2 400.1472,-381.2 400.1472,4 -4,4"></polygon>
+<!-- 12&#45;&gt;14 -->
 <g id="edge2" class="edge">
-<title>10:s-&gt;12</title>
-<path fill="none" stroke="#000000" d="M44.5676,-41.6C44.5676,-41.6 44.5676,-11 44.5676,-11 44.5676,-11 84.8513,-11 84.8513,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="84.8514,-12.7501 89.8513,-11 84.8513,-9.2501 84.8514,-12.7501"></polygon>
+<title>12:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M122.3098,-41.6C122.3098,-41.6 122.3098,-28.5777 122.3098,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="124.0599,-28.5777 122.3098,-23.5777 120.5599,-28.5778 124.0599,-28.5777"></polygon>
 </g>
-<!-- 11&#45;&gt;12 -->
+<!-- 13&#45;&gt;14 -->
 <g id="edge1" class="edge">
-<title>11:s-&gt;12</title>
-<path fill="none" stroke="#000000" d="M218.5676,-41.6C218.5676,-41.6 218.5676,-11 218.5676,-11 218.5676,-11 178.2839,-11 178.2839,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="178.2839,-9.2501 173.2839,-11 178.2838,-12.7501 178.2839,-9.2501"></polygon>
+<title>13:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M191.0742,-41.6C191.0742,-41.6 191.0742,-28.5777 191.0742,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="192.8243,-28.5777 191.0742,-23.5777 189.3243,-28.5778 192.8243,-28.5777"></polygon>
 </g>
-<!-- 8&#45;&gt;10 -->
+<!-- 10&#45;&gt;12 -->
 <g id="edge4" class="edge">
-<title>8:s-&gt;10</title>
-<path fill="none" stroke="#000000" d="M44.5676,-97.6C44.5676,-97.6 44.5676,-84.9669 44.5676,-84.9669"></path>
-<polygon fill="#000000" stroke="#000000" points="46.3177,-84.9669 44.5676,-79.9669 42.8177,-84.9669 46.3177,-84.9669"></polygon>
+<title>10:s-&gt;12</title>
+<path fill="none" stroke="#000000" d="M63.692,-97.6C63.692,-97.6 63.692,-84.9669 63.692,-84.9669"></path>
+<polygon fill="#000000" stroke="#000000" points="65.4421,-84.9669 63.692,-79.9669 61.9421,-84.9669 65.4421,-84.9669"></polygon>
 </g>
-<!-- 9&#45;&gt;11 -->
+<!-- 11&#45;&gt;13 -->
 <g id="edge3" class="edge">
-<title>9:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M218.5676,-97.6C218.5676,-97.6 218.5676,-84.9669 218.5676,-84.9669"></path>
-<polygon fill="#000000" stroke="#000000" points="220.3177,-84.9669 218.5676,-79.9669 216.8177,-84.9669 220.3177,-84.9669"></polygon>
+<title>11:s-&gt;13</title>
+<path fill="none" stroke="#000000" d="M249.692,-97.6C249.692,-97.6 249.692,-84.9669 249.692,-84.9669"></path>
+<polygon fill="#000000" stroke="#000000" points="251.4421,-84.9669 249.692,-79.9669 247.9421,-84.9669 251.4421,-84.9669"></polygon>
 </g>
-<!-- 4&#45;&gt;8 -->
+<!-- 6&#45;&gt;10 -->
 <g id="edge6" class="edge">
-<title>4:s-&gt;8</title>
-<path fill="none" stroke="#000000" d="M44.5676,-149.6C44.5676,-149.6 44.5676,-132.6493 44.5676,-132.6493"></path>
-<polygon fill="#000000" stroke="#000000" points="46.3177,-132.6493 44.5676,-127.6493 42.8177,-132.6494 46.3177,-132.6493"></polygon>
+<title>6:s-&gt;10</title>
+<path fill="none" stroke="#000000" d="M63.692,-153.6C63.692,-153.6 63.692,-132.8669 63.692,-132.8669"></path>
+<polygon fill="#000000" stroke="#000000" points="65.4421,-132.8669 63.692,-127.8669 61.9421,-132.8669 65.4421,-132.8669"></polygon>
+</g>
+<!-- 6&#45;&gt;8 -->
+<g id="edge8" class="edge">
+<title>6:e-&gt;8</title>
+<path fill="none" stroke="#000000" d="M89.692,-168C89.692,-168 98.2504,-168 98.2504,-168"></path>
+<polygon fill="#000000" stroke="#000000" points="98.2505,-169.7501 103.2504,-168 98.2504,-166.2501 98.2505,-169.7501"></polygon>
+</g>
+<!-- 7&#45;&gt;11 -->
+<g id="edge5" class="edge">
+<title>7:s-&gt;11</title>
+<path fill="none" stroke="#000000" d="M249.692,-153.6C249.692,-153.6 249.692,-132.8669 249.692,-132.8669"></path>
+<polygon fill="#000000" stroke="#000000" points="251.4421,-132.8669 249.692,-127.8669 247.9421,-132.8669 251.4421,-132.8669"></polygon>
+</g>
+<!-- 7&#45;&gt;9 -->
+<g id="edge7" class="edge">
+<title>7:e-&gt;9</title>
+<path fill="none" stroke="#000000" d="M275.692,-168C275.692,-168 284.2504,-168 284.2504,-168"></path>
+<polygon fill="#000000" stroke="#000000" points="284.2505,-169.7501 289.2504,-168 284.2504,-166.2501 284.2505,-169.7501"></polygon>
 </g>
 <!-- 4&#45;&gt;6 -->
-<g id="edge8" class="edge">
-<title>4:e-&gt;6</title>
-<path fill="none" stroke="#000000" d="M73.5676,-164C73.5676,-164 82.3128,-164 82.3128,-164"></path>
-<polygon fill="#000000" stroke="#000000" points="82.3128,-165.7501 87.3128,-164 82.3128,-162.2501 82.3128,-165.7501"></polygon>
-</g>
-<!-- 5&#45;&gt;9 -->
-<g id="edge5" class="edge">
-<title>5:s-&gt;9</title>
-<path fill="none" stroke="#000000" d="M218.5676,-149.6C218.5676,-149.6 218.5676,-132.6493 218.5676,-132.6493"></path>
-<polygon fill="#000000" stroke="#000000" points="220.3177,-132.6493 218.5676,-127.6493 216.8177,-132.6494 220.3177,-132.6493"></polygon>
+<g id="edge10" class="edge">
+<title>4:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M63.692,-209.4C63.692,-209.4 63.692,-188.7924 63.692,-188.7924"></path>
+<polygon fill="#000000" stroke="#000000" points="65.4421,-188.7924 63.692,-183.7924 61.9421,-188.7924 65.4421,-188.7924"></polygon>
 </g>
 <!-- 5&#45;&gt;7 -->
-<g id="edge7" class="edge">
-<title>5:e-&gt;7</title>
-<path fill="none" stroke="#000000" d="M247.5676,-164C247.5676,-164 256.6988,-164 256.6988,-164"></path>
-<polygon fill="#000000" stroke="#000000" points="256.6988,-165.7501 261.6988,-164 256.6987,-162.2501 256.6988,-165.7501"></polygon>
+<g id="edge9" class="edge">
+<title>5:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M249.692,-209.4C249.692,-209.4 249.692,-188.7924 249.692,-188.7924"></path>
+<polygon fill="#000000" stroke="#000000" points="251.4421,-188.7924 249.692,-183.7924 247.9421,-188.7924 251.4421,-188.7924"></polygon>
 </g>
 <!-- 3&#45;&gt;4 -->
-<g id="edge10" class="edge">
+<g id="edge12" class="edge">
 <title>3:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M131.5676,-213C131.5676,-213 44.5676,-213 44.5676,-213 44.5676,-213 44.5676,-184.6488 44.5676,-184.6488"></path>
-<polygon fill="#000000" stroke="#000000" points="46.3177,-184.6487 44.5676,-179.6488 42.8177,-184.6488 46.3177,-184.6487"></polygon>
+<path fill="none" stroke="#000000" d="M142.2065,-251.6C142.2065,-251.6 142.2065,-217 142.2065,-217 142.2065,-217 114.3642,-217 114.3642,-217"></path>
+<polygon fill="#000000" stroke="#000000" points="114.3643,-215.2501 109.3642,-217 114.3642,-218.7501 114.3643,-215.2501"></polygon>
 </g>
 <!-- 3&#45;&gt;5 -->
-<g id="edge9" class="edge">
+<g id="edge11" class="edge">
 <title>3:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M131.5676,-213C131.5676,-213 218.5676,-213 218.5676,-213 218.5676,-213 218.5676,-184.6488 218.5676,-184.6488"></path>
-<polygon fill="#000000" stroke="#000000" points="220.3177,-184.6487 218.5676,-179.6488 216.8177,-184.6488 220.3177,-184.6487"></polygon>
+<path fill="none" stroke="#000000" d="M171.1775,-251.6C171.1775,-251.6 171.1775,-225 171.1775,-225 171.1775,-225 199.0198,-225 199.0198,-225"></path>
+<polygon fill="#000000" stroke="#000000" points="199.0198,-226.7501 204.0198,-225 199.0197,-223.2501 199.0198,-226.7501"></polygon>
 </g>
 <!-- 2&#45;&gt;3 -->
-<g id="edge11" class="edge">
+<g id="edge13" class="edge">
 <title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M131.5676,-243.6C131.5676,-243.6 131.5676,-230.3358 131.5676,-230.3358"></path>
-<polygon fill="#000000" stroke="#000000" points="133.3177,-230.3358 131.5676,-225.3358 129.8177,-230.3359 133.3177,-230.3358"></polygon>
+<path fill="none" stroke="#000000" d="M156.692,-311.8C156.692,-311.8 156.692,-299.0351 156.692,-299.0351"></path>
+<polygon fill="#000000" stroke="#000000" points="158.4421,-299.0351 156.692,-294.0351 154.9421,-299.0351 158.4421,-299.0351"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
-<g id="edge12" class="edge">
+<g id="edge14" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M131.5676,-303.8C131.5676,-303.8 131.5676,-291.0351 131.5676,-291.0351"></path>
-<polygon fill="#000000" stroke="#000000" points="133.3177,-291.0351 131.5676,-286.0351 129.8177,-291.0351 133.3177,-291.0351"></polygon>
+<path fill="none" stroke="#000000" d="M156.692,-353.4C156.692,-353.4 156.692,-340.4987 156.692,-340.4987"></path>
+<polygon fill="#000000" stroke="#000000" points="158.4421,-340.4987 156.692,-335.4987 154.9421,-340.4987 158.4421,-340.4987"></polygon>
+</g>
+<!-- 14 -->
+<g id="node1" class="node">
+<title>14</title>
+<polygon fill="#ffffff" stroke="#000000" points="196.1048,-23.4033 117.2792,-23.4033 117.2792,-.1967 196.1048,-.1967 196.1048,-23.4033"></polygon>
+<text text-anchor="start" x="124.2356" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">74 in final data set</text>
 </g>
 <!-- 12 -->
-<g id="node1" class="node">
+<g id="node2" class="node">
 <title>12</title>
-<polygon fill="#ffffff" stroke="#000000" points="173.4284,-23.4033 89.7068,-23.4033 89.7068,-.1967 173.4284,-.1967 173.4284,-23.4033"></polygon>
-<text text-anchor="start" x="96.8876" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">460 in final data set</text>
+<polygon fill="#ffffff" stroke="#000000" points="127.5766,-79.6 -.1926,-79.6 -.1926,-41.6 127.5766,-41.6 127.5766,-79.6"></polygon>
+<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">average height: 145.58 ± 29.10</text>
+<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">average weight: 45.46 ± 23.20</text>
+</g>
+<!-- 13 -->
+<g id="node3" class="node">
+<title>13</title>
+<polygon fill="#ffffff" stroke="#000000" points="313.5766,-79.6 185.8074,-79.6 185.8074,-41.6 313.5766,-41.6 313.5766,-79.6"></polygon>
+<text text-anchor="start" x="193" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g</text>
+<text text-anchor="start" x="193" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">average height: 143.14 ± 25.12</text>
+<text text-anchor="start" x="193" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">average weight: 40.70 ± 20.19</text>
 </g>
 <!-- 10 -->
-<g id="node2" class="node">
+<g id="node4" class="node">
 <title>10</title>
-<polygon fill="#ffffff" stroke="#000000" points="89.2029,-79.6 -.0677,-79.6 -.0677,-41.6 89.2029,-41.6 89.2029,-79.6"></polygon>
-<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case</text>
-<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">bilirubin: 4.79 ± 1.07</text>
-<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">albumin: 3.03 ± 0.78</text>
+<polygon fill="#ffffff" stroke="#000000" points="103.8766,-127.6 23.5074,-127.6 23.5074,-97.6 103.8766,-97.6 103.8766,-127.6"></polygon>
+<text text-anchor="start" x="30.35" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="30.35" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">36 after exclusions</text>
 </g>
 <!-- 11 -->
-<g id="node3" class="node">
-<title>11</title>
-<polygon fill="#ffffff" stroke="#000000" points="263.2029,-79.6 173.9323,-79.6 173.9323,-41.6 263.2029,-41.6 263.2029,-79.6"></polygon>
-<text text-anchor="start" x="181" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control</text>
-<text text-anchor="start" x="181" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">bilirubin: 1.35 ± 1.05</text>
-<text text-anchor="start" x="181" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">albumin: 3.38 ± 0.78</text>
-</g>
-<!-- 8 -->
-<g id="node4" class="node">
-<title>8</title>
-<polygon fill="#ffffff" stroke="#000000" points="87.1989,-127.6 1.9363,-127.6 1.9363,-97.6 87.1989,-97.6 87.1989,-127.6"></polygon>
-<text text-anchor="start" x="9.002" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case</text>
-<text text-anchor="start" x="9.002" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">344 after exclusions</text>
-</g>
-<!-- 9 -->
 <g id="node5" class="node">
-<title>9</title>
-<polygon fill="#ffffff" stroke="#000000" points="261.1989,-127.6 175.9363,-127.6 175.9363,-97.6 261.1989,-97.6 261.1989,-127.6"></polygon>
-<text text-anchor="start" x="183.002" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control</text>
-<text text-anchor="start" x="183.002" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">116 after exclusions</text>
-</g>
-<!-- 4 -->
-<g id="node6" class="node">
-<title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="73.1444,-179.6 15.9908,-179.6 15.9908,-149.6 73.1444,-149.6 73.1444,-179.6"></polygon>
-<text text-anchor="start" x="22.78" y="-166.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case</text>
-<text text-anchor="start" x="22.78" y="-158.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">357 patients</text>
-</g>
-<!-- 5 -->
-<g id="node7" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="247.1444,-179.6 189.9908,-179.6 189.9908,-149.6 247.1444,-149.6 247.1444,-179.6"></polygon>
-<text text-anchor="start" x="196.78" y="-166.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control</text>
-<text text-anchor="start" x="196.78" y="-158.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">125 patients</text>
+<title>11</title>
+<polygon fill="#ffffff" stroke="#000000" points="289.8766,-127.6 209.5074,-127.6 209.5074,-97.6 289.8766,-97.6 289.8766,-127.6"></polygon>
+<text text-anchor="start" x="216.35" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g</text>
+<text text-anchor="start" x="216.35" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">38 after exclusions</text>
 </g>
 <!-- 6 -->
-<g id="node8" class="node">
+<g id="node6" class="node">
 <title>6</title>
-<polygon fill="#cccccc" stroke="#000000" points="175.8184,-183.6 87.3168,-183.6 87.3168,-145.6 175.8184,-145.6 175.8184,-183.6"></polygon>
-<text text-anchor="start" x="94.4424" y="-170.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case</text>
-<text text-anchor="start" x="94.4424" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">12 subjects under 18</text>
-<text text-anchor="start" x="94.4424" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">1 subjects over 80</text>
+<polygon fill="#ffffff" stroke="#000000" points="89.478,-183.6 37.906,-183.6 37.906,-153.6 89.478,-153.6 89.478,-183.6"></polygon>
+<text text-anchor="start" x="44.7992" y="-170.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="44.7992" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">43 records</text>
 </g>
 <!-- 7 -->
-<g id="node9" class="node">
+<g id="node7" class="node">
 <title>7</title>
-<polygon fill="#cccccc" stroke="#000000" points="345.371,-183.6 261.7642,-183.6 261.7642,-145.6 345.371,-145.6 345.371,-183.6"></polygon>
-<text text-anchor="start" x="268.666" y="-170.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control</text>
-<text text-anchor="start" x="268.666" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7 subjects under 18</text>
-<text text-anchor="start" x="268.666" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">2 subjects over 80</text>
+<polygon fill="#ffffff" stroke="#000000" points="275.478,-183.6 223.906,-183.6 223.906,-153.6 275.478,-153.6 275.478,-183.6"></polygon>
+<text text-anchor="start" x="230.7992" y="-170.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g</text>
+<text text-anchor="start" x="230.7992" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">46 records</text>
+</g>
+<!-- 8 -->
+<g id="node8" class="node">
+<title>8</title>
+<polygon fill="#cccccc" stroke="#000000" points="210.1024,-191.6 103.2816,-191.6 103.2816,-145.6 210.1024,-145.6 210.1024,-191.6"></polygon>
+<text text-anchor="start" x="110.2368" y="-178.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="110.2368" y="-170.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7 subjects under 5</text>
+<text text-anchor="start" x="110.2368" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">0 subjects over 35</text>
+<text text-anchor="start" x="110.2368" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">0 on steroids at admission</text>
+</g>
+<!-- 9 -->
+<g id="node9" class="node">
+<title>9</title>
+<polygon fill="#cccccc" stroke="#000000" points="396.1024,-191.6 289.2816,-191.6 289.2816,-145.6 396.1024,-145.6 396.1024,-191.6"></polygon>
+<text text-anchor="start" x="296.2368" y="-178.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g</text>
+<text text-anchor="start" x="296.2368" y="-170.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">4 subjects under 5</text>
+<text text-anchor="start" x="296.2368" y="-162.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">3 subjects over 35</text>
+<text text-anchor="start" x="296.2368" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">1 on steroids at admission</text>
+</g>
+<!-- 4 -->
+<g id="node10" class="node">
+<title>4</title>
+<polygon fill="#ffffff" stroke="#000000" points="109.0937,-233.0033 18.2903,-233.0033 18.2903,-209.7967 109.0937,-209.7967 109.0937,-233.0033"></polygon>
+<text text-anchor="start" x="25.2412" y="-219" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">cases versus controls</text>
+</g>
+<!-- 5 -->
+<g id="node11" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="295.0937,-233.0033 204.2903,-233.0033 204.2903,-209.7967 295.0937,-209.7967 295.0937,-233.0033"></polygon>
+<text text-anchor="start" x="211.2412" y="-219" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">cases versus controls</text>
 </g>
 <!-- 3 -->
-<g id="node10" class="node">
+<g id="node12" class="node">
 <title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="176.9693,-225.0033 86.1659,-225.0033 86.1659,-201.7967 176.9693,-201.7967 176.9693,-225.0033"></polygon>
-<text text-anchor="start" x="93.1168" y="-211" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">cases versus controls</text>
+<polygon fill="#ffffff" stroke="#000000" points="200.1048,-293.9005 113.2792,-293.9005 113.2792,-251.2995 200.1048,-251.2995 200.1048,-293.9005"></polygon>
+<text text-anchor="start" x="120.2356" y="-279.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
+<text text-anchor="start" x="120.2356" y="-270.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">26 NIH patients</text>
+<text text-anchor="start" x="120.2356" y="-260.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">63 other US patients</text>
 </g>
 <!-- 2 -->
-<g id="node11" class="node">
+<g id="node13" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="181.1421,-285.9005 81.9931,-285.9005 81.9931,-243.2995 181.1421,-243.2995 181.1421,-285.9005"></polygon>
-<text text-anchor="start" x="88.7808" y="-271.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
-<text text-anchor="start" x="88.7808" y="-262.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">128 women with bili&gt;0.7</text>
-<text text-anchor="start" x="88.7808" y="-252.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">354 men with bili&gt;0.8</text>
+<polygon fill="#ffffff" stroke="#000000" points="199.7096,-335.4033 113.6744,-335.4033 113.6744,-312.1967 199.7096,-312.1967 199.7096,-335.4033"></polygon>
+<text text-anchor="start" x="120.6832" y="-321.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">128 first observation</text>
 </g>
 <!-- 1 -->
-<g id="node12" class="node">
+<g id="node14" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="160.1444,-327.4033 102.9908,-327.4033 102.9908,-304.1967 160.1444,-304.1967 160.1444,-327.4033"></polygon>
-<text text-anchor="start" x="109.78" y="-313.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 patients</text>
+<polygon fill="#ffffff" stroke="#000000" points="184.9253,-377.0033 128.4587,-377.0033 128.4587,-353.7967 184.9253,-353.7967 184.9253,-377.0033"></polygon>
+<text text-anchor="start" x="135.5756" y="-363" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 records</text>
 </g>
 </g>
 </svg>
@@ -582,142 +629,253 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="excluded-data" class="section level1">
 <h1>Excluded data</h1>
-<p>During this pipeline, we may be keen to understand why certain data items are being rejected. This would enable us to examine the source data, and potentially correct it during the data collection process. We’ve used it to allow continuous quality checks on the data to feed back to the data curators, as we regularly conduct analyses. By tracking the exclusions, not only do we track the data flow through the pipeline we also retain all excluded items, with the reason for exclusion. Thus we can reassure ourselves that the exclusions are as expected. We enabled this by calling <code>capture_exclusions()</code> in the pipeline above. Having tracked the exclusions we can retrieve them by calling <code>excluded()</code> which gives a data frame with the excluded records and the reasons. If the exclusions happened over multiple stages as the dataframe format change in between then this will be held as a nested dataframe (i.e. see <code>?tidyr::nest</code>):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># here we filter out the majority of the actual content of the excluded data to focus on the </span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># metadata recovered during the exclusion.</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">excluded</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(.stage,.message,.filter,Age, Gender)</span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; # A tibble: 22 × 5</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt;    .stage  .message             .filter  Age   Gender</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;glue&gt;               &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; </span></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt;  1 stage 1 7 subjects under 18  Age &lt; 18 17    Male  </span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt;  2 stage 1 7 subjects under 18  Age &lt; 18 17    Female</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt;  3 stage 1 7 subjects under 18  Age &lt; 18 4     Male  </span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt;  4 stage 1 7 subjects under 18  Age &lt; 18 4     Male  </span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt;  5 stage 1 7 subjects under 18  Age &lt; 18 14    Male  </span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt;  6 stage 1 7 subjects under 18  Age &lt; 18 12    Male  </span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt;  7 stage 1 7 subjects under 18  Age &lt; 18 17    Male  </span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt;  8 stage 1 12 subjects under 18 Age &lt; 18 14    Male  </span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt;  9 stage 1 12 subjects under 18 Age &lt; 18 17    Male  </span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; 10 stage 1 12 subjects under 18 Age &lt; 18 15    Male  </span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; # … with 12 more rows</span></span></code></pre></div>
-<p>This list may have multiple entries for a single data item, if for example something is excluded in any one step for many reasons.</p>
-<p>It would be interesting to integrate this into a continuous integration work-flow to run automated checks on data as it is collected.</p>
+<p>During this pipeline, we may be keen to understand why certain data
+items are being rejected. This would enable us to examine the source
+data, and potentially correct it during the data collection process.
+We’ve used it to allow continuous quality checks on the data to feed
+back to the data curators, as we regularly conduct analyses. By tracking
+the exclusions, not only do we track the data flow through the pipeline
+we also retain all excluded items, with the reason for exclusion. Thus
+we can reassure ourselves that the exclusions are as expected. We
+enabled this by calling <code>capture_exclusions()</code> in the
+pipeline above. Having tracked the exclusions we can retrieve them by
+calling <code>excluded()</code> which gives a data frame with the
+excluded records and the reasons. If the exclusions happened over
+multiple stages as the dataframe format change in between then this will
+be held as a nested dataframe (i.e. see <code>?tidyr::nest</code>):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># here we filter out the majority of the actual content of the excluded data to focus on the </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># metadata recovered during the exclusion.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">excluded</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(.stage,.message,.filter,age, steroids)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 5</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    .stage  .message                   .filter       age   steroids</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;glue&gt;                     &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;   </span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 stage 1 7 subjects under 5         age &lt; 5       2     0       </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 stage 1 7 subjects under 5         age &lt; 5       1     0       </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 stage 1 7 subjects under 5         age &lt; 5       1     0       </span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 stage 1 7 subjects under 5         age &lt; 5       1     0       </span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 stage 1 7 subjects under 5         age &lt; 5       1     0       </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 stage 1 7 subjects under 5         age &lt; 5       4     0       </span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 stage 1 7 subjects under 5         age &lt; 5       3     0       </span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 stage 1 4 subjects under 5         age &lt; 5       3     0       </span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 stage 1 4 subjects under 5         age &lt; 5       4     0       </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 stage 1 4 subjects under 5         age &lt; 5       1     0       </span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 stage 1 4 subjects under 5         age &lt; 5       4     0       </span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 stage 1 3 subjects over 35         age &gt; 35      44    0       </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 stage 1 3 subjects over 35         age &gt; 35      38    0       </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 stage 1 3 subjects over 35         age &gt; 35      37    0       </span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 stage 1 1 on steroids at admission steroids == 1 6     1</span></span></code></pre></div>
+<p>This list may have multiple entries for a single data item, if for
+example something is excluded in any one step for many reasons.</p>
 </div>
 <div id="tagging-the-pipeline" class="section level1">
 <h1>Tagging the pipeline</h1>
-<p>For reporting results it is useful to have the numbers from the flowchart to embed into the text of the results section of the write up. Here we show the same pipeline as above, but with 4 uses of the <code>.tag</code> system for labelling part of the pipeline. This captures data in a tag-value list during the pipeline, and retains it as metadata for later reuse.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2"></a>ilpd =<span class="st"> </span>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw">track</span>(<span class="dt">.tag=</span><span class="st">&quot;initial cohort&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="st">  </span><span class="co">#     ^^^^^^^^^^^^^^^^^^^^^</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a><span class="st">  </span><span class="co">#     TAGS DEFINED</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="st">  </span><span class="kw">capture_exclusions</span>() <span class="op">%&gt;%</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="st">  </span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="st">  </span><span class="kw">include_any</span>(</span>
-<span id="cb5-11"><a href="#cb5-11"></a>    Gender <span class="op">==</span><span class="st"> &quot;Female&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Total_Bilirubin <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.7</span> <span class="op">~</span><span class="st"> &quot;{.included} women with bili&gt;0.7&quot;</span>,</span>
-<span id="cb5-12"><a href="#cb5-12"></a>    Gender <span class="op">==</span><span class="st"> &quot;Male&quot;</span> <span class="op">&amp;</span><span class="st"> </span>Total_Bilirubin <span class="op">&gt;=</span><span class="st"> </span><span class="fl">0.8</span> <span class="op">~</span><span class="st"> &quot;{.included} men with bili&gt;0.8&quot;</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="st">  </span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="st">  </span><span class="kw">group_by</span>(Case_or_Control, <span class="dt">.messages=</span><span class="st">&quot;cases versus controls&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="st">  </span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="st">  </span><span class="kw">comment</span>(<span class="dt">.tag=</span><span class="st">&quot;study cohort&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="st">  </span><span class="co">#       ^^^^^^^^^^^^^^^^^^^</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a><span class="st">  </span><span class="co">#       SECOND SET OF TAGS DEFINED</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a><span class="st">  </span></span>
-<span id="cb5-21"><a href="#cb5-21"></a><span class="st">  </span><span class="kw">exclude_all</span>(</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    Age<span class="op">&lt;</span><span class="dv">18</span> <span class="op">~</span><span class="st"> &quot;{.excluded} subjects under 18&quot;</span>,</span>
-<span id="cb5-23"><a href="#cb5-23"></a>    Age<span class="op">&gt;</span><span class="dv">80</span> <span class="op">~</span><span class="st"> &quot;{.excluded} subjects over 80&quot;</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="st">  </span></span>
-<span id="cb5-26"><a href="#cb5-26"></a><span class="st">  </span><span class="kw">comment</span>(<span class="dt">.messages =</span> <span class="st">&quot;{.count} after exclusions&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a><span class="st">  </span></span>
-<span id="cb5-28"><a href="#cb5-28"></a><span class="st">  </span><span class="kw">status</span>(</span>
-<span id="cb5-29"><a href="#cb5-29"></a>    <span class="dt">mean_bili =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="kw">mean</span>(Total_Bilirubin),<span class="kw">sd</span>(Total_Protein)),</span>
-<span id="cb5-30"><a href="#cb5-30"></a>    <span class="dt">mean_alb =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="kw">mean</span>(Albumin),<span class="kw">sd</span>(Albumin)),</span>
-<span id="cb5-31"><a href="#cb5-31"></a>    <span class="dt">.messages =</span> <span class="kw">c</span>(</span>
-<span id="cb5-32"><a href="#cb5-32"></a>      <span class="st">&quot;bilirubin: {mean_bili}&quot;</span>,</span>
-<span id="cb5-33"><a href="#cb5-33"></a>      <span class="st">&quot;albumin: {mean_alb}&quot;</span></span>
-<span id="cb5-34"><a href="#cb5-34"></a>    ),</span>
-<span id="cb5-35"><a href="#cb5-35"></a>    <span class="dt">.tag =</span> <span class="st">&quot;qualifying patients&quot;</span></span>
-<span id="cb5-36"><a href="#cb5-36"></a>  <span class="co"># ^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span></span>
-<span id="cb5-37"><a href="#cb5-37"></a>  <span class="co"># THIRD SET TAGS DEFINED</span></span>
-<span id="cb5-38"><a href="#cb5-38"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb5-39"><a href="#cb5-39"></a><span class="st">  </span></span>
-<span id="cb5-40"><a href="#cb5-40"></a><span class="st">  </span><span class="kw">ungroup</span>(<span class="dt">.messages =</span> <span class="st">&quot;{.count} in final data set&quot;</span>, <span class="dt">.tag=</span><span class="st">&quot;final set&quot;</span>)</span>
-<span id="cb5-41"><a href="#cb5-41"></a>  <span class="co">#                                                 ^^^^^^^^^^^^^^^^</span></span>
-<span id="cb5-42"><a href="#cb5-42"></a>  <span class="co">#                                                 LAST TAGS DEFINED</span></span></code></pre></div>
-<p>The tagged data can be retrieved as follows, which will give you all tagged data for all 4 points in the pipeline:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tagged</span>() <span class="op">%&gt;%</span><span class="st"> </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(.content)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; # A tibble: 6 × 7</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt;   .tag                .count .total .strata   Case_or_Control mean_bili mean_alb</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;   &lt;chr&gt;                &lt;int&gt;  &lt;int&gt; &lt;chr&gt;     &lt;ord&gt;           &lt;chr&gt;     &lt;chr&gt;   </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; 1 initial cohort         583    583 &quot;&quot;        &lt;NA&gt;            &lt;NA&gt;      &lt;NA&gt;    </span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; 2 study cohort           357    482 &quot;Case_or… case            &lt;NA&gt;      &lt;NA&gt;    </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; 3 study cohort           125    482 &quot;Case_or… control         &lt;NA&gt;      &lt;NA&gt;    </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; 4 qualifying patients    344    460 &quot;Case_or… case            4.79 ± 1… 3.03 ± …</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; 5 qualifying patients    116    460 &quot;Case_or… control         1.35 ± 1… 3.38 ± …</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; 6 final set              460    460 &quot;&quot;        &lt;NA&gt;            &lt;NA&gt;      &lt;NA&gt;</span></span></code></pre></div>
-<p>More often though you will want to retrieve specific values from specific points for the results text for example:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>initialSet =<span class="st"> </span>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tagged</span>(<span class="dt">.tag =</span> <span class="st">&quot;initial cohort&quot;</span>, <span class="dt">.glue =</span> <span class="st">&quot;{.count} patients&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>finalSet =<span class="st"> </span>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tagged</span>(<span class="dt">.tag =</span> <span class="st">&quot;final set&quot;</span>, <span class="dt">.glue =</span> <span class="st">&quot;{.count} patients&quot;</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co"># there were `r initialSet` in the study, of whom `r finalSet` met the eligibility criteria.</span></span></code></pre></div>
-<p>For example there were 583 patients in the study, of whom 460 patients met the eligibility criteria.</p>
-<p>More complex formatting and calculations are made possible by use of the <code>glue</code> specification, including those that happen on a per group basis, and we can also pull in values from elsewhere in our analysis.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tagged</span>(</span>
-<span id="cb8-2"><a href="#cb8-2"></a>    <span class="dt">.tag =</span> <span class="st">&quot;qualifying patients&quot;</span>, </span>
-<span id="cb8-3"><a href="#cb8-3"></a>    <span class="dt">.glue =</span> <span class="st">&quot;{.strata}: {.count}/{.total} ({sprintf(&#39;%1.1f&#39;, .count/.total*100)}%) patients on {sysDate}, with a mean bilirubin of {mean_bili}&quot;</span>, </span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="dt">sysDate =</span> <span class="kw">Sys.Date</span>()</span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="co"># we could have included any number of other parameters here from the global environment</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">pull</span>(.label)</span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; Case_or_Control:case: 344/460 (74.8%) patients on 2022-07-04, with a mean bilirubin of 4.79 ± 1.07</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; Case_or_Control:control: 116/460 (25.2%) patients on 2022-07-04, with a mean bilirubin of 1.35 ± 1.05</span></span></code></pre></div>
-<p>Sometimes it will be necessary to operate on all tagged content at once. This is possible but be aware that the content available depends somewhat on where the tag was set in the pipeline so not all fields will always be present (although <code>.count</code> and <code>.total</code> will be). The <code>.total</code> is the overall number of cases at that point in the pipeline. <code>.count</code> is the number of cases in each strata.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tagged</span>(<span class="dt">.glue =</span> <span class="st">&quot;{.count}/{.total} patients&quot;</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt;   .tag                .strata                   .label          </span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;                     &lt;glue&gt;          </span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt; 1 initial cohort      &quot;&quot;                        583/583 patients</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; 2 study cohort        &quot;Case_or_Control:case&quot;    357/482 patients</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; 3 study cohort        &quot;Case_or_Control:control&quot; 125/482 patients</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; 4 qualifying patients &quot;Case_or_Control:case&quot;    344/460 patients</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; 5 qualifying patients &quot;Case_or_Control:control&quot; 116/460 patients</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt; 6 final set           &quot;&quot;                        460/460 patients</span></span></code></pre></div>
-<p>For comparing inclusions and exclusions at different stages in the pipeline using tags the following example may be useful:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>ilpd <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="st">  </span><span class="kw">tagged</span>() <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># selects only top level content</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(.content) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(.tag, .total) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">distinct</span>() <span class="op">%&gt;%</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">pivot_wider</span>(<span class="dt">values_from=</span>.total, <span class="dt">names_from=</span>.tag) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="st">  </span>glue<span class="op">::</span><span class="kw">glue_data</span>(<span class="st">&quot;Out of {`initial cohort`} patients, {`study cohort`} were eligible for inclusion on the basis of their liver function tests but {`study cohort`-`qualifying patients`} were </span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="st">                  outside the age limits. This left {`final set`} patients included in the final study (i.e. overall {`initial cohort`-`final set`} were removed).&quot;</span>)</span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt; Out of 583 patients, 482 were eligible for inclusion on the basis of their liver function tests but 22 were </span></span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt; outside the age limits. This left 460 patients included in the final study (i.e. overall 123 were removed).</span></span></code></pre></div>
+<p>For reporting results it is useful to have the numbers from the
+flowchart to embed into the text of the results section of the write up.
+Here we show the same pipeline as above, but with 4 uses of the
+<code>.tag</code> system for labelling part of the pipeline. This
+captures data in a tag-value list during the pipeline, and retains it as
+metadata for later reuse.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>demo_data <span class="ot">=</span> survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>(<span class="at">.messages =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(enum <span class="sc">==</span> <span class="dv">1</span>, <span class="at">.type=</span><span class="st">&quot;inclusion&quot;</span>, <span class="at">.messages=</span><span class="st">&quot;{.count.out} first observation&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="at">.tag =</span> <span class="st">&quot;initial cohort&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#         ^^^^^^^^^^^^^^^^^^^^^</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#         TAGS DEFINED</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">include_any</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    hos.cat <span class="sc">==</span> <span class="st">&quot;US:NIH&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} NIH patients&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    hos.cat <span class="sc">==</span> <span class="st">&quot;US:other&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} other US patients&quot;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, <span class="at">.messages=</span><span class="st">&quot;cases versus controls&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="at">.tag=</span><span class="st">&quot;study cohort&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#       ^^^^^^^^^^^^^^^^^^^</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#       SECOND SET OF TAGS DEFINED</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">capture_exclusions</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exclude_all</span>(</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    age<span class="sc">&lt;</span><span class="dv">5</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} subjects under 5&quot;</span>,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    age<span class="sc">&gt;</span><span class="dv">35</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} subjects over 35&quot;</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    steroids <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} on steroids at admission&quot;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="at">.messages =</span> <span class="st">&quot;{.count} after exclusions&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">status</span>(</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_height =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="fu">mean</span>(height),<span class="fu">sd</span>(height)),</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_weight =</span> <span class="fu">sprintf</span>(<span class="st">&quot;%1.2f \u00B1 %1.2f&quot;</span>,<span class="fu">mean</span>(weight),<span class="fu">sd</span>(weight)),</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;average height: {mean_height}&quot;</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;average weight: {mean_weight}&quot;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">.tag =</span> <span class="st">&quot;qualifying patients&quot;</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  THIRD SET TAGS DEFINED                    </span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>(<span class="at">.messages =</span> <span class="st">&quot;{.count} in final data set&quot;</span>, <span class="at">.tag=</span><span class="st">&quot;final set&quot;</span>)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                                                 ^^^^^^^^^^^^^^^^</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                                                 LAST TAGS DEFINED</span></span></code></pre></div>
+<p>The tagged data can be retrieved as follows, which will give you all
+tagged data for all 4 points in the pipeline:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>() <span class="sc">%&gt;%</span> tidyr<span class="sc">::</span><span class="fu">unnest</span>(.content)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 7</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .tag                .count .total .strata         treat   mean_height  mean_…¹</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                &lt;int&gt;  &lt;int&gt; &lt;chr&gt;           &lt;fct&gt;   &lt;chr&gt;        &lt;chr&gt;  </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort         128    128 &quot;&quot;              &lt;NA&gt;    &lt;NA&gt;         &lt;NA&gt;   </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 study cohort            43     89 &quot;treat:placebo&quot; placebo &lt;NA&gt;         &lt;NA&gt;   </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 study cohort            46     89 &quot;treat:rIFN-g&quot;  rIFN-g  &lt;NA&gt;         &lt;NA&gt;   </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients     36     74 &quot;treat:placebo&quot; placebo 145.58 ± 29… 45.46 …</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients     38     74 &quot;treat:rIFN-g&quot;  rIFN-g  143.14 ± 25… 40.70 …</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 final set               74     74 &quot;&quot;              &lt;NA&gt;    &lt;NA&gt;         &lt;NA&gt;   </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with abbreviated variable name ¹​mean_weight</span></span></code></pre></div>
+<p>More often though you will want to retrieve specific values from
+specific points for the results text for example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>initialSet <span class="ot">=</span> demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(<span class="at">.tag =</span> <span class="st">&quot;initial cohort&quot;</span>, <span class="at">.glue =</span> <span class="st">&quot;{.count} patients&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>finalSet <span class="ot">=</span> demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(<span class="at">.tag =</span> <span class="st">&quot;final set&quot;</span>, <span class="at">.glue =</span> <span class="st">&quot;{.count} patients&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># there were `r initialSet` in the study, of whom `r finalSet` met the eligibility criteria.</span></span></code></pre></div>
+<p>For example there were 128 patients in the study, of whom 74 patients
+met the eligibility criteria.</p>
+<p>More complex formatting and calculations are made possible by use of
+the <code>glue</code> specification, including those that happen on a
+per group basis, and we can also pull in values from elsewhere in our
+analysis.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">.tag =</span> <span class="st">&quot;qualifying patients&quot;</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">.glue =</span> <span class="st">&quot;{.strata}: {.count}/{.total} ({sprintf(&#39;%1.1f&#39;, .count/.total*100)}%) patients on {sysDate}, with a mean height of {mean_height}&quot;</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">sysDate =</span> <span class="fu">Sys.Date</span>()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># we could have included any number of other parameters here from the global environment</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(.label)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; treat:placebo: 36/74 (48.6%) patients on 2023-03-24, with a mean height of 145.58 ± 29.10</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; treat:rIFN-g: 38/74 (51.4%) patients on 2023-03-24, with a mean height of 143.14 ± 25.12</span></span></code></pre></div>
+<p>Sometimes it will be necessary to operate on all tagged content at
+once. This is possible but be aware that the content available depends
+somewhat on where the tag was set in the pipeline so not all fields will
+always be present (although <code>.count</code> and <code>.total</code>
+will be). The <code>.total</code> is the overall number of cases at that
+point in the pipeline. <code>.count</code> is the number of cases in
+each strata.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(<span class="at">.glue =</span> <span class="st">&quot;{.count}/{.total} patients&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   .tag                .strata         .label          </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;           &lt;glue&gt;          </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort      &quot;&quot;              128/128 patients</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 study cohort        &quot;treat:placebo&quot; 43/89 patients  </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 study cohort        &quot;treat:rIFN-g&quot;  46/89 patients  </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients &quot;treat:placebo&quot; 36/74 patients  </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients &quot;treat:rIFN-g&quot;  38/74 patients  </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 final set           &quot;&quot;              74/74 patients</span></span></code></pre></div>
+<p>For comparing inclusions and exclusions at different stages in the
+pipeline using tags the following example may be useful:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tagged</span>() <span class="sc">%&gt;%</span>   <span class="co"># selects only top level content</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">unnest</span>(.content) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(.tag, .total) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_wider</span>(<span class="at">values_from=</span>.total, <span class="at">names_from=</span>.tag) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue_data</span>(<span class="st">&quot;Out of {`initial cohort`} patients, {`study cohort`} were eligible for inclusion on the basis of their age</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">  but {`study cohort`-`qualifying patients`} were outside the age limits. </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">  This left {`final set`} patients included in the final study (i.e. overall {`initial cohort`-`final set`} were removed).&quot;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Out of 128 patients, 89 were eligible for inclusion on the basis of their age</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; but 15 were outside the age limits. </span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This left 74 patients included in the final study (i.e. overall 54 were removed).</span></span></code></pre></div>
+</div>
+<div id="reusable-functions" class="section level1">
+<h1>Reusable functions</h1>
+<p>Composing <code>dtrackr</code> inclusion and exclusion criteria into
+functions lets you reuse them across different studies, but to be useful
+these functions need to be parameterised. As <code>dtrackr</code>
+already uses formulae as part of the input to construct the formulae for
+<code>dtrackr</code> from a helper function requires injection support,
+using <code>rlang::inject()</code>. This is an advanced R topic but the
+following example gives a sense of what is possible.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a reusable function to restrict ages</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>age_restrict <span class="ot">=</span> <span class="cf">function</span>(df, age_col, <span class="at">min_age =</span> <span class="dv">18</span>, <span class="at">max_age =</span> <span class="dv">65</span>) {</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  age_col <span class="ot">=</span> rlang<span class="sc">::</span><span class="fu">ensym</span>(age_col)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  message <span class="ot">=</span> <span class="fu">sprintf</span>(<span class="st">&quot;{.included} between</span><span class="sc">\n</span><span class="st">%d and %d years&quot;</span>, min_age, max_age)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  dtrackr<span class="sc">::</span><span class="fu">include_any</span>(df,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># injection support for parameters must be made explicit using</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># rlang::inject in any functions using include_any or exclude_all</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    rlang<span class="sc">::</span><span class="fu">inject</span>(min_age <span class="sc">&lt;=</span> <span class="sc">!!</span>age_col <span class="sc">&amp;</span> max_age <span class="sc">&gt;=</span> <span class="sc">!!</span>age_col <span class="sc">~</span> <span class="sc">!!</span>message)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span> </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the `age` column is in </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">age_restrict</span>(age, <span class="at">max_age =</span> <span class="dv">30</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># demonstrating that this works in 2 stages</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">age_restrict</span>(age, <span class="at">min_age =</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="79.000pt" height="112.000pt" viewBox="0 0 79.000 112.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 108.000)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-107.6 75.3576,-107.6 75.3576,4 -4,4"></polygon>
+<!-- 1&#45;&gt;2 -->
+<g id="edge1" class="edge">
+<title>1:s-&gt;2</title>
+<path fill="none" stroke="#000000" d="M35.6788,-61.2C35.6788,-61.2 35.6788,-48.1632 35.6788,-48.1632"></path>
+<polygon fill="#000000" stroke="#000000" points="37.4289,-48.1632 35.6788,-43.1632 33.9289,-48.1632 37.4289,-48.1632"></polygon>
+</g>
+<!-- 2 -->
+<g id="node1" class="node">
+<title>2</title>
+<polygon fill="#ffffff" stroke="#000000" points="71.5373,-42.7005 -.1797,-42.7005 -.1797,-.0995 71.5373,-.0995 71.5373,-42.7005"></polygon>
+<text text-anchor="start" x="7" y="-28.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
+<text text-anchor="start" x="7" y="-19" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">43 between</text>
+<text text-anchor="start" x="7" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 and 65 years</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node">
+<title>1</title>
+<polygon fill="#ffffff" stroke="#000000" points="71.5373,-103.5005 -.1797,-103.5005 -.1797,-60.8995 71.5373,-60.8995 71.5373,-103.5005"></polygon>
+<text text-anchor="start" x="7" y="-89.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
+<text text-anchor="start" x="7" y="-79.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">52 between</text>
+<text text-anchor="start" x="7" y="-70.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">18 and 30 years</text>
+</g>
+</g>
+</svg>
+
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<div id="refs">
-<div id="ref-collinsTransparentReportingMultivariable2015">
-<p>Collins, Gary S., Johannes B. Reitsma, Douglas G. Altman, and Karel GM Moons. 2015. “Transparent Reporting of a Multivariable Prediction Model for Individual Prognosis or Diagnosis (TRIPOD): The TRIPOD Statement.” <em>BMC Medicine</em> 13 (1): 1. <a href="https://doi.org/10.1186/s12916-014-0241-z">https://doi.org/10.1186/s12916-014-0241-z</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-collinsTransparentReportingMultivariable2015" class="csl-entry">
+Collins, Gary S., Johannes B. Reitsma, Douglas G. Altman, and Karel GM
+Moons. 2015. <span>“Transparent Reporting of a Multivariable Prediction
+Model for Individual Prognosis or Diagnosis (<span>TRIPOD</span>): The
+<span>TRIPOD Statement</span>.”</span> <em>BMC Medicine</em> 13 (1): 1.
+<a href="https://doi.org/10.1186/s12916-014-0241-z">https://doi.org/10.1186/s12916-014-0241-z</a>.
 </div>
-<div id="ref-Dua2019">
-<p>Dua, Dheeru, and Casey Graff. 2017. “UCI Machine Learning Repository.” University of California, Irvine, School of Information and Computer Sciences. <a href="http://archive.ics.uci.edu/ml/">http://archive.ics.uci.edu/ml/</a>.</p>
+<div id="ref-vonelmStrengtheningReportingObservational2008" class="csl-entry">
+Elm, Erik von, Douglas G Altman, Matthias Egger, Stuart J Pocock, Peter
+C Gøtzsche, Jan P Vandenbroucke, and STROBE Initiative. 2008. <span>“The
+<span>Strengthening</span> the <span>Reporting</span> of
+<span>Observational Studies</span> in <span>Epidemiology</span>
+(<span>STROBE</span>) Statement: Guidelines for Reporting Observational
+Studies.”</span> <em>Journal of Clinical Epidemiology</em> 61 (4):
+344–49.
 </div>
-<div id="ref-vonelmStrengtheningReportingObservational2008">
-<p>Elm, Erik von, Douglas G Altman, Matthias Egger, Stuart J Pocock, Peter C Gøtzsche, Jan P Vandenbroucke, and STROBE Initiative. 2008. “The Strengthening the Reporting of Observational Studies in Epidemiology (STROBE) Statement: Guidelines for Reporting Observational Studies.” <em>Journal of Clinical Epidemiology</em> 61 (4): 344–49.</p>
+<div id="ref-schulzCONSORT2010Statement2010" class="csl-entry">
+Schulz, Kenneth F., Douglas G. Altman, and David Moher. 2010.
+<span>“<span>CONSORT</span> 2010 <span>Statement</span>: Updated
+Guidelines for Reporting Parallel Group Randomised Trials.”</span>
+<em>BMJ</em> 340 (March): c332. <a href="https://doi.org/10.1136/bmj.c332">https://doi.org/10.1136/bmj.c332</a>.
 </div>
-<div id="ref-ramanaCriticalStudySelected2011">
-<p>Ramana, B., M. Babu, and N. Venkateswarlu. 2011. “A Critical Study of Selected Classification Algorithms for Liver Disease Diagnosis.” <a href="https://doi.org/10.5121/IJDMS.2011.3207">https://doi.org/10.5121/IJDMS.2011.3207</a>.</p>
+<div id="ref-survival-book" class="csl-entry">
+Terry M. Therneau, and Patricia M. Grambsch. 2000. <em>Modeling Survival
+Data: Extending the <span>C</span>ox Model</em>. New York: Springer.
 </div>
-<div id="ref-ramanaCriticalComparativeStudy">
-<p>Ramana, Bendi Venkata, Prof N. B. Venkateswarlu, and Andhra Pradesh. n.d. “A Critical Comparative Study of Liver Patients from USA and INDIA: An Exploratory Analysis.”</p>
-</div>
-<div id="ref-schulzCONSORT2010Statement2010">
-<p>Schulz, Kenneth F., Douglas G. Altman, and David Moher. 2010. “CONSORT 2010 Statement: Updated Guidelines for Reporting Parallel Group Randomised Trials.” <em>BMJ</em> 340 (March): c332. <a href="https://doi.org/10.1136/bmj.c332">https://doi.org/10.1136/bmj.c332</a>.</p>
+<div id="ref-survival-package" class="csl-entry">
+Therneau, Terry M. 2022. <em>A Package for Survival Analysis in r</em>.
+<a href="https://CRAN.R-project.org/package=survival">https://CRAN.R-project.org/package=survival</a>.
 </div>
 </div>
 </div>

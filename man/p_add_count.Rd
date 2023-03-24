@@ -2,61 +2,89 @@
 % Please edit documentation in R/dtrackr.R
 \name{p_add_count}
 \alias{p_add_count}
-\title{Standard dplyr modifying operations}
+\title{dplyr modifying operations}
 \usage{
-p_add_count(
-  .data,
-  ...,
-  wt = NULL,
-  sort = FALSE,
-  name = NULL,
-  .messages = "",
-  .headline = "",
-  .tag = NULL
-)
+p_add_count(x, ..., .messages = "", .headline = "", .tag = NULL)
 }
 \arguments{
-\item{.data}{\itemize{
-\item a dataframe which may be grouped
-}}
+\item{x}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr).}
 
-\item{...}{a set of dplyr summary expressions.}
-
-\item{wt}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Frequency weights.
+\item{...}{
+  Arguments passed on to \code{\link[dplyr:count]{dplyr::add_count}}
+  \describe{
+    \item{\code{wt}}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Frequency weights.
 Can be \code{NULL} or a variable:
 \itemize{
 \item If \code{NULL} (the default), counts the number of rows in each group.
 \item If a variable, computes \code{sum(wt)} for each group.
 }}
-
-\item{sort}{If \code{TRUE}, will show the largest groups at the top.}
-
-\item{name}{The name of the new column in the output.
+    \item{\code{sort}}{If \code{TRUE}, will show the largest groups at the top.}
+    \item{\code{name}}{The name of the new column in the output.
 
 If omitted, it will default to \code{n}. If there's already a column called \code{n},
-it will error, and require you to specify the name.}
+it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
+\code{nnn}, and so on, adding \code{n}s until it gets a new name.}
+    \item{\code{.drop}}{For \code{count()}: if \code{FALSE} will include counts for empty groups
+(i.e. for levels of factors that don't exist in the data). Deprecated in
+\code{add_count()} since it didn't actually affect the output.}
+  }}
 
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any global variable, grouping variable, or \{.strata\}. Defaults to nothing.
-}}
+\item{.messages}{a set of glue specs. The glue code can use any global
+variable, grouping variable, \{.new_cols\} or \{.dropped_cols\} for changes to
+columns, \{.cols\} for the output column names, or \{.strata\}. Defaults to nothing.}
 
-\item{.headline}{\itemize{
-\item a headline glue spec. The glue code can use any global variable, grouping variable, or \{.strata\}. Defaults to nothing.
-}}
+\item{.headline}{a headline glue spec. The glue code can use any global
+variable, grouping variable, \{.new_cols\}, \{.dropped_cols\}, \{.cols\} or \{.strata\}.
+Defaults to nothing.}
 
-\item{.tag}{\itemize{
-\item if you want the summary data from this step in the future then give it a name with .tag.
-}}
+\item{.tag}{if you want the summary data from this step in the future then
+give it a name with .tag.}
 }
 \value{
-the .data dataframe after being modified by the dplyr equivalent function, but with the history graph updated with a new stage if the \code{.messages} field is not empty
+the .data dataframe after being modified by the \code{dplyr} equivalent
+function, but with the history graph updated with a new stage if the
+\code{.messages} or \code{.headline} parameter is not empty.
 }
 \description{
-Equivalent Dplyr functions for mutating, selecting and renaming a data set act in the normal way.
-mutates / selects / rename generally don't add anything in documentation so the default behaviour is to miss these out of the history.
-This can be overridden with the .messages, or .headline values in which case they behave just like a \code{comment()}
-See \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}}, \code{\link[dplyr:mutate]{dplyr::transmute()}}, \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}}, \code{\link[dplyr:rename]{dplyr::rename()}}
+Equivalent \code{dplyr} functions for mutating, selecting and renaming a data set
+act in the normal way. mutates / selects / rename generally don't add
+anything in documentation so the default behaviour is to miss these out of
+the history. This can be overridden with the .messages, or .headline values
+in which case they behave just like a \code{comment()} See \code{\link[dplyr:mutate]{dplyr::mutate()}},
+\code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}}, \code{\link[dplyr:transmute]{dplyr::transmute()}},
+\code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}}, \code{\link[dplyr:rename]{dplyr::rename()}}
 \code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details.
+}
+\examples{
+library(dplyr)
+library(dtrackr)
+
+# mutate and other functions are unitary operations that generally change
+# the structure but not size of a dataframe. In dtrackr these are by ignored
+# by default but we can change that so that their behaviour is obvious.
+
+# add_count
+# adding in a count or tally column as a new column
+iris \%>\%
+  track() \%>\%
+  add_count(Species, name="new_count_total",
+            .messages="{.new_cols}",
+            # .messages="{.cols}",
+            .headline="New columns from add_count:") \%>\%
+  history()
+
+# add_tally
+iris \%>\%
+  track() \%>\%
+  group_by(Species) \%>\%
+  dtrackr::add_tally(wt=Petal.Length, name="new_tally_total",
+            .messages="{.new_cols}",
+            .headline="New columns from add_tally:") \%>\%
+  history()
+
+
+
 }
 \seealso{
 dplyr::add_count()

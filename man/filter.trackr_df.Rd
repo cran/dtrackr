@@ -7,60 +7,55 @@
 \method{filter}{trackr_df}(
   .data,
   ...,
-  .preserve = FALSE,
   .messages = "excluded {.excluded} items",
   .headline = .defaultHeadline(),
   .type = "exclusion",
   .asOffshoot = (.type == "exclusion"),
-  .stage = "",
+  .stage = (if (is.null(.tag)) "" else .tag),
   .tag = NULL
 )
 }
 \arguments{
-\item{.data}{\itemize{
-\item a dataframe which may be grouped
-}}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{the filter criteria}
+\item{...}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Expressions that return a
+logical value, and are defined in terms of the variables in \code{.data}.
+If multiple expressions are included, they are combined with the \code{&} operator.
+Only rows for which all conditions evaluate to \code{TRUE} are kept.}
 
-\item{.preserve}{Relevant when the \code{.data} input is grouped.
-If \code{.preserve = FALSE} (the default), the grouping structure
-is recalculated based on the resulting data, otherwise the grouping is kept as is.}
+\item{.messages}{a set of glue specs. The glue code can use any global
+variable, or \{.strata\},\{.count.in\},and \{.count.out\}}
 
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any global variable, or \{.strata\},\{.count.in\},and \{.count.out\}
-}}
+\item{.headline}{a headline glue spec. The glue code can use any global
+variable, or \{.strata\},\{.count.in\},and \{.count.out\}}
 
-\item{.headline}{\itemize{
-\item a headline glue spec. The glue code can use any global variable, or \{.strata\},\{.count.in\},and \{.count.out\}
-}}
+\item{.type}{the format type of the action typically an exclusion}
 
-\item{.type}{\itemize{
-\item the format type of the action - typically an exclusion
-}}
+\item{.asOffshoot}{if the type is exclusion, \code{.asOffshoot} places the
+information box outside of the main flow, as an exclusion.}
 
-\item{.asOffshoot}{\itemize{
-\item if the type is exclusion, asOffshoot places the information box outside of the main flow, as an exclusion.
-}}
+\item{.stage}{a name for this step in the pathway}
 
-\item{.stage}{\itemize{
-\item a name for this step in the pathway
-}}
-
-\item{.tag}{\itemize{
-\item if you want the summary data from this step in the future then give it a name with .tag.
-}}
+\item{.tag}{if you want the summary data from this step in the future then
+give it a name with \code{.tag}.}
 }
 \value{
 the filtered .data dataframe with history graph updated
 }
 \description{
-Filter acts in the same way as DPLYR. Prior to the operation the size of the group is calculated \{.count.in\} and
-after the operation the output size \{.count.out\}. The group \{.strata\} is also available (if grouped) for reporting.
-See \code{\link[dplyr:filter]{dplyr::filter()}}.
+Filter acts in the same way as in \code{dplyr} where predicates which evaluate to
+TRUE act to select items to include, and items for which the predicate cannot
+be evaluated are excluded. For tracking prior to the filter operation the
+size of each group is calculated \{.count.in\} and after the operation the
+output size of each group \{.count.out\}. The grouping \{.strata\} is also
+available (if grouped) for reporting. See \code{\link[dplyr:filter]{dplyr::filter()}}.
 }
 \examples{
 library(dplyr)
+library(dtrackr)
+
 tmp = iris \%>\% track() \%>\% group_by(Species)
 tmp \%>\% filter(Petal.Length > 5) \%>\% history()
 }

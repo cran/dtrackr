@@ -9,17 +9,11 @@
 \arguments{
 \item{x}{a dtrackr history graph (e.g. output from \code{\link[=history]{history()}})}
 
-\item{fill}{\itemize{
-\item the default node fill colour
-}}
+\item{fill}{the default node fill colour}
 
-\item{fontsize}{\itemize{
-\item the default font size
-}}
+\item{fontsize}{the default font size}
 
-\item{colour}{\itemize{
-\item the default font colour
-}}
+\item{colour}{the default font colour}
 
 \item{...}{not used}
 }
@@ -31,5 +25,6 @@ Plots a history graph as html
 }
 \examples{
 library(dplyr)
+library(dtrackr)
 iris \%>\% comment("hello {.total} rows") \%>\% history() \%>\% plot()
 }

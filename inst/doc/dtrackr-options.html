@@ -14,106 +14,103 @@
 
 <title>dtrackr - Configuration example</title>
 
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
   }
 });
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -122,13 +119,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -338,731 +342,889 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div id="global-configuration" class="section level1">
 <h1>Global configuration</h1>
-<p>Most of the behaviour of <code>dtrackr</code> can be specified at the individual call level using the <code>.headline</code> and <code>.messages</code> glue specifications to define a format. Sometimes however this is annoying to do for all the stages in a flow chart and a global configuration of behaviour is desirable.</p>
+<p>Most of the behaviour of <code>dtrackr</code> can be specified at the
+individual call level using the <code>.headline</code> and
+<code>.messages</code> glue specifications to define a format. Sometimes
+however this is annoying to do for all the stages in a flow chart and a
+global configuration of behaviour is desirable.</p>
 <div id="naming-conventions-for-groups" class="section level2">
 <h2>Naming conventions for groups</h2>
-<p>One of the areas where default behaviour may be undesirable is the naming of groups. The default setting combines the group name <code>{.group}</code> and the group value <code>{.value}</code> into a concatenated colon separated string as demonstrated below:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># these are the defaults</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>old =<span class="st"> </span><span class="kw">options</span>(</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="dt">dtrackr.strata_glue=</span><span class="st">&quot;{.group}:{.value}&quot;</span>,</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">dtrackr.strata_sep=</span><span class="st">&quot;; &quot;</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="st">  </span><span class="kw">track</span>() <span class="op">%&gt;%</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="st">  </span><span class="kw">group_by</span>(Case_or_Control) <span class="op">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="st">  </span><span class="kw">comment</span>() <span class="op">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="st">  </span><span class="kw">group_by</span>(Gender,<span class="dt">.add =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="st">  </span><span class="kw">comment</span>(</span>
-<span id="cb1-13"><a href="#cb1-13"></a>    <span class="dt">.messages =</span> <span class="kw">c</span>(</span>
-<span id="cb1-14"><a href="#cb1-14"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="st">  </span><span class="kw">flowchart</span>()</span></code></pre></div>
+<p>One of the areas where default behaviour may be undesirable is the
+naming of groups. The default setting combines the group name
+<code>{.group}</code> and the group value <code>{.value}</code> into a
+concatenated colon separated string as demonstrated below:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># these are the defaults</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{.group}:{.value}&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;; &quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat) <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,<span class="at">.add =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="659pt" height="260pt" viewBox="0.00 0.00 659.47 260.40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 256.4)">
+<svg width="424.800pt" height="251.590pt" viewBox="0 0 424.800 251.590" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.968 0.968) rotate(0) translate(4 256.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-256.4 655.4696,-256.4 655.4696,4 -4,4"></polygon>
-<!-- 7&#45;&gt;11 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-256.4 435.3472,-256.4 435.3472,4 -4,4"></polygon>
+<!-- 10&#45;&gt;14 -->
 <g id="edge4" class="edge">
-<title>7:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M76.7912,-41.6C76.7912,-41.6 76.7912,-11 76.7912,-11 76.7912,-11 293.3044,-11 293.3044,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="293.3045,-12.7501 298.3044,-11 293.3044,-9.2501 293.3045,-12.7501"></polygon>
+<title>10:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M51.6792,-41.6C51.6792,-41.6 51.6792,-11 51.6792,-11 51.6792,-11 191.4656,-11 191.4656,-11"></path>
+<polygon fill="#000000" stroke="#000000" points="191.4657,-12.7501 196.4656,-11 191.4656,-9.2501 191.4657,-12.7501"></polygon>
 </g>
-<!-- 8&#45;&gt;11 -->
+<!-- 11&#45;&gt;14 -->
 <g id="edge3" class="edge">
-<title>8:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M305.1848,-41.6C305.1848,-41.6 305.1848,-28.5777 305.1848,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="306.9349,-28.5777 305.1848,-23.5777 303.4349,-28.5778 306.9349,-28.5777"></polygon>
+<title>11:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M205.1828,-41.6C205.1828,-41.6 205.1828,-28.5777 205.1828,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="206.9329,-28.5777 205.1828,-23.5777 203.4329,-28.5778 206.9329,-28.5777"></polygon>
 </g>
-<!-- 9&#45;&gt;11 -->
+<!-- 12&#45;&gt;14 -->
 <g id="edge2" class="edge">
-<title>9:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M336.2868,-41.6C336.2868,-41.6 336.2868,-28.5777 336.2868,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="338.0369,-28.5777 336.2868,-23.5777 334.5369,-28.5778 338.0369,-28.5777"></polygon>
+<title>12:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M236.346,-41.6C236.346,-41.6 236.346,-28.5777 236.346,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="238.0961,-28.5777 236.346,-23.5777 234.5961,-28.5778 238.0961,-28.5777"></polygon>
 </g>
-<!-- 10&#45;&gt;11 -->
+<!-- 13&#45;&gt;14 -->
 <g id="edge1" class="edge">
-<title>10:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M575.7912,-41.6C575.7912,-41.6 575.7912,-11 575.7912,-11 575.7912,-11 352.0499,-11 352.0499,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="352.0499,-9.2501 347.0499,-11 352.0499,-12.7501 352.0499,-9.2501"></polygon>
-</g>
-<!-- 5&#45;&gt;7 -->
-<g id="edge8" class="edge">
-<title>5:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M239.7912,-109C239.7912,-109 76.7912,-109 76.7912,-109 76.7912,-109 76.7912,-84.729 76.7912,-84.729"></path>
-<polygon fill="#000000" stroke="#000000" points="78.5413,-84.7289 76.7912,-79.729 75.0413,-84.729 78.5413,-84.7289"></polygon>
-</g>
-<!-- 5&#45;&gt;8 -->
-<g id="edge7" class="edge">
-<title>5:s-&gt;8</title>
-<path fill="none" stroke="#000000" d="M239.7912,-97.4C239.7912,-97.4 239.7912,-84.8622 239.7912,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="241.5413,-84.8622 239.7912,-79.8622 238.0413,-84.8623 241.5413,-84.8622"></polygon>
-</g>
-<!-- 6&#45;&gt;9 -->
-<g id="edge6" class="edge">
-<title>6:s-&gt;9</title>
-<path fill="none" stroke="#000000" d="M405.7912,-97.4C405.7912,-97.4 405.7912,-84.8622 405.7912,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="407.5413,-84.8622 405.7912,-79.8622 404.0413,-84.8623 407.5413,-84.8622"></polygon>
+<title>13:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M385.6792,-41.6C385.6792,-41.6 385.6792,-11 385.6792,-11 385.6792,-11 250.0255,-11 250.0255,-11"></path>
+<polygon fill="#000000" stroke="#000000" points="250.0256,-9.2501 245.0255,-11 250.0255,-12.7501 250.0256,-9.2501"></polygon>
 </g>
 <!-- 6&#45;&gt;10 -->
-<g id="edge5" class="edge">
+<g id="edge8" class="edge">
 <title>6:s-&gt;10</title>
-<path fill="none" stroke="#000000" d="M405.7912,-109C405.7912,-109 575.7912,-109 575.7912,-109 575.7912,-109 575.7912,-84.729 575.7912,-84.729"></path>
-<polygon fill="#000000" stroke="#000000" points="577.5413,-84.7289 575.7912,-79.729 574.0413,-84.729 577.5413,-84.7289"></polygon>
+<path fill="none" stroke="#000000" d="M51.6792,-97.4C51.6792,-97.4 51.6792,-84.8622 51.6792,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="53.4293,-84.8622 51.6792,-79.8622 49.9293,-84.8623 53.4293,-84.8622"></polygon>
 </g>
-<!-- 3&#45;&gt;5 -->
-<g id="edge10" class="edge">
-<title>3:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M239.7912,-139.2C239.7912,-139.2 239.7912,-126.1777 239.7912,-126.1777"></path>
-<polygon fill="#000000" stroke="#000000" points="241.5413,-126.1777 239.7912,-121.1777 238.0413,-126.1778 241.5413,-126.1777"></polygon>
+<!-- 7&#45;&gt;11 -->
+<g id="edge7" class="edge">
+<title>7:s-&gt;11</title>
+<path fill="none" stroke="#000000" d="M165.6792,-97.4C165.6792,-97.4 165.6792,-84.8622 165.6792,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="167.4293,-84.8622 165.6792,-79.8622 163.9293,-84.8623 167.4293,-84.8622"></polygon>
+</g>
+<!-- 8&#45;&gt;12 -->
+<g id="edge6" class="edge">
+<title>8:s-&gt;12</title>
+<path fill="none" stroke="#000000" d="M276.6792,-97.4C276.6792,-97.4 276.6792,-84.8622 276.6792,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="278.4293,-84.8622 276.6792,-79.8622 274.9293,-84.8623 278.4293,-84.8622"></polygon>
+</g>
+<!-- 9&#45;&gt;13 -->
+<g id="edge5" class="edge">
+<title>9:s-&gt;13</title>
+<path fill="none" stroke="#000000" d="M385.6792,-97.4C385.6792,-97.4 385.6792,-84.8622 385.6792,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="387.4293,-84.8622 385.6792,-79.8622 383.9293,-84.8623 387.4293,-84.8622"></polygon>
 </g>
 <!-- 4&#45;&gt;6 -->
-<g id="edge9" class="edge">
-<title>4:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M405.7912,-139.2C405.7912,-139.2 405.7912,-126.1777 405.7912,-126.1777"></path>
-<polygon fill="#000000" stroke="#000000" points="407.5413,-126.1777 405.7912,-121.1777 404.0413,-126.1778 407.5413,-126.1777"></polygon>
-</g>
-<!-- 2&#45;&gt;3 -->
 <g id="edge12" class="edge">
-<title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M276.9584,-187C276.9584,-187 276.9584,-174.4477 276.9584,-174.4477"></path>
-<polygon fill="#000000" stroke="#000000" points="278.7085,-174.4477 276.9584,-169.4477 275.2085,-174.4478 278.7085,-174.4477"></polygon>
+<title>4:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M165.6792,-154C165.6792,-154 51.6792,-154 51.6792,-154 51.6792,-154 51.6792,-126.1181 51.6792,-126.1181"></path>
+<polygon fill="#000000" stroke="#000000" points="53.4293,-126.1181 51.6792,-121.1181 49.9293,-126.1182 53.4293,-126.1181"></polygon>
+</g>
+<!-- 4&#45;&gt;7 -->
+<g id="edge11" class="edge">
+<title>4:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M165.6792,-139.2C165.6792,-139.2 165.6792,-126.1777 165.6792,-126.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="167.4293,-126.1777 165.6792,-121.1777 163.9293,-126.1778 167.4293,-126.1777"></polygon>
+</g>
+<!-- 5&#45;&gt;8 -->
+<g id="edge10" class="edge">
+<title>5:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M276.6792,-139.2C276.6792,-139.2 276.6792,-126.1777 276.6792,-126.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="278.4293,-126.1777 276.6792,-121.1777 274.9293,-126.1778 278.4293,-126.1777"></polygon>
+</g>
+<!-- 5&#45;&gt;9 -->
+<g id="edge9" class="edge">
+<title>5:s-&gt;9</title>
+<path fill="none" stroke="#000000" d="M276.6792,-154C276.6792,-154 385.6792,-154 385.6792,-154 385.6792,-154 385.6792,-126.1181 385.6792,-126.1181"></path>
+<polygon fill="#000000" stroke="#000000" points="387.4293,-126.1181 385.6792,-121.1181 383.9293,-126.1182 387.4293,-126.1181"></polygon>
 </g>
 <!-- 2&#45;&gt;4 -->
-<g id="edge11" class="edge">
+<g id="edge14" class="edge">
 <title>2:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M366.8468,-187C366.8468,-187 366.8468,-174.4477 366.8468,-174.4477"></path>
-<polygon fill="#000000" stroke="#000000" points="368.5969,-174.4477 366.8468,-169.4477 365.0969,-174.4478 368.5969,-174.4477"></polygon>
+<path fill="none" stroke="#000000" d="M165.6792,-187C165.6792,-187 165.6792,-174.4477 165.6792,-174.4477"></path>
+<polygon fill="#000000" stroke="#000000" points="167.4293,-174.4477 165.6792,-169.4477 163.9293,-174.4478 167.4293,-174.4477"></polygon>
+</g>
+<!-- 3&#45;&gt;5 -->
+<g id="edge13" class="edge">
+<title>3:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M276.6792,-187C276.6792,-187 276.6792,-174.4477 276.6792,-174.4477"></path>
+<polygon fill="#000000" stroke="#000000" points="278.4293,-174.4477 276.6792,-169.4477 274.9293,-174.4478 278.4293,-174.4477"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
-<g id="edge13" class="edge">
+<g id="edge16" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M322.7912,-228.6C322.7912,-228.6 322.7912,-215.6987 322.7912,-215.6987"></path>
-<polygon fill="#000000" stroke="#000000" points="324.5413,-215.6987 322.7912,-210.6987 321.0413,-215.6987 324.5413,-215.6987"></polygon>
+<path fill="none" stroke="#000000" d="M203.129,-228.6C203.129,-228.6 203.129,-195 203.129,-195 203.129,-195 202.7282,-195 202.7282,-195"></path>
+<polygon fill="#000000" stroke="#000000" points="204.1213,-193.2501 199.1212,-195 204.1212,-196.7501 204.1213,-193.2501"></polygon>
 </g>
-<!-- 11 -->
+<!-- 1&#45;&gt;3 -->
+<g id="edge15" class="edge">
+<title>1:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M239.2294,-228.6C239.2294,-228.6 239.2294,-202 239.2294,-202 239.2294,-202 239.6302,-202 239.6302,-202"></path>
+<polygon fill="#000000" stroke="#000000" points="238.2372,-203.7501 243.2372,-202 238.2371,-200.2501 238.2372,-203.7501"></polygon>
+</g>
+<!-- 14 -->
 <g id="node1" class="node">
-<title>11</title>
-<polygon fill="#ffffff" stroke="#000000" points="346.9659,-23.4033 298.6165,-23.4033 298.6165,-.1967 346.9659,-.1967 346.9659,-23.4033"></polygon>
-<text text-anchor="start" x="305.4544" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
-</g>
-<!-- 7 -->
-<g id="node2" class="node">
-<title>7</title>
-<polygon fill="#ffffff" stroke="#000000" points="153.3742,-79.6 .2082,-79.6 .2082,-41.6 153.3742,-41.6 153.3742,-79.6"></polygon>
-<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:case; Gender:Female</text>
-<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">92 patients</text>
-<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">16% of the total</text>
-</g>
-<!-- 8 -->
-<g id="node3" class="node">
-<title>8</title>
-<polygon fill="#ffffff" stroke="#000000" points="312.0394,-79.6 167.543,-79.6 167.543,-41.6 312.0394,-41.6 312.0394,-79.6"></polygon>
-<text text-anchor="start" x="174.6672" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:case; Gender:Male</text>
-<text text-anchor="start" x="174.6672" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">324 patients</text>
-<text text-anchor="start" x="174.6672" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">56% of the total</text>
-</g>
-<!-- 9 -->
-<g id="node4" class="node">
-<title>9</title>
-<polygon fill="#ffffff" stroke="#000000" points="485.9827,-79.6 325.5997,-79.6 325.5997,-41.6 485.9827,-41.6 485.9827,-79.6"></polygon>
-<text text-anchor="start" x="332.4456" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:control; Gender:Female</text>
-<text text-anchor="start" x="332.4456" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">50 patients</text>
-<text text-anchor="start" x="332.4456" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">9% of the total</text>
+<title>14</title>
+<polygon fill="#ffffff" stroke="#000000" points="244.8539,-23.4033 196.5045,-23.4033 196.5045,-.1967 244.8539,-.1967 244.8539,-23.4033"></polygon>
+<text text-anchor="start" x="203.3424" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 <!-- 10 -->
-<g id="node5" class="node">
+<g id="node2" class="node">
 <title>10</title>
-<polygon fill="#ffffff" stroke="#000000" points="651.6484,-79.6 499.934,-79.6 499.934,-41.6 651.6484,-41.6 651.6484,-79.6"></polygon>
-<text text-anchor="start" x="507.1128" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:control; Gender:Male</text>
-<text text-anchor="start" x="507.1128" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">117 patients</text>
-<text text-anchor="start" x="507.1128" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20% of the total</text>
+<polygon fill="#ffffff" stroke="#000000" points="103.5382,-79.6 -.1798,-79.6 -.1798,-41.6 103.5382,-41.6 103.5382,-79.6"></polygon>
+<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo; sex:female</text>
+<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 patients</text>
+<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">10% of the total</text>
 </g>
-<!-- 5 -->
-<g id="node6" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="310.8144,-121.0033 168.768,-121.0033 168.768,-97.7967 310.8144,-97.7967 310.8144,-121.0033"></polygon>
-<text text-anchor="start" x="175.7796" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by Case_or_Control, Gender</text>
+<!-- 11 -->
+<g id="node3" class="node">
+<title>11</title>
+<polygon fill="#ffffff" stroke="#000000" points="213.8677,-79.6 117.4907,-79.6 117.4907,-41.6 213.8677,-41.6 213.8677,-79.6"></polygon>
+<text text-anchor="start" x="124.3352" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo; sex:male</text>
+<text text-anchor="start" x="124.3352" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">100 patients</text>
+<text text-anchor="start" x="124.3352" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">49% of the total</text>
+</g>
+<!-- 12 -->
+<g id="node4" class="node">
+<title>12</title>
+<polygon fill="#ffffff" stroke="#000000" points="325.6856,-79.6 227.6728,-79.6 227.6728,-41.6 325.6856,-41.6 325.6856,-79.6"></polygon>
+<text text-anchor="start" x="234.676" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g; sex:female</text>
+<text text-anchor="start" x="234.676" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">15 patients</text>
+<text text-anchor="start" x="234.676" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7% of the total</text>
+</g>
+<!-- 13 -->
+<g id="node5" class="node">
+<title>13</title>
+<polygon fill="#ffffff" stroke="#000000" points="431.5158,-79.6 339.8426,-79.6 339.8426,-41.6 431.5158,-41.6 431.5158,-79.6"></polygon>
+<text text-anchor="start" x="347.0112" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g; sex:male</text>
+<text text-anchor="start" x="347.0112" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">68 patients</text>
+<text text-anchor="start" x="347.0112" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">33% of the total</text>
 </g>
 <!-- 6 -->
-<g id="node7" class="node">
+<g id="node6" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="476.8144,-121.0033 334.768,-121.0033 334.768,-97.7967 476.8144,-97.7967 476.8144,-121.0033"></polygon>
-<text text-anchor="start" x="341.7796" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by Case_or_Control, Gender</text>
+<polygon fill="#ffffff" stroke="#000000" points="93.5263,-121.0033 9.8321,-121.0033 9.8321,-97.7967 93.5263,-97.7967 93.5263,-121.0033"></polygon>
+<text text-anchor="start" x="17.006" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat, sex</text>
 </g>
-<!-- 3 -->
+<!-- 7 -->
+<g id="node7" class="node">
+<title>7</title>
+<polygon fill="#ffffff" stroke="#000000" points="207.5263,-121.0033 123.8321,-121.0033 123.8321,-97.7967 207.5263,-97.7967 207.5263,-121.0033"></polygon>
+<text text-anchor="start" x="131.006" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat, sex</text>
+</g>
+<!-- 8 -->
 <g id="node8" class="node">
-<title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="286.3626,-169.2 193.2198,-169.2 193.2198,-139.2 286.3626,-139.2 286.3626,-169.2"></polygon>
-<text text-anchor="start" x="200.006" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:case</text>
-<text text-anchor="start" x="200.006" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">416 items</text>
+<title>8</title>
+<polygon fill="#ffffff" stroke="#000000" points="318.5263,-121.0033 234.8321,-121.0033 234.8321,-97.7967 318.5263,-97.7967 318.5263,-121.0033"></polygon>
+<text text-anchor="start" x="242.006" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat, sex</text>
+</g>
+<!-- 9 -->
+<g id="node9" class="node">
+<title>9</title>
+<polygon fill="#ffffff" stroke="#000000" points="427.5263,-121.0033 343.8321,-121.0033 343.8321,-97.7967 427.5263,-97.7967 427.5263,-121.0033"></polygon>
+<text text-anchor="start" x="351.006" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat, sex</text>
 </g>
 <!-- 4 -->
-<g id="node9" class="node">
+<g id="node10" class="node">
 <title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="455.9709,-169.2 355.6115,-169.2 355.6115,-139.2 455.9709,-139.2 455.9709,-169.2"></polygon>
-<text text-anchor="start" x="362.4516" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:control</text>
-<text text-anchor="start" x="362.4516" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">167 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="195.9181,-169.2 135.4403,-169.2 135.4403,-139.2 195.9181,-139.2 195.9181,-169.2"></polygon>
+<text text-anchor="start" x="142.56" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo</text>
+<text text-anchor="start" x="142.56" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">120 items</text>
+</g>
+<!-- 5 -->
+<g id="node11" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="304.0657,-169.2 249.2927,-169.2 249.2927,-139.2 304.0657,-139.2 304.0657,-169.2"></polygon>
+<text text-anchor="start" x="256.236" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g</text>
+<text text-anchor="start" x="256.236" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">83 items</text>
 </g>
 <!-- 2 -->
-<g id="node10" class="node">
+<g id="node12" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="378.1928,-210.6033 267.3896,-210.6033 267.3896,-187.3967 378.1928,-187.3967 378.1928,-210.6033"></polygon>
-<text text-anchor="start" x="274.3404" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by Case_or_Control</text>
+<polygon fill="#ffffff" stroke="#000000" points="199.1336,-210.6033 132.2248,-210.6033 132.2248,-187.3967 199.1336,-187.3967 199.1336,-210.6033"></polygon>
+<text text-anchor="start" x="139.4528" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat</text>
+</g>
+<!-- 3 -->
+<g id="node13" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="310.1336,-210.6033 243.2248,-210.6033 243.2248,-187.3967 310.1336,-187.3967 310.1336,-210.6033"></polygon>
+<text text-anchor="start" x="250.4528" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by treat</text>
 </g>
 <!-- 1 -->
-<g id="node11" class="node">
+<g id="node14" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="346.9659,-252.2033 298.6165,-252.2033 298.6165,-228.9967 346.9659,-228.9967 346.9659,-252.2033"></polygon>
-<text text-anchor="start" x="305.4544" y="-238.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="244.8539,-252.2033 196.5045,-252.2033 196.5045,-228.9967 244.8539,-228.9967 244.8539,-252.2033"></polygon>
+<text text-anchor="start" x="203.3424" y="-238.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># reset options </span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">options</span>(old)</span></code></pre></div>
-<p>In particular in situations like this where you are faceting on factors or strings, disposing of the group name may make this clearer. In the following example we only include the group value, force it to lower case, and use a comma to separate multiple facets. We have used manual override of the messages in the grouping stages to specify what we are faceting by in a more natural way:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># only include the group value in the description of the group</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>old =<span class="st"> </span><span class="kw">options</span>(</span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="st">  </span><span class="kw">track</span>() <span class="op">%&gt;%</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="st">  </span><span class="kw">group_by</span>(</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    Case_or_Control,</span>
-<span id="cb3-11"><a href="#cb3-11"></a>    <span class="dt">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="st">  </span><span class="kw">comment</span>() <span class="op">%&gt;%</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="st">  </span><span class="kw">group_by</span>(</span>
-<span id="cb3-15"><a href="#cb3-15"></a>    Gender,</span>
-<span id="cb3-16"><a href="#cb3-16"></a>    <span class="dt">.add =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb3-17"><a href="#cb3-17"></a>    <span class="dt">.messages =</span> <span class="st">&quot;by {tolower(.cols)}&quot;</span> <span class="co">#.cols contains a csv string of the grouping variables</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="st">  </span><span class="kw">comment</span>(</span>
-<span id="cb3-20"><a href="#cb3-20"></a>    <span class="dt">.messages =</span> <span class="kw">c</span>(</span>
-<span id="cb3-21"><a href="#cb3-21"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb3-22"><a href="#cb3-22"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a><span class="st">  </span><span class="kw">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<p>In particular in situations like this where you are faceting on
+factors or strings, disposing of the group name may make this clearer.
+In the following example we only include the group value, force it to
+lower case, and use a comma to separate multiple facets. We have used
+manual override of the messages in the grouping stages, by providing a
+<code>.messages</code> parameter, to specify what we are faceting by in
+a more natural way:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># only include the group value in the description of the group</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by {tolower(.cols)}&quot;</span> <span class="co">#.cols contains a csv string of the grouping variables</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="326pt" height="260pt" viewBox="0.00 0.00 325.58 260.40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 256.4)">
+<svg width="324.000pt" height="260.000pt" viewBox="0 0 324.000 260.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 256.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-256.4 321.5792,-256.4 321.5792,4 -4,4"></polygon>
-<!-- 7&#45;&gt;11 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-256.4 320.02,-256.4 320.02,4 -4,4"></polygon>
+<!-- 10&#45;&gt;14 -->
 <g id="edge4" class="edge">
-<title>7:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M34.7896,-41.6C34.7896,-41.6 34.7896,-11 34.7896,-11 34.7896,-11 130.3916,-11 130.3916,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="130.3916,-12.7501 135.3916,-11 130.3916,-9.2501 130.3916,-12.7501"></polygon>
+<title>10:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M35.2304,-41.6C35.2304,-41.6 35.2304,-11 35.2304,-11 35.2304,-11 130.0276,-11 130.0276,-11"></path>
+<polygon fill="#000000" stroke="#000000" points="130.0276,-12.7501 135.0276,-11 130.0276,-9.2501 130.0276,-12.7501"></polygon>
 </g>
-<!-- 8&#45;&gt;11 -->
+<!-- 11&#45;&gt;14 -->
 <g id="edge3" class="edge">
-<title>8:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M144.516,-41.6C144.516,-41.6 144.516,-28.5777 144.516,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="146.2661,-28.5777 144.516,-23.5777 142.7661,-28.5778 146.2661,-28.5777"></polygon>
+<title>11:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M144.4568,-41.6C144.4568,-41.6 144.4568,-28.5777 144.4568,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="146.2069,-28.5777 144.4568,-23.5777 142.7069,-28.5778 146.2069,-28.5777"></polygon>
 </g>
-<!-- 9&#45;&gt;11 -->
+<!-- 12&#45;&gt;14 -->
 <g id="edge2" class="edge">
-<title>9:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M175.8448,-41.6C175.8448,-41.6 175.8448,-28.5777 175.8448,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="177.5949,-28.5777 175.8448,-23.5777 174.0949,-28.5778 177.5949,-28.5777"></polygon>
+<title>12:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M175.6158,-41.6C175.6158,-41.6 175.6158,-28.5777 175.6158,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="177.3659,-28.5777 175.6158,-23.5777 173.8659,-28.5778 177.3659,-28.5777"></polygon>
 </g>
-<!-- 10&#45;&gt;11 -->
+<!-- 13&#45;&gt;14 -->
 <g id="edge1" class="edge">
-<title>10:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M282.7896,-41.6C282.7896,-41.6 282.7896,-11 282.7896,-11 282.7896,-11 189.0904,-11 189.0904,-11"></path>
-<polygon fill="#000000" stroke="#000000" points="189.0905,-9.2501 184.0904,-11 189.0904,-12.7501 189.0905,-9.2501"></polygon>
-</g>
-<!-- 5&#45;&gt;7 -->
-<g id="edge8" class="edge">
-<title>5:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M55.4548,-97.4C55.4548,-97.4 55.4548,-84.8622 55.4548,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="57.2049,-84.8622 55.4548,-79.8622 53.7049,-84.8623 57.2049,-84.8622"></polygon>
-</g>
-<!-- 5&#45;&gt;8 -->
-<g id="edge7" class="edge">
-<title>5:s-&gt;8</title>
-<path fill="none" stroke="#000000" d="M118.1244,-97.4C118.1244,-97.4 118.1244,-84.8622 118.1244,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="119.8745,-84.8622 118.1244,-79.8622 116.3745,-84.8623 119.8745,-84.8622"></polygon>
-</g>
-<!-- 6&#45;&gt;9 -->
-<g id="edge6" class="edge">
-<title>6:s-&gt;9</title>
-<path fill="none" stroke="#000000" d="M200.7896,-97.4C200.7896,-97.4 200.7896,-84.8622 200.7896,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="202.5397,-84.8622 200.7896,-79.8622 199.0397,-84.8623 202.5397,-84.8622"></polygon>
+<title>13:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M281.2304,-41.6C281.2304,-41.6 281.2304,-11 281.2304,-11 281.2304,-11 188.6257,-11 188.6257,-11"></path>
+<polygon fill="#000000" stroke="#000000" points="188.6257,-9.2501 183.6257,-11 188.6257,-12.7501 188.6257,-9.2501"></polygon>
 </g>
 <!-- 6&#45;&gt;10 -->
-<g id="edge5" class="edge">
+<g id="edge8" class="edge">
 <title>6:s-&gt;10</title>
-<path fill="none" stroke="#000000" d="M262.6244,-97.4C262.6244,-97.4 262.6244,-84.8622 262.6244,-84.8622"></path>
-<polygon fill="#000000" stroke="#000000" points="264.3745,-84.8622 262.6244,-79.8622 260.8745,-84.8623 264.3745,-84.8622"></polygon>
+<path fill="none" stroke="#000000" d="M35.2304,-97.4C35.2304,-97.4 35.2304,-84.8622 35.2304,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="36.9805,-84.8622 35.2304,-79.8622 33.4805,-84.8623 36.9805,-84.8622"></polygon>
 </g>
-<!-- 3&#45;&gt;5 -->
-<g id="edge10" class="edge">
-<title>3:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M96.7896,-139.2C96.7896,-139.2 96.7896,-126.1777 96.7896,-126.1777"></path>
-<polygon fill="#000000" stroke="#000000" points="98.5397,-126.1777 96.7896,-121.1777 95.0397,-126.1778 98.5397,-126.1777"></polygon>
+<!-- 7&#45;&gt;11 -->
+<g id="edge7" class="edge">
+<title>7:s-&gt;11</title>
+<path fill="none" stroke="#000000" d="M119.2304,-97.4C119.2304,-97.4 119.2304,-84.8622 119.2304,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="120.9805,-84.8622 119.2304,-79.8622 117.4805,-84.8623 120.9805,-84.8622"></polygon>
+</g>
+<!-- 8&#45;&gt;12 -->
+<g id="edge6" class="edge">
+<title>8:s-&gt;12</title>
+<path fill="none" stroke="#000000" d="M200.2304,-97.4C200.2304,-97.4 200.2304,-84.8622 200.2304,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="201.9805,-84.8622 200.2304,-79.8622 198.4805,-84.8623 201.9805,-84.8622"></polygon>
+</g>
+<!-- 9&#45;&gt;13 -->
+<g id="edge5" class="edge">
+<title>9:s-&gt;13</title>
+<path fill="none" stroke="#000000" d="M281.2304,-97.4C281.2304,-97.4 281.2304,-84.8622 281.2304,-84.8622"></path>
+<polygon fill="#000000" stroke="#000000" points="282.9805,-84.8622 281.2304,-79.8622 279.4805,-84.8623 282.9805,-84.8622"></polygon>
 </g>
 <!-- 4&#45;&gt;6 -->
-<g id="edge9" class="edge">
-<title>4:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M221.7896,-139.2C221.7896,-139.2 221.7896,-126.1777 221.7896,-126.1777"></path>
-<polygon fill="#000000" stroke="#000000" points="223.5397,-126.1777 221.7896,-121.1777 220.0397,-126.1778 223.5397,-126.1777"></polygon>
-</g>
-<!-- 2&#45;&gt;3 -->
 <g id="edge12" class="edge">
-<title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M138.9056,-187C138.9056,-187 138.9056,-149 138.9056,-149 138.9056,-149 126.2887,-149 126.2887,-149"></path>
-<polygon fill="#000000" stroke="#000000" points="126.2887,-147.2501 121.2887,-149 126.2886,-150.7501 126.2887,-147.2501"></polygon>
+<title>4:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M119.2304,-154C119.2304,-154 35.2304,-154 35.2304,-154 35.2304,-154 35.2304,-126.1181 35.2304,-126.1181"></path>
+<polygon fill="#000000" stroke="#000000" points="36.9805,-126.1181 35.2304,-121.1181 33.4805,-126.1182 36.9805,-126.1181"></polygon>
+</g>
+<!-- 4&#45;&gt;7 -->
+<g id="edge11" class="edge">
+<title>4:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M119.2304,-139.2C119.2304,-139.2 119.2304,-126.1777 119.2304,-126.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="120.9805,-126.1777 119.2304,-121.1777 117.4805,-126.1778 120.9805,-126.1777"></polygon>
+</g>
+<!-- 5&#45;&gt;8 -->
+<g id="edge10" class="edge">
+<title>5:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M200.2304,-139.2C200.2304,-139.2 200.2304,-126.1777 200.2304,-126.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="201.9805,-126.1777 200.2304,-121.1777 198.4805,-126.1778 201.9805,-126.1777"></polygon>
+</g>
+<!-- 5&#45;&gt;9 -->
+<g id="edge9" class="edge">
+<title>5:s-&gt;9</title>
+<path fill="none" stroke="#000000" d="M200.2304,-154C200.2304,-154 281.2304,-154 281.2304,-154 281.2304,-154 281.2304,-126.1181 281.2304,-126.1181"></path>
+<polygon fill="#000000" stroke="#000000" points="282.9805,-126.1181 281.2304,-121.1181 279.4805,-126.1182 282.9805,-126.1181"></polygon>
 </g>
 <!-- 2&#45;&gt;4 -->
-<g id="edge11" class="edge">
+<g id="edge14" class="edge">
 <title>2:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M179.1736,-187C179.1736,-187 179.1736,-159 179.1736,-159 179.1736,-159 192.4939,-159 192.4939,-159"></path>
-<polygon fill="#000000" stroke="#000000" points="192.494,-160.7501 197.4939,-159 192.4939,-157.2501 192.494,-160.7501"></polygon>
+<path fill="none" stroke="#000000" d="M119.2304,-187C119.2304,-187 119.2304,-174.4477 119.2304,-174.4477"></path>
+<polygon fill="#000000" stroke="#000000" points="120.9805,-174.4477 119.2304,-169.4477 117.4805,-174.4478 120.9805,-174.4477"></polygon>
+</g>
+<!-- 3&#45;&gt;5 -->
+<g id="edge13" class="edge">
+<title>3:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M200.2304,-187C200.2304,-187 200.2304,-174.4477 200.2304,-174.4477"></path>
+<polygon fill="#000000" stroke="#000000" points="201.9805,-174.4477 200.2304,-169.4477 198.4805,-174.4478 201.9805,-174.4477"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
-<g id="edge13" class="edge">
+<g id="edge16" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M158.7896,-228.6C158.7896,-228.6 158.7896,-215.6987 158.7896,-215.6987"></path>
-<polygon fill="#000000" stroke="#000000" points="160.5397,-215.6987 158.7896,-210.6987 157.0397,-215.6987 160.5397,-215.6987"></polygon>
+<path fill="none" stroke="#000000" d="M143.6756,-228.6C143.6756,-228.6 143.6756,-215.6987 143.6756,-215.6987"></path>
+<polygon fill="#000000" stroke="#000000" points="145.4257,-215.6987 143.6756,-210.6987 141.9257,-215.6987 145.4257,-215.6987"></polygon>
 </g>
-<!-- 11 -->
+<!-- 1&#45;&gt;3 -->
+<g id="edge15" class="edge">
+<title>1:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M175.2852,-228.6C175.2852,-228.6 175.2852,-215.6987 175.2852,-215.6987"></path>
+<polygon fill="#000000" stroke="#000000" points="177.0353,-215.6987 175.2852,-210.6987 173.5353,-215.6987 177.0353,-215.6987"></polygon>
+</g>
+<!-- 14 -->
 <g id="node1" class="node">
-<title>11</title>
-<polygon fill="#ffffff" stroke="#000000" points="183.9643,-23.4033 135.6149,-23.4033 135.6149,-.1967 183.9643,-.1967 183.9643,-23.4033"></polygon>
-<text text-anchor="start" x="142.4528" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
-</g>
-<!-- 7 -->
-<g id="node2" class="node">
-<title>7</title>
-<polygon fill="#ffffff" stroke="#000000" points="69.3701,-79.6 .2091,-79.6 .2091,-41.6 69.3701,-41.6 69.3701,-79.6"></polygon>
-<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case, female</text>
-<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">92 patients</text>
-<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">16% of the total</text>
-</g>
-<!-- 8 -->
-<g id="node3" class="node">
-<title>8</title>
-<polygon fill="#ffffff" stroke="#000000" points="153.3701,-79.6 84.2091,-79.6 84.2091,-41.6 153.3701,-41.6 153.3701,-79.6"></polygon>
-<text text-anchor="start" x="91" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case, male</text>
-<text text-anchor="start" x="91" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">324 patients</text>
-<text text-anchor="start" x="91" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">56% of the total</text>
-</g>
-<!-- 9 -->
-<g id="node4" class="node">
-<title>9</title>
-<polygon fill="#ffffff" stroke="#000000" points="234.244,-79.6 167.3352,-79.6 167.3352,-41.6 234.244,-41.6 234.244,-79.6"></polygon>
-<text text-anchor="start" x="174.5632" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control, female</text>
-<text text-anchor="start" x="174.5632" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">50 patients</text>
-<text text-anchor="start" x="174.5632" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">9% of the total</text>
+<title>14</title>
+<polygon fill="#ffffff" stroke="#000000" points="183.4051,-23.4033 135.0557,-23.4033 135.0557,-.1967 183.4051,-.1967 183.4051,-23.4033"></polygon>
+<text text-anchor="start" x="141.8936" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 <!-- 10 -->
-<g id="node5" class="node">
+<g id="node2" class="node">
 <title>10</title>
-<polygon fill="#ffffff" stroke="#000000" points="317.3701,-79.6 248.2091,-79.6 248.2091,-41.6 317.3701,-41.6 317.3701,-79.6"></polygon>
-<text text-anchor="start" x="255" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control, male</text>
-<text text-anchor="start" x="255" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">117 patients</text>
-<text text-anchor="start" x="255" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20% of the total</text>
+<polygon fill="#ffffff" stroke="#000000" points="70.6927,-79.6 -.2319,-79.6 -.2319,-41.6 70.6927,-41.6 70.6927,-79.6"></polygon>
+<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo, female</text>
+<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 patients</text>
+<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">10% of the total</text>
 </g>
-<!-- 5 -->
-<g id="node6" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="152.208,-121.0033 41.3712,-121.0033 41.3712,-97.7967 152.208,-97.7967 152.208,-121.0033"></polygon>
-<text text-anchor="start" x="48.3304" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by case_or_control, gender</text>
+<!-- 11 -->
+<g id="node3" class="node">
+<title>11</title>
+<polygon fill="#ffffff" stroke="#000000" points="153.8109,-79.6 84.6499,-79.6 84.6499,-41.6 153.8109,-41.6 153.8109,-79.6"></polygon>
+<text text-anchor="start" x="91.4408" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo, male</text>
+<text text-anchor="start" x="91.4408" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">100 patients</text>
+<text text-anchor="start" x="91.4408" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">49% of the total</text>
+</g>
+<!-- 12 -->
+<g id="node4" class="node">
+<title>12</title>
+<polygon fill="#ffffff" stroke="#000000" points="232.8625,-79.6 167.5983,-79.6 167.5983,-41.6 232.8625,-41.6 232.8625,-79.6"></polygon>
+<text text-anchor="start" x="174.6644" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g, female</text>
+<text text-anchor="start" x="174.6644" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">15 patients</text>
+<text text-anchor="start" x="174.6644" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7% of the total</text>
+</g>
+<!-- 13 -->
+<g id="node5" class="node">
+<title>13</title>
+<polygon fill="#ffffff" stroke="#000000" points="315.8109,-79.6 246.6499,-79.6 246.6499,-41.6 315.8109,-41.6 315.8109,-79.6"></polygon>
+<text text-anchor="start" x="253.4408" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g, male</text>
+<text text-anchor="start" x="253.4408" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">68 patients</text>
+<text text-anchor="start" x="253.4408" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">33% of the total</text>
 </g>
 <!-- 6 -->
-<g id="node7" class="node">
+<g id="node6" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="277.208,-121.0033 166.3712,-121.0033 166.3712,-97.7967 277.208,-97.7967 277.208,-121.0033"></polygon>
-<text text-anchor="start" x="173.3304" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by case_or_control, gender</text>
+<polygon fill="#ffffff" stroke="#000000" points="63.8,-121.0033 6.6608,-121.0033 6.6608,-97.7967 63.8,-97.7967 63.8,-121.0033"></polygon>
+<text text-anchor="start" x="13.4464" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by treat, sex</text>
 </g>
-<!-- 3 -->
+<!-- 7 -->
+<g id="node7" class="node">
+<title>7</title>
+<polygon fill="#ffffff" stroke="#000000" points="147.8,-121.0033 90.6608,-121.0033 90.6608,-97.7967 147.8,-97.7967 147.8,-121.0033"></polygon>
+<text text-anchor="start" x="97.4464" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by treat, sex</text>
+</g>
+<!-- 8 -->
 <g id="node8" class="node">
-<title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="120.9643,-169.2 72.6149,-169.2 72.6149,-139.2 120.9643,-139.2 120.9643,-169.2"></polygon>
-<text text-anchor="start" x="79.4528" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">case</text>
-<text text-anchor="start" x="79.4528" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">416 items</text>
+<title>8</title>
+<polygon fill="#ffffff" stroke="#000000" points="228.8,-121.0033 171.6608,-121.0033 171.6608,-97.7967 228.8,-97.7967 228.8,-121.0033"></polygon>
+<text text-anchor="start" x="178.4464" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by treat, sex</text>
+</g>
+<!-- 9 -->
+<g id="node9" class="node">
+<title>9</title>
+<polygon fill="#ffffff" stroke="#000000" points="309.8,-121.0033 252.6608,-121.0033 252.6608,-97.7967 309.8,-97.7967 309.8,-121.0033"></polygon>
+<text text-anchor="start" x="259.4464" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by treat, sex</text>
 </g>
 <!-- 4 -->
-<g id="node9" class="node">
+<g id="node10" class="node">
 <title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="245.9643,-169.2 197.6149,-169.2 197.6149,-139.2 245.9643,-139.2 245.9643,-169.2"></polygon>
-<text text-anchor="start" x="204.4528" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">control</text>
-<text text-anchor="start" x="204.4528" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">167 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="143.4051,-169.2 95.0557,-169.2 95.0557,-139.2 143.4051,-139.2 143.4051,-169.2"></polygon>
+<text text-anchor="start" x="101.8936" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="101.8936" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">120 items</text>
+</g>
+<!-- 5 -->
+<g id="node11" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="222.4574,-169.2 178.0034,-169.2 178.0034,-139.2 222.4574,-139.2 222.4574,-169.2"></polygon>
+<text text-anchor="start" x="185.1172" y="-156" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rifn-g</text>
+<text text-anchor="start" x="185.1172" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">83 items</text>
 </g>
 <!-- 2 -->
-<g id="node10" class="node">
+<g id="node12" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="192.2456,-210.6033 125.3336,-210.6033 125.3336,-187.3967 192.2456,-187.3967 192.2456,-210.6033"></polygon>
-<text text-anchor="start" x="132.5624" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+<polygon fill="#ffffff" stroke="#000000" points="152.6864,-210.6033 85.7744,-210.6033 85.7744,-187.3967 152.6864,-187.3967 152.6864,-210.6033"></polygon>
+<text text-anchor="start" x="93.0032" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+</g>
+<!-- 3 -->
+<g id="node13" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="233.6864,-210.6033 166.7744,-210.6033 166.7744,-187.3967 233.6864,-187.3967 233.6864,-210.6033"></polygon>
+<text text-anchor="start" x="174.0032" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
 </g>
 <!-- 1 -->
-<g id="node11" class="node">
+<g id="node14" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="182.9643,-252.2033 134.6149,-252.2033 134.6149,-228.9967 182.9643,-228.9967 182.9643,-252.2033"></polygon>
-<text text-anchor="start" x="141.4528" y="-238.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="183.4051,-252.2033 135.0557,-252.2033 135.0557,-228.9967 183.4051,-228.9967 183.4051,-252.2033"></polygon>
+<text text-anchor="start" x="141.8936" y="-238.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># reset options </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">options</span>(old)</span></code></pre></div>
-<p>N.B. this setting affects the “strata” label of the group, which in turn affects the flowchart branching. If this is not unique from one group to another strange behaviours will be observed.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<p>N.B. this setting affects the “strata” label of the group, which in
+turn affects the flowchart branching. If this is not unique from one
+group to another strange behaviours will be observed.</p>
 </div>
 <div id="default-text" class="section level2">
 <h2>Default text</h2>
-<p>With the group strata label defined you can set other defaults. In the flowchart above the “583 items” labels are generated by the default message setting, and the headings for the groups by the default headline setting. In this example we change these to alter the default text.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>old =<span class="st"> </span><span class="kw">options</span>(</span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="dt">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="dt">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="dt">dtrackr.default_message =</span> <span class="st">&quot;containing {.count} patients&quot;</span>,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="dt">dtrackr.default_headline =</span> <span class="st">&quot;subgroup: {.strata}&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="st">  </span><span class="kw">track</span>() <span class="op">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="st">  </span><span class="kw">group_by</span>(</span>
-<span id="cb5-11"><a href="#cb5-11"></a>    Case_or_Control,</span>
-<span id="cb5-12"><a href="#cb5-12"></a>    <span class="dt">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="st">  </span><span class="kw">comment</span>() <span class="op">%&gt;%</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="st">  </span><span class="kw">group_by</span>(</span>
-<span id="cb5-16"><a href="#cb5-16"></a>    Gender,</span>
-<span id="cb5-17"><a href="#cb5-17"></a>    <span class="dt">.add =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb5-18"><a href="#cb5-18"></a>    <span class="dt">.messages =</span> <span class="st">&quot;by gender&quot;</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a><span class="st">  </span><span class="kw">comment</span>(</span>
-<span id="cb5-21"><a href="#cb5-21"></a>    <span class="dt">.messages =</span> <span class="kw">c</span>(</span>
-<span id="cb5-22"><a href="#cb5-22"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb5-23"><a href="#cb5-23"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="st">  </span><span class="kw">flowchart</span>()</span></code></pre></div>
+<p>With the group strata label defined you can set other defaults. In
+the flowchart above the “583 items” labels are generated by the default
+message setting, and the headings for the groups by the default headline
+setting. In this example we change these to alter the default text.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_message =</span> <span class="st">&quot;containing {.count} patients&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;subgroup: {.strata}&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    treat,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    sex,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by gender&quot;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="439pt" height="273pt" viewBox="0.00 0.00 439.36 273.20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 269.2)">
+<svg width="424.800pt" height="257.712pt" viewBox="0 0 424.800 257.712" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.944 0.944) rotate(0) translate(4 269.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-269.2 435.356,-269.2 435.356,4 -4,4"></polygon>
-<!-- 7&#45;&gt;11 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-269.2 446.0224,-269.2 446.0224,4 -4,4"></polygon>
+<!-- 10&#45;&gt;14 -->
 <g id="edge4" class="edge">
-<title>7:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M48.5684,-48C48.5684,-48 48.5684,-15 48.5684,-15 48.5684,-15 158.1043,-15 158.1043,-15"></path>
-<polygon fill="#000000" stroke="#000000" points="158.1044,-16.7501 163.1043,-15 158.1043,-13.2501 158.1044,-16.7501"></polygon>
+<title>10:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M54.1268,-48C54.1268,-48 54.1268,-15 54.1268,-15 54.1268,-15 176.5681,-15 176.5681,-15"></path>
+<polygon fill="#000000" stroke="#000000" points="176.5682,-16.7501 181.5681,-15 176.5681,-13.2501 176.5682,-16.7501"></polygon>
 </g>
-<!-- 8&#45;&gt;11 -->
+<!-- 11&#45;&gt;14 -->
 <g id="edge3" class="edge">
-<title>8:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M182.6212,-48C182.6212,-48 182.6212,-35.3407 182.6212,-35.3407"></path>
-<polygon fill="#000000" stroke="#000000" points="184.3713,-35.3407 182.6212,-30.3407 180.8713,-35.3407 184.3713,-35.3407"></polygon>
+<title>11:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M202.9588,-48C202.9588,-48 202.9588,-35.3407 202.9588,-35.3407"></path>
+<polygon fill="#000000" stroke="#000000" points="204.7089,-35.3407 202.9588,-30.3407 201.2089,-35.3407 204.7089,-35.3407"></polygon>
 </g>
-<!-- 9&#45;&gt;11 -->
+<!-- 12&#45;&gt;14 -->
 <g id="edge2" class="edge">
-<title>9:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M237.5708,-48C237.5708,-48 237.5708,-35.3407 237.5708,-35.3407"></path>
-<polygon fill="#000000" stroke="#000000" points="239.3209,-35.3407 237.5708,-30.3407 235.8209,-35.3407 239.3209,-35.3407"></polygon>
+<title>12:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M258.0752,-48C258.0752,-48 258.0752,-35.3407 258.0752,-35.3407"></path>
+<polygon fill="#000000" stroke="#000000" points="259.8253,-35.3407 258.0752,-30.3407 256.3253,-35.3407 259.8253,-35.3407"></polygon>
 </g>
-<!-- 10&#45;&gt;11 -->
+<!-- 13&#45;&gt;14 -->
 <g id="edge1" class="edge">
-<title>10:s-&gt;11</title>
-<path fill="none" stroke="#000000" d="M382.5684,-48C382.5684,-48 382.5684,-15 382.5684,-15 382.5684,-15 265.1127,-15 265.1127,-15"></path>
-<polygon fill="#000000" stroke="#000000" points="265.1128,-13.2501 260.1127,-15 265.1127,-16.7501 265.1128,-13.2501"></polygon>
-</g>
-<!-- 5&#45;&gt;7 -->
-<g id="edge8" class="edge">
-<title>5:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M156.5684,-115C156.5684,-115 48.5684,-115 48.5684,-115 48.5684,-115 48.5684,-91.2469 48.5684,-91.2469"></path>
-<polygon fill="#000000" stroke="#000000" points="50.3185,-91.2468 48.5684,-86.2469 46.8185,-91.2469 50.3185,-91.2468"></polygon>
-</g>
-<!-- 5&#45;&gt;8 -->
-<g id="edge7" class="edge">
-<title>5:s-&gt;8</title>
-<path fill="none" stroke="#000000" d="M156.5684,-103.8C156.5684,-103.8 156.5684,-91.2622 156.5684,-91.2622"></path>
-<polygon fill="#000000" stroke="#000000" points="158.3185,-91.2622 156.5684,-86.2622 154.8185,-91.2623 158.3185,-91.2622"></polygon>
-</g>
-<!-- 6&#45;&gt;9 -->
-<g id="edge6" class="edge">
-<title>6:s-&gt;9</title>
-<path fill="none" stroke="#000000" d="M267.5684,-103.8C267.5684,-103.8 267.5684,-91.2622 267.5684,-91.2622"></path>
-<polygon fill="#000000" stroke="#000000" points="269.3185,-91.2622 267.5684,-86.2622 265.8185,-91.2623 269.3185,-91.2622"></polygon>
+<title>13:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M396.1268,-48C396.1268,-48 396.1268,-15 396.1268,-15 396.1268,-15 283.5871,-15 283.5871,-15"></path>
+<polygon fill="#000000" stroke="#000000" points="283.5872,-13.2501 278.5871,-15 283.5871,-16.7501 283.5872,-13.2501"></polygon>
 </g>
 <!-- 6&#45;&gt;10 -->
-<g id="edge5" class="edge">
+<g id="edge8" class="edge">
 <title>6:s-&gt;10</title>
-<path fill="none" stroke="#000000" d="M267.5684,-115C267.5684,-115 382.5684,-115 382.5684,-115 382.5684,-115 382.5684,-91.2469 382.5684,-91.2469"></path>
-<polygon fill="#000000" stroke="#000000" points="384.3185,-91.2468 382.5684,-86.2469 380.8185,-91.2469 384.3185,-91.2468"></polygon>
+<path fill="none" stroke="#000000" d="M54.1268,-103.8C54.1268,-103.8 54.1268,-91.2622 54.1268,-91.2622"></path>
+<polygon fill="#000000" stroke="#000000" points="55.8769,-91.2622 54.1268,-86.2622 52.3769,-91.2623 55.8769,-91.2622"></polygon>
 </g>
-<!-- 3&#45;&gt;5 -->
-<g id="edge10" class="edge">
-<title>3:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M156.5684,-145.6C156.5684,-145.6 156.5684,-132.5777 156.5684,-132.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="158.3185,-132.5777 156.5684,-127.5777 154.8185,-132.5778 158.3185,-132.5777"></polygon>
+<!-- 7&#45;&gt;11 -->
+<g id="edge7" class="edge">
+<title>7:s-&gt;11</title>
+<path fill="none" stroke="#000000" d="M173.1268,-103.8C173.1268,-103.8 173.1268,-91.2622 173.1268,-91.2622"></path>
+<polygon fill="#000000" stroke="#000000" points="174.8769,-91.2622 173.1268,-86.2622 171.3769,-91.2623 174.8769,-91.2622"></polygon>
+</g>
+<!-- 8&#45;&gt;12 -->
+<g id="edge6" class="edge">
+<title>8:s-&gt;12</title>
+<path fill="none" stroke="#000000" d="M287.1268,-103.8C287.1268,-103.8 287.1268,-91.2622 287.1268,-91.2622"></path>
+<polygon fill="#000000" stroke="#000000" points="288.8769,-91.2622 287.1268,-86.2622 285.3769,-91.2623 288.8769,-91.2622"></polygon>
+</g>
+<!-- 9&#45;&gt;13 -->
+<g id="edge5" class="edge">
+<title>9:s-&gt;13</title>
+<path fill="none" stroke="#000000" d="M396.1268,-103.8C396.1268,-103.8 396.1268,-91.2622 396.1268,-91.2622"></path>
+<polygon fill="#000000" stroke="#000000" points="397.8769,-91.2622 396.1268,-86.2622 394.3769,-91.2623 397.8769,-91.2622"></polygon>
 </g>
 <!-- 4&#45;&gt;6 -->
-<g id="edge9" class="edge">
-<title>4:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M267.5684,-145.6C267.5684,-145.6 267.5684,-132.5777 267.5684,-132.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="269.3185,-132.5777 267.5684,-127.5777 265.8185,-132.5778 269.3185,-132.5777"></polygon>
-</g>
-<!-- 2&#45;&gt;3 -->
 <g id="edge12" class="edge">
-<title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M191.5186,-193.4C191.5186,-193.4 191.5186,-180.8477 191.5186,-180.8477"></path>
-<polygon fill="#000000" stroke="#000000" points="193.2687,-180.8477 191.5186,-175.8477 189.7687,-180.8478 193.2687,-180.8477"></polygon>
+<title>4:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M136.6706,-145.6C136.6706,-145.6 136.6706,-115 136.6706,-115 136.6706,-115 83.8927,-115 83.8927,-115"></path>
+<polygon fill="#000000" stroke="#000000" points="83.8927,-113.2501 78.8927,-115 83.8926,-116.7501 83.8927,-113.2501"></polygon>
+</g>
+<!-- 4&#45;&gt;7 -->
+<g id="edge11" class="edge">
+<title>4:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M173.1268,-145.6C173.1268,-145.6 173.1268,-132.5777 173.1268,-132.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="174.8769,-132.5777 173.1268,-127.5777 171.3769,-132.5778 174.8769,-132.5777"></polygon>
+</g>
+<!-- 5&#45;&gt;8 -->
+<g id="edge10" class="edge">
+<title>5:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M287.1268,-145.6C287.1268,-145.6 287.1268,-132.5777 287.1268,-132.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="288.8769,-132.5777 287.1268,-127.5777 285.3769,-132.5778 288.8769,-132.5777"></polygon>
+</g>
+<!-- 5&#45;&gt;9 -->
+<g id="edge9" class="edge">
+<title>5:s-&gt;9</title>
+<path fill="none" stroke="#000000" d="M322.4712,-145.6C322.4712,-145.6 322.4712,-115 322.4712,-115 322.4712,-115 366.1904,-115 366.1904,-115"></path>
+<polygon fill="#000000" stroke="#000000" points="366.1904,-116.7501 371.1904,-115 366.1903,-113.2501 366.1904,-116.7501"></polygon>
 </g>
 <!-- 2&#45;&gt;4 -->
-<g id="edge11" class="edge">
+<g id="edge14" class="edge">
 <title>2:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M232.1182,-193.4C232.1182,-193.4 232.1182,-180.8477 232.1182,-180.8477"></path>
-<polygon fill="#000000" stroke="#000000" points="233.8683,-180.8477 232.1182,-175.8477 230.3683,-180.8478 233.8683,-180.8477"></polygon>
+<path fill="none" stroke="#000000" d="M173.1268,-193.4C173.1268,-193.4 173.1268,-180.8477 173.1268,-180.8477"></path>
+<polygon fill="#000000" stroke="#000000" points="174.8769,-180.8477 173.1268,-175.8477 171.3769,-180.8478 174.8769,-180.8477"></polygon>
+</g>
+<!-- 3&#45;&gt;5 -->
+<g id="edge13" class="edge">
+<title>3:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M287.1268,-193.4C287.1268,-193.4 287.1268,-180.8477 287.1268,-180.8477"></path>
+<polygon fill="#000000" stroke="#000000" points="288.8769,-180.8477 287.1268,-175.8477 285.3769,-180.8478 288.8769,-180.8477"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
-<g id="edge13" class="edge">
+<g id="edge16" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M211.5684,-235.2C211.5684,-235.2 211.5684,-222.1777 211.5684,-222.1777"></path>
-<polygon fill="#000000" stroke="#000000" points="213.3185,-222.1777 211.5684,-217.1777 209.8185,-222.1778 213.3185,-222.1777"></polygon>
+<path fill="none" stroke="#000000" d="M194.1766,-235.2C194.1766,-235.2 194.1766,-222.1777 194.1766,-222.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="195.9267,-222.1777 194.1766,-217.1777 192.4267,-222.1778 195.9267,-222.1777"></polygon>
 </g>
-<!-- 11 -->
+<!-- 1&#45;&gt;3 -->
+<g id="edge15" class="edge">
+<title>1:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M266.077,-235.2C266.077,-235.2 266.077,-222.1777 266.077,-222.1777"></path>
+<polygon fill="#000000" stroke="#000000" points="267.8271,-222.1777 266.077,-217.1777 264.3271,-222.1778 267.8271,-222.1777"></polygon>
+</g>
+<!-- 14 -->
 <g id="node1" class="node">
-<title>11</title>
-<polygon fill="#ffffff" stroke="#000000" points="259.8239,-30 163.3129,-30 163.3129,0 259.8239,0 259.8239,-30"></polygon>
-<text text-anchor="start" x="170.4408" y="-16.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: </text>
-<text text-anchor="start" x="170.4408" y="-8.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 583 patients</text>
-</g>
-<!-- 7 -->
-<g id="node2" class="node">
-<title>7</title>
-<polygon fill="#ffffff" stroke="#000000" points="97.2053,-86 -.0685,-86 -.0685,-48 97.2053,-48 97.2053,-86"></polygon>
-<text text-anchor="start" x="7" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: case, female</text>
-<text text-anchor="start" x="7" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">92 patients</text>
-<text text-anchor="start" x="7" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">16% of the total</text>
-</g>
-<!-- 8 -->
-<g id="node3" class="node">
-<title>8</title>
-<polygon fill="#ffffff" stroke="#000000" points="202.036,-86 111.1008,-86 111.1008,-48 202.036,-48 202.036,-86"></polygon>
-<text text-anchor="start" x="118.3352" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: case, male</text>
-<text text-anchor="start" x="118.3352" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">324 patients</text>
-<text text-anchor="start" x="118.3352" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">56% of the total</text>
-</g>
-<!-- 9 -->
-<g id="node4" class="node">
-<title>9</title>
-<polygon fill="#ffffff" stroke="#000000" points="319.8143,-86 215.3225,-86 215.3225,-48 319.8143,-48 319.8143,-86"></polygon>
-<text text-anchor="start" x="222.4456" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: control, female</text>
-<text text-anchor="start" x="222.4456" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">50 patients</text>
-<text text-anchor="start" x="222.4456" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">9% of the total</text>
+<title>14</title>
+<polygon fill="#ffffff" stroke="#000000" points="278.3823,-30 181.8713,-30 181.8713,0 278.3823,0 278.3823,-30"></polygon>
+<text text-anchor="start" x="188.9992" y="-16.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: </text>
+<text text-anchor="start" x="188.9992" y="-8.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 203 patients</text>
 </g>
 <!-- 10 -->
-<g id="node5" class="node">
+<g id="node2" class="node">
 <title>10</title>
-<polygon fill="#ffffff" stroke="#000000" points="431.1445,-86 333.9923,-86 333.9923,-48 431.1445,-48 431.1445,-86"></polygon>
-<text text-anchor="start" x="340.7808" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: control, male</text>
-<text text-anchor="start" x="340.7808" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">117 patients</text>
-<text text-anchor="start" x="340.7808" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20% of the total</text>
+<polygon fill="#ffffff" stroke="#000000" points="108.3807,-86 -.1271,-86 -.1271,-48 108.3807,-48 108.3807,-86"></polygon>
+<text text-anchor="start" x="7" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: placebo, female</text>
+<text text-anchor="start" x="7" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 patients</text>
+<text text-anchor="start" x="7" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">10% of the total</text>
 </g>
-<!-- 5 -->
-<g id="node6" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="181.1399,-127.4033 131.9969,-127.4033 131.9969,-104.1967 181.1399,-104.1967 181.1399,-127.4033"></polygon>
-<text text-anchor="start" x="138.7836" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
+<!-- 11 -->
+<g id="node3" class="node">
+<title>11</title>
+<polygon fill="#ffffff" stroke="#000000" points="223.7109,-86 122.5427,-86 122.5427,-48 223.7109,-48 223.7109,-86"></polygon>
+<text text-anchor="start" x="129.3352" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: placebo, male</text>
+<text text-anchor="start" x="129.3352" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">100 patients</text>
+<text text-anchor="start" x="129.3352" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">49% of the total</text>
+</g>
+<!-- 12 -->
+<g id="node4" class="node">
+<title>12</title>
+<polygon fill="#ffffff" stroke="#000000" points="336.5895,-86 237.6641,-86 237.6641,-48 336.5895,-48 336.5895,-86"></polygon>
+<text text-anchor="start" x="244.896" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: rifn-g, female</text>
+<text text-anchor="start" x="244.896" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">15 patients</text>
+<text text-anchor="start" x="244.896" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7% of the total</text>
+</g>
+<!-- 13 -->
+<g id="node5" class="node">
+<title>13</title>
+<polygon fill="#ffffff" stroke="#000000" points="441.9182,-86 350.3354,-86 350.3354,-48 441.9182,-48 441.9182,-86"></polygon>
+<text text-anchor="start" x="357.2312" y="-72.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: rifn-g, male</text>
+<text text-anchor="start" x="357.2312" y="-64.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">68 patients</text>
+<text text-anchor="start" x="357.2312" y="-56.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">33% of the total</text>
 </g>
 <!-- 6 -->
-<g id="node7" class="node">
+<g id="node6" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="292.1399,-127.4033 242.9969,-127.4033 242.9969,-104.1967 292.1399,-104.1967 292.1399,-127.4033"></polygon>
-<text text-anchor="start" x="249.7836" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
+<polygon fill="#ffffff" stroke="#000000" points="78.6983,-127.4033 29.5553,-127.4033 29.5553,-104.1967 78.6983,-104.1967 78.6983,-127.4033"></polygon>
+<text text-anchor="start" x="36.342" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
 </g>
-<!-- 3 -->
+<!-- 7 -->
+<g id="node7" class="node">
+<title>7</title>
+<polygon fill="#ffffff" stroke="#000000" points="197.6983,-127.4033 148.5553,-127.4033 148.5553,-104.1967 197.6983,-104.1967 197.6983,-127.4033"></polygon>
+<text text-anchor="start" x="155.342" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
+</g>
+<!-- 8 -->
 <g id="node8" class="node">
-<title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="204.8239,-175.6 108.3129,-175.6 108.3129,-145.6 204.8239,-145.6 204.8239,-175.6"></polygon>
-<text text-anchor="start" x="115.4408" y="-162.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: case</text>
-<text text-anchor="start" x="115.4408" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 416 patients</text>
+<title>8</title>
+<polygon fill="#ffffff" stroke="#000000" points="311.6983,-127.4033 262.5553,-127.4033 262.5553,-104.1967 311.6983,-104.1967 311.6983,-127.4033"></polygon>
+<text text-anchor="start" x="269.342" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
+</g>
+<!-- 9 -->
+<g id="node9" class="node">
+<title>9</title>
+<polygon fill="#ffffff" stroke="#000000" points="420.6983,-127.4033 371.5553,-127.4033 371.5553,-104.1967 420.6983,-104.1967 420.6983,-127.4033"></polygon>
+<text text-anchor="start" x="378.342" y="-113.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">by gender</text>
 </g>
 <!-- 4 -->
-<g id="node9" class="node">
+<g id="node10" class="node">
 <title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="315.8239,-175.6 219.3129,-175.6 219.3129,-145.6 315.8239,-145.6 315.8239,-175.6"></polygon>
-<text text-anchor="start" x="226.4408" y="-162.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: control</text>
-<text text-anchor="start" x="226.4408" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 167 patients</text>
+<polygon fill="#ffffff" stroke="#000000" points="221.3823,-175.6 124.8713,-175.6 124.8713,-145.6 221.3823,-145.6 221.3823,-175.6"></polygon>
+<text text-anchor="start" x="131.9992" y="-162.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: placebo</text>
+<text text-anchor="start" x="131.9992" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 120 patients</text>
+</g>
+<!-- 5 -->
+<g id="node11" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="332.935,-175.6 241.3186,-175.6 241.3186,-145.6 332.935,-145.6 332.935,-175.6"></polygon>
+<text text-anchor="start" x="248.2228" y="-162.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: rifn-g</text>
+<text text-anchor="start" x="248.2228" y="-154.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 83 patients</text>
 </g>
 <!-- 2 -->
-<g id="node10" class="node">
+<g id="node12" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="245.0244,-217.0033 178.1124,-217.0033 178.1124,-193.7967 245.0244,-193.7967 245.0244,-217.0033"></polygon>
-<text text-anchor="start" x="185.3412" y="-203" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+<polygon fill="#ffffff" stroke="#000000" points="206.5828,-217.0033 139.6708,-217.0033 139.6708,-193.7967 206.5828,-193.7967 206.5828,-217.0033"></polygon>
+<text text-anchor="start" x="146.8996" y="-203" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+</g>
+<!-- 3 -->
+<g id="node13" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="320.5828,-217.0033 253.6708,-217.0033 253.6708,-193.7967 320.5828,-193.7967 320.5828,-217.0033"></polygon>
+<text text-anchor="start" x="260.8996" y="-203" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
 </g>
 <!-- 1 -->
-<g id="node11" class="node">
+<g id="node14" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="259.8239,-265.2 163.3129,-265.2 163.3129,-235.2 259.8239,-235.2 259.8239,-265.2"></polygon>
-<text text-anchor="start" x="170.4408" y="-252" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: </text>
-<text text-anchor="start" x="170.4408" y="-244" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 583 patients</text>
+<polygon fill="#ffffff" stroke="#000000" points="278.3823,-265.2 181.8713,-265.2 181.8713,-235.2 278.3823,-235.2 278.3823,-265.2"></polygon>
+<text text-anchor="start" x="188.9992" y="-252" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">subgroup: </text>
+<text text-anchor="start" x="188.9992" y="-244" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">containing 203 patients</text>
 </g>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># N.b. this setting includes some unwanted headlines in the ungrouped stages of the flow chart. If a headline evaluates to &quot;&quot; then the headline is suppressed and we can get rid of unwanted headlines. An example of doing this is as follows:</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># options(dtrackr.default_headline = &quot;{ifelse(.strata != &#39;&#39;, glue::glue(&#39;subgroup: {.strata}&#39;), &#39;&#39;)}&quot;)</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># reset options </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># N.b. this setting includes some unwanted headlines in the ungrouped stages of</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the flow chart. If a headline evaluates to &quot;&quot; then the headline is suppressed</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># and we can get rid of unwanted headlines. An example of doing this is as</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># follows:</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># options(dtrackr.default_headline = &quot;{ifelse(.strata != &#39;&#39;, glue::glue(&#39;subgroup: {.strata}&#39;), &#39;&#39;)}&quot;)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 </div>
 <div id="subgroup-count" class="section level2">
 <h2>Subgroup count</h2>
-<p>Subgroup counts are a slightly neater way of doing this. Their default layout can be modified using <code>dtrackr.default_count_subgroup</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>old =<span class="st"> </span><span class="kw">options</span>(</span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="dt">dtrackr.default_headline =</span> <span class="st">&quot;{.strata}&quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="dt">dtrackr.default_count_subgroup =</span> <span class="st">&quot;{tolower(.name)}: {.count}/{.subtotal}&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a></span>
-<span id="cb7-6"><a href="#cb7-6"></a>dtrackr<span class="op">::</span>ILPD <span class="op">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="st">  </span><span class="kw">track</span>() <span class="op">%&gt;%</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="st">  </span><span class="kw">group_by</span>(</span>
-<span id="cb7-9"><a href="#cb7-9"></a>    Case_or_Control,</span>
-<span id="cb7-10"><a href="#cb7-10"></a>    <span class="dt">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="st">  </span><span class="kw">comment</span>() <span class="op">%&gt;%</span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="st">  </span><span class="kw">count_subgroup</span>(</span>
-<span id="cb7-14"><a href="#cb7-14"></a>    Gender</span>
-<span id="cb7-15"><a href="#cb7-15"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="st">  </span><span class="kw">flowchart</span>()</span></code></pre></div>
+<p>Subgroup counts are a slightly neater way of doing this. Their
+default layout can be modified using
+<code>dtrackr.default_count_subgroup</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;{.strata}&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dtrackr.default_count_subgroup =</span> <span class="st">&quot;{tolower(.name)}: {.count}/{.subtotal}&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    treat,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count_subgroup</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    sex</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="216pt" height="219pt" viewBox="0.00 0.00 216.12 218.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 214.8)">
+<svg width="155.000pt" height="219.000pt" viewBox="0 0 155.000 219.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 215.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-214.8 212.1248,-214.8 212.1248,4 -4,4"></polygon>
-<!-- 5&#45;&gt;7 -->
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-214.8 150.6816,-214.8 150.6816,4 -4,4"></polygon>
+<!-- 6&#45;&gt;8 -->
 <g id="edge2" class="edge">
-<title>5:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M85.5094,-41.6C85.5094,-41.6 85.5094,-28.5777 85.5094,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="87.2595,-28.5777 85.5094,-23.5777 83.7595,-28.5778 87.2595,-28.5777"></polygon>
+<title>6:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M58.0132,-41.6C58.0132,-41.6 58.0132,-28.5777 58.0132,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="59.7633,-28.5777 58.0132,-23.5777 56.2633,-28.5778 59.7633,-28.5777"></polygon>
 </g>
-<!-- 6&#45;&gt;7 -->
+<!-- 7&#45;&gt;8 -->
 <g id="edge1" class="edge">
-<title>6:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M116.7838,-41.6C116.7838,-41.6 116.7838,-28.5777 116.7838,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="118.5339,-28.5777 116.7838,-23.5777 115.0339,-28.5778 118.5339,-28.5777"></polygon>
-</g>
-<!-- 3&#45;&gt;5 -->
-<g id="edge4" class="edge">
-<title>3:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M46.7852,-97.6C46.7852,-97.6 46.7852,-84.9669 46.7852,-84.9669"></path>
-<polygon fill="#000000" stroke="#000000" points="48.5353,-84.9669 46.7852,-79.9669 45.0353,-84.9669 48.5353,-84.9669"></polygon>
+<title>7:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M90.0074,-41.6C90.0074,-41.6 90.0074,-28.5777 90.0074,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="91.7575,-28.5777 90.0074,-23.5777 88.2575,-28.5778 91.7575,-28.5777"></polygon>
 </g>
 <!-- 4&#45;&gt;6 -->
-<g id="edge3" class="edge">
+<g id="edge4" class="edge">
 <title>4:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M157.7852,-97.6C157.7852,-97.6 157.7852,-84.9669 157.7852,-84.9669"></path>
-<polygon fill="#000000" stroke="#000000" points="159.5353,-84.9669 157.7852,-79.9669 156.0353,-84.9669 159.5353,-84.9669"></polygon>
+<path fill="none" stroke="#000000" d="M33.4544,-97.6C33.4544,-97.6 33.4544,-84.9669 33.4544,-84.9669"></path>
+<polygon fill="#000000" stroke="#000000" points="35.2045,-84.9669 33.4544,-79.9669 31.7045,-84.9669 35.2045,-84.9669"></polygon>
 </g>
-<!-- 2&#45;&gt;3 -->
-<g id="edge6" class="edge">
-<title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M81.0642,-145.4C81.0642,-145.4 81.0642,-132.8477 81.0642,-132.8477"></path>
-<polygon fill="#000000" stroke="#000000" points="82.8143,-132.8477 81.0642,-127.8477 79.3143,-132.8478 82.8143,-132.8477"></polygon>
+<!-- 5&#45;&gt;7 -->
+<g id="edge3" class="edge">
+<title>5:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M113.4544,-97.6C113.4544,-97.6 113.4544,-84.9669 113.4544,-84.9669"></path>
+<polygon fill="#000000" stroke="#000000" points="115.2045,-84.9669 113.4544,-79.9669 111.7045,-84.9669 115.2045,-84.9669"></polygon>
 </g>
 <!-- 2&#45;&gt;4 -->
-<g id="edge5" class="edge">
+<g id="edge6" class="edge">
 <title>2:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M121.229,-145.4C121.229,-145.4 121.229,-132.8477 121.229,-132.8477"></path>
-<polygon fill="#000000" stroke="#000000" points="122.9791,-132.8477 121.229,-127.8477 119.4791,-132.8478 122.9791,-132.8477"></polygon>
+<path fill="none" stroke="#000000" d="M33.4544,-145.4C33.4544,-145.4 33.4544,-132.8477 33.4544,-132.8477"></path>
+<polygon fill="#000000" stroke="#000000" points="35.2045,-132.8477 33.4544,-127.8477 31.7045,-132.8478 35.2045,-132.8477"></polygon>
+</g>
+<!-- 3&#45;&gt;5 -->
+<g id="edge5" class="edge">
+<title>3:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M113.4544,-145.4C113.4544,-145.4 113.4544,-132.8477 113.4544,-132.8477"></path>
+<polygon fill="#000000" stroke="#000000" points="115.2045,-132.8477 113.4544,-127.8477 111.7045,-132.8478 115.2045,-132.8477"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
-<g id="edge7" class="edge">
+<g id="edge8" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M101.7852,-187C101.7852,-187 101.7852,-174.0987 101.7852,-174.0987"></path>
-<polygon fill="#000000" stroke="#000000" points="103.5353,-174.0987 101.7852,-169.0987 100.0353,-174.0987 103.5353,-174.0987"></polygon>
+<path fill="none" stroke="#000000" d="M57.8996,-187C57.8996,-187 57.8996,-174.0987 57.8996,-174.0987"></path>
+<polygon fill="#000000" stroke="#000000" points="59.6497,-174.0987 57.8996,-169.0987 56.1497,-174.0987 59.6497,-174.0987"></polygon>
 </g>
-<!-- 7 -->
+<!-- 1&#45;&gt;3 -->
+<g id="edge7" class="edge">
+<title>1:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M89.0092,-187C89.0092,-187 89.0092,-174.0987 89.0092,-174.0987"></path>
+<polygon fill="#000000" stroke="#000000" points="90.7593,-174.0987 89.0092,-169.0987 87.2593,-174.0987 90.7593,-174.0987"></polygon>
+</g>
+<!-- 8 -->
 <g id="node1" class="node">
-<title>7</title>
-<polygon fill="#ffffff" stroke="#000000" points="125.9599,-23.4033 77.6105,-23.4033 77.6105,-.1967 125.9599,-.1967 125.9599,-23.4033"></polygon>
-<text text-anchor="start" x="84.4484" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
-</g>
-<!-- 5 -->
-<g id="node2" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="93.3566,-79.6 .2138,-79.6 .2138,-41.6 93.3566,-41.6 93.3566,-79.6"></polygon>
-<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:case</text>
-<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 92/416</text>
-<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 324/416</text>
+<title>8</title>
+<polygon fill="#ffffff" stroke="#000000" points="97.6291,-23.4033 49.2797,-23.4033 49.2797,-.1967 97.6291,-.1967 97.6291,-23.4033"></polygon>
+<text text-anchor="start" x="56.1176" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 <!-- 6 -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="207.9649,-79.6 107.6055,-79.6 107.6055,-41.6 207.9649,-41.6 207.9649,-79.6"></polygon>
-<text text-anchor="start" x="114.4456" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:control</text>
-<text text-anchor="start" x="114.4456" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 50/167</text>
-<text text-anchor="start" x="114.4456" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 117/167</text>
+<polygon fill="#ffffff" stroke="#000000" points="66.8633,-79.6 .0455,-79.6 .0455,-41.6 66.8633,-41.6 66.8633,-79.6"></polygon>
+<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo</text>
+<text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 100/120</text>
+<text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 20/120</text>
 </g>
-<!-- 3 -->
-<g id="node4" class="node">
-<title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="93.3566,-127.6 .2138,-127.6 .2138,-97.6 93.3566,-97.6 93.3566,-127.6"></polygon>
-<text text-anchor="start" x="7" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:case</text>
-<text text-anchor="start" x="7" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">416 items</text>
+<!-- 7 -->
+<g id="node3" class="node">
+<title>7</title>
+<polygon fill="#ffffff" stroke="#000000" points="144.9177,-79.6 81.9911,-79.6 81.9911,-41.6 144.9177,-41.6 144.9177,-79.6"></polygon>
+<text text-anchor="start" x="89.2236" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g</text>
+<text text-anchor="start" x="89.2236" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 68/83</text>
+<text text-anchor="start" x="89.2236" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 15/83</text>
 </g>
 <!-- 4 -->
-<g id="node5" class="node">
+<g id="node4" class="node">
 <title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="207.9649,-127.6 107.6055,-127.6 107.6055,-97.6 207.9649,-97.6 207.9649,-127.6"></polygon>
-<text text-anchor="start" x="114.4456" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Case_or_Control:control</text>
-<text text-anchor="start" x="114.4456" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">167 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="63.6933,-127.6 3.2155,-127.6 3.2155,-97.6 63.6933,-97.6 63.6933,-127.6"></polygon>
+<text text-anchor="start" x="10.3352" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo</text>
+<text text-anchor="start" x="10.3352" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">120 items</text>
+</g>
+<!-- 5 -->
+<g id="node5" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="140.8409,-127.6 86.0679,-127.6 86.0679,-97.6 140.8409,-97.6 140.8409,-127.6"></polygon>
+<text text-anchor="start" x="93.0112" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g</text>
+<text text-anchor="start" x="93.0112" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">83 items</text>
 </g>
 <!-- 2 -->
 <g id="node6" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="135.2412,-169.0033 68.3292,-169.0033 68.3292,-145.7967 135.2412,-145.7967 135.2412,-169.0033"></polygon>
-<text text-anchor="start" x="75.558" y="-155" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+<polygon fill="#ffffff" stroke="#000000" points="66.9104,-169.0033 -.0016,-169.0033 -.0016,-145.7967 66.9104,-145.7967 66.9104,-169.0033"></polygon>
+<text text-anchor="start" x="7.2272" y="-155" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
+</g>
+<!-- 3 -->
+<g id="node7" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="146.9104,-169.0033 79.9984,-169.0033 79.9984,-145.7967 146.9104,-145.7967 146.9104,-169.0033"></polygon>
+<text text-anchor="start" x="87.2272" y="-155" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">case or control</text>
 </g>
 <!-- 1 -->
-<g id="node7" class="node">
+<g id="node8" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="125.9599,-210.6033 77.6105,-210.6033 77.6105,-187.3967 125.9599,-187.3967 125.9599,-210.6033"></polygon>
-<text text-anchor="start" x="84.4484" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">583 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="97.6291,-210.6033 49.2797,-210.6033 49.2797,-187.3967 97.6291,-187.3967 97.6291,-210.6033"></polygon>
+<text text-anchor="start" x="56.1176" y="-196.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">203 items</text>
 </g>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># reset options </span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 </div>
 <div id="exclusions" class="section level2">
 <h2>Exclusions</h2>
-<p>Elsewhere we discuss the possibility of capturing excluded items for debugging. This behaviour can be added to any pipeline with the <code>capture_exclusions()</code> function. Alternatively it can be globally enabled with the following option. Usual caveats about performance apply.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">options</span>(<span class="dt">dtrackr.exclusions=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<p>Elsewhere we discuss the possibility of capturing excluded items for
+debugging. This behaviour can be added to any pipeline with the
+<code>capture_exclusions()</code> function. Alternatively it can be
+globally enabled with the following option. Usual caveats about
+performance apply.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.exclusions=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="reporting-exclusions-which-do-nothing" class="section level2">
 <h2>Reporting exclusions which do nothing</h2>
-<p>Sometimes in a pipeline we have a exclusion criteria which is not triggered, or is not triggered for a particular subgroup. In this case the default is not to show the zero items that were excluded. However sometimes it is reassuring to know that an filter was applied even if it results in nothing:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">options</span>(<span class="dt">dtrackr.show_zero_exclusions=</span><span class="ot">FALSE</span>)</span></code></pre></div>
+<p>Sometimes in a pipeline we have a exclusion criteria which is not
+triggered, or is not triggered for a particular subgroup. In this case
+the default is not to show the zero items that were excluded. However
+sometimes it is reassuring to know that an filter was applied even if it
+results in nothing:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.show_zero_exclusions=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="maximum-groupings" class="section level2">
 <h2>Maximum groupings</h2>
-<p>in <code>count_subgroup()</code> and <code>group_by()</code> statements there can be a large number of items generated if a particular grouping variable has a lot of possible values. This can cause performance issues and legibility issues for the resulting graph and is usually a mistake, as a result of an interim stage of the data pipeline (e.g. a <code>dataset %&gt;% group_by(nearly_unique_id) %&gt;% filter(row_number()==1)</code> type operation). The most number of groups that <code>dtrackr</code> will attempt to keep track of is configurable but defaults to 16:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">options</span>(<span class="dt">dtrackr.max_supported_groupings =</span> <span class="dv">16</span>)</span></code></pre></div>
+<p>In <code>count_subgroup()</code> and <code>group_by()</code>
+statements there can be a large number of items generated if a
+particular grouping variable has a lot of possible values. This can
+cause performance issues and legibility issues for the resulting graph
+and is usually a result of an interim stage of the data pipeline where
+grouping is used to do fine scale summarisation operation (e.g. a
+<code>dataset %&gt;% group_by(nearly_unique_id) %&gt;% filter(row_number()==1)</code>
+or a timeseries where things need to be aggregated by date, and the data
+is quickly ungrouped (e.g.
+<code>timeseries %&gt;% group_by(date) %&gt;% summarise(count = n())</code>).
+The most number of groups that <code>dtrackr</code> will attempt to keep
+track of is configurable but defaults to 16:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.max_supported_groupings =</span> <span class="dv">16</span>)</span></code></pre></div>
 </div>
 </div>
 

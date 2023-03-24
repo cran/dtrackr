@@ -4,48 +4,51 @@
 \alias{summarise.trackr_df}
 \title{Summarise a data set}
 \usage{
-\method{summarise}{trackr_df}(
-  .data,
-  ...,
-  .groups = NULL,
-  .messages = "",
-  .headline = "",
-  .tag = NULL
-)
+\method{summarise}{trackr_df}(.data, ..., .messages = "", .headline = "", .tag = NULL)
 }
 \arguments{
-\item{.data}{\itemize{
-\item a dataframe which may be grouped
-}}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{...}{a set of dplyr summary expressions.}
+\item{...}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Name-value pairs of summary
+functions. The name will be the name of the variable in the result.
 
-\item{.groups}{\itemize{
-\item Experimental lifecycle Grouping structure of the result.
-}}
+The value can be:
+\itemize{
+\item A vector of length 1, e.g. \code{min(x)}, \code{n()}, or \code{sum(is.na(y))}.
+\item A data frame, to add multiple columns from a single expression.
+}
 
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any summary variable defined in the ... parameter, or any global variable, or \{.strata\}
-}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Returning values with size 0 or >1 was
+deprecated as of 1.1.0. Please use \code{\link[dplyr:reframe]{reframe()}} for this instead.}
 
-\item{.headline}{\itemize{
-\item a headline glue spec. The glue code can use any summary variable defined in the ... parameter, or any global variable, or \{.strata\}
-}}
+\item{.messages}{a set of glue specs. The glue code can use any summary
+variable defined in the ... parameter, or any global variable, or
+\{.strata\}}
 
-\item{.tag}{\itemize{
-\item if you want the summary data from this step in the future then give it a name with .tag.
-}}
+\item{.headline}{a headline glue spec. The glue code can use any summary
+variable defined in the ... parameter, or any global variable, or
+\{.strata\}}
+
+\item{.tag}{if you want the summary data from this step in the future then
+give it a name with .tag.}
 }
 \value{
-the .data dataframe summarised with the history graph updated showing the summarise operation as a new stage
+the .data dataframe summarised with the history graph updated showing
+the summarise operation as a new stage
 }
 \description{
-Summarising a data set acts in the normal way. Any columns resulting form the summary can be added to the history graph
-In the history this joins any stratified branches and acts as a specific type of p_summary, allowing you to
-generate some summary statistics about the un-grouped data. See \code{\link[dplyr:summarise]{dplyr::summarise()}}.
+Summarising a data set acts in the normal \code{dplyr} manner to collapse groups
+to individual rows. Any columns resulting from the summary can be added to
+the history graph In the history this also joins any stratified branches and
+allows you to generate some summary statistics about the un-grouped data. See
+\code{\link[dplyr:summarise]{dplyr::summarise()}}.
 }
 \examples{
 library(dplyr)
+library(dtrackr)
+
 tmp = iris \%>\% group_by(Species)
 tmp \%>\% summarise(avg = mean(Petal.Length), .messages="{avg} length") \%>\% history()
 }

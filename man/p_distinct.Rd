@@ -6,50 +6,47 @@
 \usage{
 p_distinct(
   .data,
-  .f,
   ...,
-  .keep = FALSE,
   .messages = "removing {.count.in-.count.out} duplicates",
   .headline = .defaultHeadline(),
   .tag = NULL
 )
 }
 \arguments{
-\item{.data}{\itemize{
-\item a dataframe which may be grouped
-}}
+\item{.data}{A data frame, data frame extension (e.g. a tibble), or a
+lazy data frame (e.g. from dbplyr or dtplyr). See \emph{Methods}, below, for
+more details.}
 
-\item{.f}{a function as expected by dplyr::group_modify e.g. function(d,g,...) { ...do something with d and return a dataframe... }}
+\item{...}{
+  Arguments passed on to \code{\link[dplyr:distinct]{dplyr::distinct}}
+  \describe{
+    \item{\code{.keep_all}}{If \code{TRUE}, keep all variables in \code{.data}.
+If a combination of \code{...} is not distinct, this keeps the
+first row of values.}
+  }}
 
-\item{...}{additional parameters for .f.}
+\item{.messages}{a set of glue specs. The glue code can use any global
+variable, or \{.strata\},\{.count.in\},and \{.count.out\}}
 
-\item{.keep}{\itemize{
-\item are the grouping variables kept in d, or split out to g (the default)
-}}
+\item{.headline}{a headline glue spec. The glue code can use any global
+variable, or \{.strata\},\{.count.in\},and \{.count.out\}}
 
-\item{.messages}{\itemize{
-\item a set of glue specs. The glue code can use any global variable, or \{.strata\},\{.count.in\},and \{.count.out\}
-}}
-
-\item{.headline}{\itemize{
-\item a headline glue spec. The glue code can use any global variable, or \{.strata\},\{.count.in\},and \{.count.out\}
-}}
-
-\item{.tag}{\itemize{
-\item if you want the summary data from this step in the future then give it a name with .tag.
-}}
+\item{.tag}{if you want the summary data from this step in the future then
+give it a name with .tag.}
 }
 \value{
 the .data dataframe with distinct values and history graph updated.
 }
 \description{
-Distinct acts in the same way as in \code{dplyr::distinct}. Prior to the operation the size of the group is calculated \{.count.in\} and
-after the operation the output size \{.count.out\}
-The group \{.strata\} is also available (if grouped) for reporting
-See \code{\link[dplyr:distinct]{dplyr::distinct()}}.
+Distinct acts in the same way as in \code{dplyr::distinct}. Prior to the operation
+the size of the group is calculated \{.count.in\} and after the operation the
+output size \{.count.out\} The group \{.strata\} is also available (if
+grouped) for reporting. See \code{\link[dplyr:distinct]{dplyr::distinct()}}.
 }
 \examples{
 library(dplyr)
+library(dtrackr)
+
 tmp = bind_rows(iris \%>\% track(), iris \%>\% track() \%>\% filter(Petal.Length > 5))
 tmp \%>\% group_by(Species) \%>\% distinct() \%>\% history()
 }

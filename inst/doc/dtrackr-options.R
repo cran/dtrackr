@@ -13,11 +13,11 @@ old = options(
   dtrackr.strata_sep="; "
 )
 
-dtrackr::ILPD %>%
+survival::cgd %>%
   track() %>%
-  group_by(Case_or_Control) %>%
+  group_by(treat) %>%
   comment() %>%
-  group_by(Gender,.add = TRUE) %>%
+  group_by(sex,.add = TRUE) %>%
   comment(
     .messages = c(
     "{.count} patients",
@@ -37,15 +37,11 @@ old = options(
   dtrackr.strata_sep=", "
 )
 
-dtrackr::ILPD %>%
+survival::cgd %>%
   track() %>%
-  group_by(
-    Case_or_Control,
-    .messages = "case or control"
-  ) %>%
+  group_by(treat, .messages = "case or control") %>%
   comment() %>%
-  group_by(
-    Gender,
+  group_by(sex,
     .add = TRUE, 
     .messages = "by {tolower(.cols)}" #.cols contains a csv string of the grouping variables
   ) %>%
@@ -68,15 +64,15 @@ old = options(
   dtrackr.default_headline = "subgroup: {.strata}"
 )
 
-dtrackr::ILPD %>%
+survival::cgd %>%
   track() %>%
   group_by(
-    Case_or_Control,
+    treat,
     .messages = "case or control"
   ) %>%
   comment() %>%
   group_by(
-    Gender,
+    sex,
     .add = TRUE, 
     .messages = "by gender"
   ) %>%
@@ -87,7 +83,10 @@ dtrackr::ILPD %>%
   ungroup() %>%
   flowchart()
 
-# N.b. this setting includes some unwanted headlines in the ungrouped stages of the flow chart. If a headline evaluates to "" then the headline is suppressed and we can get rid of unwanted headlines. An example of doing this is as follows:
+# N.b. this setting includes some unwanted headlines in the ungrouped stages of
+# the flow chart. If a headline evaluates to "" then the headline is suppressed
+# and we can get rid of unwanted headlines. An example of doing this is as
+# follows:
 # options(dtrackr.default_headline = "{ifelse(.strata != '', glue::glue('subgroup: {.strata}'), '')}")
 
 # reset options 
@@ -101,15 +100,15 @@ old = options(
   dtrackr.default_count_subgroup = "{tolower(.name)}: {.count}/{.subtotal}"
 )
 
-dtrackr::ILPD %>%
+survival::cgd %>%
   track() %>%
   group_by(
-    Case_or_Control,
+    treat,
     .messages = "case or control"
   ) %>%
   comment() %>%
   count_subgroup(
-    Gender
+    sex
   ) %>%
   ungroup() %>%
   flowchart()
