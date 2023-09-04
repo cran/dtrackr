@@ -345,120 +345,120 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Joining <code>dtrackr</code> tracked data is supported and allows us
 to combine linked data sets. In this toy example the data sets are
 characters from a popular film from my youth.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># here we create a set of linked data from the starwars data</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># in a real example these data sets woudl have come from different places</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>people <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>films, <span class="sc">-</span>vehicles, <span class="sc">-</span>starships)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>vehicles <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,vehicles) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(vehicles))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>starships <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,starships) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(starships))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>films <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,films) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(films))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># these 4 data frames are linked together by the name attribute</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># we track both input data sets:</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">=</span> people <span class="sc">%&gt;%</span> <span class="fu">track</span>() <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;People df {.total}&quot;</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">=</span> films <span class="sc">%&gt;%</span> <span class="fu">track</span>() <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;Films df {.total}&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;a test comment&quot;</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># and here we (re)join the two data sets:</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="sc">%&gt;%</span> </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(tmp2, <span class="at">by=</span><span class="st">&quot;name&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;joined {.total}&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># here we create a set of linked data from the starwars data</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># in a real example these data sets would have come from different places</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>people <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>films, <span class="sc">-</span>vehicles, <span class="sc">-</span>starships)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>vehicles <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,vehicles) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(vehicles))</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>starships <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,starships) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(starships))</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>films <span class="ot">=</span> starwars <span class="sc">%&gt;%</span> <span class="fu">select</span>(name,films) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(films))</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># these 4 data frames are linked together by the name attribute</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># we track both input data sets:</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>tmp1 <span class="ot">=</span> people <span class="sc">%&gt;%</span> <span class="fu">track</span>() <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;People df {.total}&quot;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>tmp2 <span class="ot">=</span> films <span class="sc">%&gt;%</span> <span class="fu">track</span>() <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;Films df {.total}&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;a test comment&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co"># and here we (re)join the two data sets:</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>tmp1 <span class="sc">%&gt;%</span> </span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="fu">inner_join</span>(tmp2, <span class="at">by=</span><span class="st">&quot;name&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;joined {.total}&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="138.000pt" height="220.000pt" viewBox="0 0 138.000 220.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="150.000pt" height="220.000pt" viewBox="0 0 150.000 220.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 216.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-216.4 134.2348,-216.4 134.2348,4 -4,4"></polygon>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-216.4 145.7944,-216.4 145.7944,4 -4,4"></polygon>
 <!-- 6&#45;&gt;7 -->
 <g id="edge1" class="edge">
 <title>6:s-&gt;7</title>
-<path fill="none" stroke="#000000" d="M64.7796,-41.6C64.7796,-41.6 64.7796,-28.5777 64.7796,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="66.5297,-28.5777 64.7796,-23.5777 63.0297,-28.5778 66.5297,-28.5777"></polygon>
-</g>
-<!-- 5&#45;&gt;6 -->
-<g id="edge2" class="edge">
-<title>5:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M48.0006,-105.4C48.0006,-105.4 48.0006,-92.8603 48.0006,-92.8603"></path>
-<polygon fill="#000000" stroke="#000000" points="49.7507,-92.8603 48.0006,-87.8603 46.2507,-92.8604 49.7507,-92.8603"></polygon>
+<path fill="none" stroke="#000000" d="M68.4552,-41.6C68.4552,-41.6 68.4552,-28.5777 68.4552,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="70.2053,-28.5777 68.4552,-23.5777 66.7053,-28.5778 70.2053,-28.5777"></polygon>
 </g>
 <!-- 2&#45;&gt;6 -->
 <g id="edge3" class="edge">
 <title>2:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M88.0006,-147C88.0006,-147 88.0006,-92.9921 88.0006,-92.9921"></path>
-<polygon fill="#000000" stroke="#000000" points="89.7507,-92.9921 88.0006,-87.9921 86.2507,-92.9922 89.7507,-92.9921"></polygon>
+<path fill="none" stroke="#000000" d="M43.7342,-105.4C43.7342,-105.4 43.7342,-92.8603 43.7342,-92.8603"></path>
+<polygon fill="#000000" stroke="#000000" points="45.4843,-92.8603 43.7342,-87.8603 41.9843,-92.8604 45.4843,-92.8603"></polygon>
 </g>
-<!-- 4&#45;&gt;5 -->
-<g id="edge4" class="edge">
-<title>4:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M29.9998,-147C29.9998,-147 29.9998,-134.0987 29.9998,-134.0987"></path>
-<polygon fill="#000000" stroke="#000000" points="31.7499,-134.0987 29.9998,-129.0987 28.2499,-134.0987 31.7499,-134.0987"></polygon>
+<!-- 5&#45;&gt;6 -->
+<g id="edge2" class="edge">
+<title>5:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M90.7342,-105.4C90.7342,-105.4 90.7342,-92.8603 90.7342,-92.8603"></path>
+<polygon fill="#000000" stroke="#000000" points="92.4843,-92.8603 90.7342,-87.8603 88.9843,-92.8604 92.4843,-92.8603"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
 <g id="edge6" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M100.7796,-188.6C100.7796,-188.6 100.7796,-175.6987 100.7796,-175.6987"></path>
-<polygon fill="#000000" stroke="#000000" points="102.5297,-175.6987 100.7796,-170.6987 99.0297,-175.6987 102.5297,-175.6987"></polygon>
+<path fill="none" stroke="#000000" d="M29.4552,-147C29.4552,-147 29.4552,-134.0987 29.4552,-134.0987"></path>
+<polygon fill="#000000" stroke="#000000" points="31.2053,-134.0987 29.4552,-129.0987 27.7053,-134.0987 31.2053,-134.0987"></polygon>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="edge4" class="edge">
+<title>4:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M107.4552,-147C107.4552,-147 107.4552,-134.0987 107.4552,-134.0987"></path>
+<polygon fill="#000000" stroke="#000000" points="109.2053,-134.0987 107.4552,-129.0987 105.7053,-134.0987 109.2053,-134.0987"></polygon>
 </g>
 <!-- 3&#45;&gt;4 -->
 <g id="edge5" class="edge">
 <title>3:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M28.7796,-188.6C28.7796,-188.6 28.7796,-175.6987 28.7796,-175.6987"></path>
-<polygon fill="#000000" stroke="#000000" points="30.5297,-175.6987 28.7796,-170.6987 27.0297,-175.6987 30.5297,-175.6987"></polygon>
+<path fill="none" stroke="#000000" d="M107.4552,-188.6C107.4552,-188.6 107.4552,-175.6987 107.4552,-175.6987"></path>
+<polygon fill="#000000" stroke="#000000" points="109.2053,-175.6987 107.4552,-170.6987 105.7053,-175.6987 109.2053,-175.6987"></polygon>
 </g>
 <!-- 7 -->
 <g id="node1" class="node">
 <title>7</title>
-<polygon fill="#ffffff" stroke="#000000" points="90.1837,-23.4033 39.3755,-23.4033 39.3755,-.1967 90.1837,-.1967 90.1837,-23.4033"></polygon>
-<text text-anchor="start" x="46.3276" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">joined 173</text>
+<polygon fill="#ffffff" stroke="#000000" points="93.8593,-23.4033 43.0511,-23.4033 43.0511,-.1967 93.8593,-.1967 93.8593,-23.4033"></polygon>
+<text text-anchor="start" x="50.0032" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">joined 173</text>
 </g>
 <!-- 6 -->
 <g id="node2" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="104.5743,-87.6 24.9849,-87.6 24.9849,-41.6 104.5743,-41.6 104.5743,-87.6"></polygon>
-<text text-anchor="start" x="31.8824" y="-74.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Inner join by name</text>
-<text text-anchor="start" x="31.8824" y="-66.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">87 on LHS</text>
-<text text-anchor="start" x="31.8824" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 on RHS</text>
-<text text-anchor="start" x="31.8824" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 in linked set</text>
-</g>
-<!-- 5 -->
-<g id="node3" class="node">
-<title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="70.9587,-129.0033 2.6005,-129.0033 2.6005,-105.7967 70.9587,-105.7967 70.9587,-129.0033"></polygon>
-<text text-anchor="start" x="9.4404" y="-115" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">a test comment</text>
+<polygon fill="#ffffff" stroke="#000000" points="108.2499,-87.6 28.6605,-87.6 28.6605,-41.6 108.2499,-41.6 108.2499,-87.6"></polygon>
+<text text-anchor="start" x="35.558" y="-74.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Inner join by name</text>
+<text text-anchor="start" x="35.558" y="-66.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">87 on LHS</text>
+<text text-anchor="start" x="35.558" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 on RHS</text>
+<text text-anchor="start" x="35.558" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 in linked set</text>
 </g>
 <!-- 2 -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="130.1901,-170.6033 71.3691,-170.6033 71.3691,-147.3967 130.1901,-147.3967 130.1901,-170.6033"></polygon>
-<text text-anchor="start" x="78.3244" y="-156.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">People df 87</text>
+<polygon fill="#ffffff" stroke="#000000" points="58.8657,-129.0033 .0447,-129.0033 .0447,-105.7967 58.8657,-105.7967 58.8657,-129.0033"></polygon>
+<text text-anchor="start" x="7" y="-115" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">People df 87</text>
 </g>
-<!-- 4 -->
-<g id="node5" class="node">
-<title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="57.3405,-170.6033 .2187,-170.6033 .2187,-147.3967 57.3405,-147.3967 57.3405,-170.6033"></polygon>
-<text text-anchor="start" x="7" y="-156.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Films df 173</text>
+<!-- 5 -->
+<g id="node4" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="141.6343,-129.0033 73.2761,-129.0033 73.2761,-105.7967 141.6343,-105.7967 141.6343,-129.0033"></polygon>
+<text text-anchor="start" x="80.116" y="-115" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">a test comment</text>
 </g>
 <!-- 1 -->
-<g id="node6" class="node">
+<g id="node5" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="123.0066,-212.2033 78.5526,-212.2033 78.5526,-188.9967 123.0066,-188.9967 123.0066,-212.2033"></polygon>
-<text text-anchor="start" x="85.6664" y="-198.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">87 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="51.6822,-170.6033 7.2282,-170.6033 7.2282,-147.3967 51.6822,-147.3967 51.6822,-170.6033"></polygon>
+<text text-anchor="start" x="14.342" y="-156.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">87 items</text>
+</g>
+<!-- 4 -->
+<g id="node6" class="node">
+<title>4</title>
+<polygon fill="#ffffff" stroke="#000000" points="136.0161,-170.6033 78.8943,-170.6033 78.8943,-147.3967 136.0161,-147.3967 136.0161,-170.6033"></polygon>
+<text text-anchor="start" x="85.6756" y="-156.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Films df 173</text>
 </g>
 <!-- 3 -->
 <g id="node7" class="node">
 <title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="52.9543,-212.2033 4.6049,-212.2033 4.6049,-188.9967 52.9543,-188.9967 52.9543,-212.2033"></polygon>
-<text text-anchor="start" x="11.4428" y="-198.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="131.6299,-212.2033 83.2805,-212.2033 83.2805,-188.9967 131.6299,-188.9967 131.6299,-212.2033"></polygon>
+<text text-anchor="start" x="90.1184" y="-198.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">173 items</text>
 </g>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The join message used by inner_join here is configurable but defaults to </span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># {.count.lhs} on LHS</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># {.count.rhs} on RHS</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># {.count.out} in linked set</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># The join message used by inner_join here is configurable but defaults to </span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># {.count.lhs} on LHS</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># {.count.rhs} on RHS</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># {.count.out} in linked set</span></span></code></pre></div>
 <p>All <code>dplyr</code> join types are supported by
 <code>dtrackr</code> which allows us to report on the numbers on either
 side of the join and on the resulting total. This can help detect if any
@@ -473,103 +473,103 @@ and works as expected. In this example the early part of the pipeline is
 detected to be the same on both branches of the data flow. This
 therefore results in a flow that splits then subsequently joins again
 during the union (<code>bind_rows</code>) operator.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">=</span> people <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;start&quot;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">=</span> tmp <span class="sc">%&gt;%</span> <span class="fu">include_any</span>(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Human&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} humans&quot;</span>,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Droid&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} droids&quot;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">=</span> tmp <span class="sc">%&gt;%</span> <span class="fu">include_any</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Gungan&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} gungans&quot;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;{.count} gungans&quot;</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">=</span> <span class="fu">bind_rows</span>(tmp1,tmp2) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;{.count} human,droids and gungans&quot;</span>) </span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="sc">%&gt;%</span> <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>tmp <span class="ot">=</span> people <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;start&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>tmp1 <span class="ot">=</span> tmp <span class="sc">%&gt;%</span> <span class="fu">include_any</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Human&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} humans&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Droid&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} droids&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  )</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>tmp2 <span class="ot">=</span> tmp <span class="sc">%&gt;%</span> <span class="fu">include_any</span>(</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  species <span class="sc">==</span> <span class="st">&quot;Gungan&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.included} gungans&quot;</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;{.count} gungans&quot;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>tmp3 <span class="ot">=</span> <span class="fu">bind_rows</span>(tmp1,tmp2) <span class="sc">%&gt;%</span> <span class="fu">comment</span>(<span class="st">&quot;{.count} human,droids and gungans&quot;</span>) </span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>tmp3 <span class="sc">%&gt;%</span> <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
  -->
 <!-- Title: %0 Pages: 1 -->
-<svg width="131.000pt" height="224.000pt" viewBox="0 0 131.000 224.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 220.000)">
+<svg width="130.000pt" height="233.000pt" viewBox="0 0 130.000 233.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 229.000)">
 <title>%0</title>
-<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-219.6 126.8068,-219.6 126.8068,4 -4,4"></polygon>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-229.2 126.044,-229.2 126.044,4 -4,4"></polygon>
 <!-- 5&#45;&gt;6 -->
 <g id="edge1" class="edge">
 <title>5:s-&gt;6</title>
-<path fill="none" stroke="#000000" d="M61.7848,-41.6C61.7848,-41.6 61.7848,-28.5777 61.7848,-28.5777"></path>
-<polygon fill="#000000" stroke="#000000" points="63.5349,-28.5777 61.7848,-23.5777 60.0349,-28.5778 63.5349,-28.5777"></polygon>
-</g>
-<!-- 4&#45;&gt;5 -->
-<g id="edge2" class="edge">
-<title>4:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M75.2282,-89.4C75.2282,-89.4 75.2282,-76.8477 75.2282,-76.8477"></path>
-<polygon fill="#000000" stroke="#000000" points="76.9783,-76.8477 75.2282,-71.8477 73.4783,-76.8478 76.9783,-76.8477"></polygon>
+<path fill="none" stroke="#000000" d="M61.022,-41.6C61.022,-41.6 61.022,-28.5777 61.022,-28.5777"></path>
+<polygon fill="#000000" stroke="#000000" points="62.7721,-28.5777 61.022,-23.5777 59.2721,-28.5778 62.7721,-28.5777"></polygon>
 </g>
 <!-- 2&#45;&gt;5 -->
 <g id="edge3" class="edge">
 <title>2:s-&gt;5</title>
-<path fill="none" stroke="#000000" d="M44.3954,-131.6C44.3954,-131.6 44.3954,-76.7774 44.3954,-76.7774"></path>
-<polygon fill="#000000" stroke="#000000" points="46.1455,-76.7773 44.3954,-71.7774 42.6455,-76.7774 46.1455,-76.7773"></polygon>
+<path fill="none" stroke="#000000" d="M44.6326,-90C44.6326,-90 44.6326,-76.7364 44.6326,-76.7364"></path>
+<polygon fill="#000000" stroke="#000000" points="46.3827,-76.7364 44.6326,-71.7364 42.8827,-76.7364 46.3827,-76.7364"></polygon>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="edge2" class="edge">
+<title>4:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M77.9654,-99C77.9654,-99 77.9654,-76.9074 77.9654,-76.9074"></path>
+<polygon fill="#000000" stroke="#000000" points="79.7155,-76.9073 77.9654,-71.9074 76.2155,-76.9074 79.7155,-76.9073"></polygon>
 </g>
 <!-- 3&#45;&gt;4 -->
 <g id="edge4" class="edge">
 <title>3:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M90.2848,-135.6C90.2848,-135.6 90.2848,-118.3615 90.2848,-118.3615"></path>
-<polygon fill="#000000" stroke="#000000" points="92.0349,-118.3615 90.2848,-113.3615 88.5349,-118.3615 92.0349,-118.3615"></polygon>
+<path fill="none" stroke="#000000" d="M91.522,-150C91.522,-150 91.522,-127.9132 91.522,-127.9132"></path>
+<polygon fill="#000000" stroke="#000000" points="93.2721,-127.9132 91.522,-122.9132 89.7721,-127.9132 93.2721,-127.9132"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
 <g id="edge6" class="edge">
 <title>1:s-&gt;2</title>
-<path fill="none" stroke="#000000" d="M49.288,-191.8C49.288,-191.8 49.288,-179.0351 49.288,-179.0351"></path>
-<polygon fill="#000000" stroke="#000000" points="51.0381,-179.0351 49.288,-174.0351 47.5381,-179.0351 51.0381,-179.0351"></polygon>
+<path fill="none" stroke="#000000" d="M50.5252,-201.4C50.5252,-201.4 50.5252,-137.4235 50.5252,-137.4235"></path>
+<polygon fill="#000000" stroke="#000000" points="52.2753,-137.4235 50.5252,-132.4235 48.7753,-137.4236 52.2753,-137.4235"></polygon>
 </g>
 <!-- 1&#45;&gt;3 -->
 <g id="edge5" class="edge">
 <title>1:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M70.8356,-191.8C70.8356,-191.8 70.8356,-174.4518 70.8356,-174.4518"></path>
-<polygon fill="#000000" stroke="#000000" points="72.5857,-174.4518 70.8356,-169.4518 69.0857,-174.4519 72.5857,-174.4518"></polygon>
+<path fill="none" stroke="#000000" d="M69.5728,-201.4C69.5728,-201.4 69.5728,-188.7969 69.5728,-188.7969"></path>
+<polygon fill="#000000" stroke="#000000" points="71.3229,-188.7969 69.5728,-183.7969 67.8229,-188.7969 71.3229,-188.7969"></polygon>
 </g>
 <!-- 6 -->
 <g id="node1" class="node">
 <title>6</title>
-<polygon fill="#ffffff" stroke="#000000" points="122.8288,-23.4033 .7408,-23.4033 .7408,-.1967 122.8288,-.1967 122.8288,-23.4033"></polygon>
-<text text-anchor="start" x="7.7628" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">44 human,droids and gungans</text>
+<polygon fill="#ffffff" stroke="#000000" points="122.066,-23.4033 -.022,-23.4033 -.022,-.1967 122.066,-.1967 122.066,-23.4033"></polygon>
+<text text-anchor="start" x="7" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">44 human,droids and gungans</text>
 </g>
 <!-- 5 -->
 <g id="node2" class="node">
 <title>5</title>
-<polygon fill="#ffffff" stroke="#000000" points="88.4122,-71.6 35.1574,-71.6 35.1574,-41.6 88.4122,-41.6 88.4122,-71.6"></polygon>
-<text text-anchor="start" x="42.2212" y="-58.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Union</text>
-<text text-anchor="start" x="42.2212" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">44 in union</text>
-</g>
-<!-- 4 -->
-<g id="node3" class="node">
-<title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="113.6396,-113.0033 61.93,-113.0033 61.93,-89.7967 113.6396,-89.7967 113.6396,-113.0033"></polygon>
-<text text-anchor="start" x="69.108" y="-99" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">3 gungans</text>
+<polygon fill="#ffffff" stroke="#000000" points="87.6494,-71.6 34.3946,-71.6 34.3946,-41.6 87.6494,-41.6 87.6494,-71.6"></polygon>
+<text text-anchor="start" x="41.4584" y="-58.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Union</text>
+<text text-anchor="start" x="41.4584" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">44 in union</text>
 </g>
 <!-- 2 -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>2</title>
-<polygon fill="#ffffff" stroke="#000000" points="53.3561,-173.9005 .2135,-173.9005 .2135,-131.2995 53.3561,-131.2995 53.3561,-173.9005"></polygon>
-<text text-anchor="start" x="7" y="-159.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
-<text text-anchor="start" x="7" y="-150.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">35 humans</text>
-<text text-anchor="start" x="7" y="-140.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">6 droids</text>
+<polygon fill="#ffffff" stroke="#000000" points="54.5933,-132.3005 1.4507,-132.3005 1.4507,-89.6995 54.5933,-89.6995 54.5933,-132.3005"></polygon>
+<text text-anchor="start" x="8.2372" y="-118.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
+<text text-anchor="start" x="8.2372" y="-108.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">35 humans</text>
+<text text-anchor="start" x="8.2372" y="-99" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">6 droids</text>
+</g>
+<!-- 4 -->
+<g id="node4" class="node">
+<title>4</title>
+<polygon fill="#ffffff" stroke="#000000" points="119.8768,-122.6033 68.1672,-122.6033 68.1672,-99.3967 119.8768,-99.3967 119.8768,-122.6033"></polygon>
+<text text-anchor="start" x="75.3452" y="-108.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">3 gungans</text>
 </g>
 <!-- 3 -->
 <g id="node5" class="node">
 <title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="118.6396,-169.3006 66.93,-169.3006 66.93,-135.8994 118.6396,-135.8994 118.6396,-169.3006"></polygon>
-<text text-anchor="start" x="74.108" y="-155" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
-<text text-anchor="start" x="74.108" y="-145.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">3 gungans</text>
+<polygon fill="#ffffff" stroke="#000000" points="114.8768,-183.7006 63.1672,-183.7006 63.1672,-150.2994 114.8768,-150.2994 114.8768,-183.7006"></polygon>
+<text text-anchor="start" x="70.3452" y="-169.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">inclusions:</text>
+<text text-anchor="start" x="70.3452" y="-159.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">3 gungans</text>
 </g>
 <!-- 1 -->
 <g id="node6" class="node">
 <title>1</title>
-<polygon fill="#ffffff" stroke="#000000" points="74.3449,-215.4033 45.2247,-215.4033 45.2247,-192.1967 74.3449,-192.1967 74.3449,-215.4033"></polygon>
-<text text-anchor="start" x="52.0064" y="-201.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">start</text>
+<polygon fill="#ffffff" stroke="#000000" points="75.5821,-225.0033 46.4619,-225.0033 46.4619,-201.7967 75.5821,-201.7967 75.5821,-225.0033"></polygon>
+<text text-anchor="start" x="53.2436" y="-211" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">start</text>
 </g>
 </g>
 </svg>

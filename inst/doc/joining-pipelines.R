@@ -1,12 +1,13 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
+library(dplyr)
+library(tidyr)
 library(dtrackr)
 
 ## -----------------------------------------------------------------------------
 
 # here we create a set of linked data from the starwars data
-# in a real example these data sets woudl have come from different places
+# in a real example these data sets would have come from different places
 people = starwars %>% select(-films, -vehicles, -starships)
 vehicles = starwars %>% select(name,vehicles) %>% unnest(cols = c(vehicles))
 starships = starwars %>% select(name,starships) %>% unnest(cols = c(starships))

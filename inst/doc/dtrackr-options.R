@@ -1,5 +1,5 @@
 ## ----setup, include=FALSE-----------------------------------------------------
-library(tidyverse)
+library(dplyr)
 library(dtrackr)
 
 knitr::opts_chunk$set(echo = TRUE)

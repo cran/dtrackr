@@ -1,15 +1,39 @@
 # NEWS
 
+# dtrackr 0.4.4
+
+* Support for `reframe` as alternative to `summarise` for `dplyr` 1.1.0
+* remove `tidyverse` suggests dependency.
+* TODO: (future version) exclusions in joins
+* TODO: (future version) better support for long format dataframes
+* TODO: (future version) column level tracking (prototyped in 0.2.5)
+
+# dtrackr 0.4.3
+
+* fixed warnings caused by additional deprecated dplyr functions.
+* More informative messages when syntactic errors in `exclude_all` and `include_any` input
+* fixed regression bug in `pivot_wider`
+* documentation updates.
+* improved ranking of nodes and branching in groups.
+
+# dtrackr 0.4.2
+
+* updates to remove deprecation warnings from `dplyr` 1.1.0
+* change to information warnings switched off by default.
+* auto resume paused tracking of dataframes
+
+# dtrackr 0.4.1
+
+* Regression bug fix in group by that results in multiple group by nodes.
+* improved testing of `group_by` functions
+* removal of extraneous ungroup node when rearranging grouping structure.
+
 # dtrackr 0.4.0
 
-* Updating release following `dplyr` version 1.1.0 an changes in new versions of
-`tidyr`
+* Updating release following `dplyr` version 1.1.0 an changes in new versions of `tidyr`
 * More use of @inheritDotParams to decouple from upstream APIs
 * fix for #33
 * Fix for RSVG scaling inconsistency / rotation issues.
-* TODO: (next version) exclusions in joins
-* TODO: (next version) better support for long format tables
-* TODO: (future version) column level tracking (prototyped in 0.2.5)
 
 # dtrackr 0.3.0
 

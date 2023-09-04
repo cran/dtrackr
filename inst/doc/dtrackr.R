@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 
 ## ----setup--------------------------------------------------------------------
 # devtools::load_all()
-library(tidyverse)
+library(dplyr)
 library(dtrackr)
 
 
@@ -54,7 +54,7 @@ iris %>%
 
 
 ## -----------------------------------------------------------------------------
-diamonds %>%
+ggplot2::diamonds %>%
   track() %>%
   group_by(cut) %>%
   count_subgroup(

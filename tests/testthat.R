@@ -1,5 +1,6 @@
 library(testthat)
-library(tidyverse)
+library(dplyr)
 library(dtrackr)
 
 test_check("dtrackr")
+

@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 
 here::i_am("vignettes/consort-example.Rmd")
 
-library(tidyverse)
+library(dplyr)
 library(dtrackr)
 
 ## -----------------------------------------------------------------------------
@@ -150,7 +150,7 @@ age_restrict = function(df, age_col, min_age = 18, max_age = 65) {
 }
 
 survival::cgd %>% 
-  # the `age` column is in 
+  # the `age` column is in the cgd dataset: 
   age_restrict(age, max_age = 30) %>%
   # demonstrating that this works in 2 stages
   age_restrict(age, min_age = 20) %>% 
