@@ -21,6 +21,29 @@ The value can be:
 if ungrouped).
 \item \code{NULL}, to remove the column.
 \item A data frame or tibble, to create multiple columns in the output.
+}
+  Named arguments passed on to \code{\link[dplyr:mutate]{dplyr::mutate}}\describe{
+    \item{\code{.by}}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
+<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, a selection of columns to
+group by for just this operation, functioning as an alternative to \code{\link[dplyr:group_by]{group_by()}}. For
+details and examples, see \link[dplyr:dplyr_by]{?dplyr_by}.}
+\item{\code{.keep}}{Control which columns from \code{.data} are retained in the output. Grouping
+columns and columns created by \code{...} are always kept.
+\itemize{
+\item \code{"all"} retains all columns from \code{.data}. This is the default.
+\item \code{"used"} retains only the columns used in \code{...} to create new
+columns. This is useful for checking your work, as it displays inputs
+and outputs side-by-side.
+\item \code{"unused"} retains only the columns \emph{not} used in \code{...} to create new
+columns. This is useful if you generate new columns, but no longer need
+the columns used to generate them.
+\item \code{"none"} doesn't retain any extra columns from \code{.data}. Only the grouping
+variables and columns created by \code{...} are kept.
+}}
+\item{\code{.before,.after}}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, control where new columns
+should appear (the default is to add to the right hand side). See
+\code{\link[dplyr:relocate]{relocate()}} for more details.}
 }}
 
 \item{.messages}{a set of glue specs. The glue code can use any global
@@ -35,19 +58,20 @@ Defaults to nothing.}
 give it a name with .tag.}
 }
 \value{
-the .data dataframe after being modified by the \code{dplyr} equivalent
+the \code{.data} dataframe after being modified by the \code{dplyr} equivalent
 function, but with the history graph updated with a new stage if the
 \code{.messages} or \code{.headline} parameter is not empty.
 }
 \description{
-Equivalent \code{dplyr} functions for mutating, selecting and renaming a data set
-act in the normal way. mutates / selects / rename generally don't add
-anything in documentation so the default behaviour is to miss these out of
-the history. This can be overridden with the .messages, or .headline values
-in which case they behave just like a \code{comment()} See \code{\link[dplyr:mutate]{dplyr::mutate()}},
-\code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}}, \code{\link[dplyr:transmute]{dplyr::transmute()}},
-\code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}}, \code{\link[dplyr:rename]{dplyr::rename()}}
-\code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details.
+See \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}},
+\code{\link[dplyr:transmute]{dplyr::transmute()}}, \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}},
+\code{\link[dplyr:rename]{dplyr::rename()}} \code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details
+on underlying functions. \code{dtrackr} provides equivalent functions for
+mutating, selecting and renaming a data set which act in the same way as
+\code{dplyr}. \code{mutate} / \code{select} / \code{rename} generally don't add anything in terms
+of provenance of data so the default behaviour is to miss these out of the
+\code{dtrackr} history. This can be overridden with the \code{.messages}, or
+\code{.headline} values in which case they behave just like a \code{comment()}.
 }
 \examples{
 library(dplyr)

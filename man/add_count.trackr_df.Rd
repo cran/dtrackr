@@ -10,16 +10,29 @@
 \item{x}{A data frame, data frame extension (e.g. a tibble), or a
 lazy data frame (e.g. from dbplyr or dtplyr).}
 
-\item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Name-value pairs.
-The name gives the name of the column in the output.
-
-The value can be:
+\item{...}{<\code{\link[rlang:args_data_masking]{data-masking}}> Variables to group
+by.
+  Named arguments passed on to \code{\link[dplyr:count]{dplyr::add_count}}\describe{
+    \item{\code{wt}}{<\code{\link[rlang:args_data_masking]{data-masking}}> Frequency weights.
+Can be \code{NULL} or a variable:
 \itemize{
-\item A vector of length 1, which will be recycled to the correct length.
-\item A vector the same length as the current group (or the whole data frame
-if ungrouped).
-\item \code{NULL}, to remove the column.
-\item A data frame or tibble, to create multiple columns in the output.
+\item If \code{NULL} (the default), counts the number of rows in each group.
+\item If a variable, computes \code{sum(wt)} for each group.
+}}
+\item{\code{sort}}{If \code{TRUE}, will show the largest groups at the top.}
+\item{\code{name}}{The name of the new column in the output.
+
+If omitted, it will default to \code{n}. If there's already a column called \code{n},
+it will use \code{nn}. If there's a column called \code{n} and \code{nn}, it'll use
+\code{nnn}, and so on, adding \code{n}s until it gets a new name.}
+\item{\code{.drop}}{Handling of factor levels that don't appear in the data, passed
+on to \code{\link[dplyr:group_by]{group_by()}}.
+
+For \code{count()}: if \code{FALSE} will include counts for empty groups (i.e. for
+levels of factors that don't exist in the data).
+
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} For \code{add_count()}: deprecated since it
+can't actually affect the output.}
 }}
 
 \item{.messages}{a set of glue specs. The glue code can use any global
@@ -34,19 +47,20 @@ Defaults to nothing.}
 give it a name with .tag.}
 }
 \value{
-the .data dataframe after being modified by the \code{dplyr} equivalent
+the \code{.data} dataframe after being modified by the \code{dplyr} equivalent
 function, but with the history graph updated with a new stage if the
 \code{.messages} or \code{.headline} parameter is not empty.
 }
 \description{
-Equivalent \code{dplyr} functions for mutating, selecting and renaming a data set
-act in the normal way. mutates / selects / rename generally don't add
-anything in documentation so the default behaviour is to miss these out of
-the history. This can be overridden with the .messages, or .headline values
-in which case they behave just like a \code{comment()} See \code{\link[dplyr:mutate]{dplyr::mutate()}},
-\code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}}, \code{\link[dplyr:transmute]{dplyr::transmute()}},
-\code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}}, \code{\link[dplyr:rename]{dplyr::rename()}}
-\code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details.
+See \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}},
+\code{\link[dplyr:transmute]{dplyr::transmute()}}, \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}},
+\code{\link[dplyr:rename]{dplyr::rename()}} \code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details
+on underlying functions. \code{dtrackr} provides equivalent functions for
+mutating, selecting and renaming a data set which act in the same way as
+\code{dplyr}. \code{mutate} / \code{select} / \code{rename} generally don't add anything in terms
+of provenance of data so the default behaviour is to miss these out of the
+\code{dtrackr} history. This can be overridden with the \code{.messages}, or
+\code{.headline} values in which case they behave just like a \code{comment()}.
 }
 \examples{
 library(dplyr)

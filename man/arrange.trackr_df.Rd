@@ -21,6 +21,27 @@ The value can be:
 if ungrouped).
 \item \code{NULL}, to remove the column.
 \item A data frame or tibble, to create multiple columns in the output.
+}
+  Named arguments passed on to \code{\link[dplyr:arrange]{dplyr::arrange}}\describe{
+    \item{\code{.by_group}}{If \code{TRUE}, will sort first by grouping variable. Applies to
+grouped data frames only.}
+\item{\code{.locale}}{The locale to sort character vectors in.
+\itemize{
+\item If \code{NULL}, the default, uses the \code{"C"} locale unless the
+\code{dplyr.legacy_locale} global option escape hatch is active. See the
+\link[dplyr]{dplyr-locale} help page for more details.
+\item If a single string from \code{\link[stringi:stri_locale_list]{stringi::stri_locale_list()}} is supplied, then
+this will be used as the locale to sort with. For example, \code{"en"} will
+sort with the American English locale. This requires the stringi package.
+\item If \code{"C"} is supplied, then character vectors will always be sorted in the
+C locale. This does not require stringi and is often much faster than
+supplying a locale identifier.
+}
+
+The C locale is not the same as English locales, such as \code{"en"},
+particularly when it comes to data containing a mix of upper and lower case
+letters. This is explained in more detail on the \link[dplyr:dplyr-locale]{locale}
+help page under the \verb{Default locale} section.}
 }}
 
 \item{.messages}{a set of glue specs. The glue code can use any global
@@ -35,19 +56,20 @@ Defaults to nothing.}
 give it a name with .tag.}
 }
 \value{
-the .data dataframe after being modified by the \code{dplyr} equivalent
+the \code{.data} dataframe after being modified by the \code{dplyr} equivalent
 function, but with the history graph updated with a new stage if the
 \code{.messages} or \code{.headline} parameter is not empty.
 }
 \description{
-Equivalent \code{dplyr} functions for mutating, selecting and renaming a data set
-act in the normal way. mutates / selects / rename generally don't add
-anything in documentation so the default behaviour is to miss these out of
-the history. This can be overridden with the .messages, or .headline values
-in which case they behave just like a \code{comment()} See \code{\link[dplyr:mutate]{dplyr::mutate()}},
-\code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}}, \code{\link[dplyr:transmute]{dplyr::transmute()}},
-\code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}}, \code{\link[dplyr:rename]{dplyr::rename()}}
-\code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details.
+See \code{\link[dplyr:mutate]{dplyr::mutate()}}, \code{\link[dplyr:count]{dplyr::add_count()}}, \code{\link[dplyr:count]{dplyr::add_tally()}},
+\code{\link[dplyr:transmute]{dplyr::transmute()}}, \code{\link[dplyr:select]{dplyr::select()}}, \code{\link[dplyr:relocate]{dplyr::relocate()}},
+\code{\link[dplyr:rename]{dplyr::rename()}} \code{\link[dplyr:rename]{dplyr::rename_with()}}, \code{\link[dplyr:arrange]{dplyr::arrange()}} for more details
+on underlying functions. \code{dtrackr} provides equivalent functions for
+mutating, selecting and renaming a data set which act in the same way as
+\code{dplyr}. \code{mutate} / \code{select} / \code{rename} generally don't add anything in terms
+of provenance of data so the default behaviour is to miss these out of the
+\code{dtrackr} history. This can be overridden with the \code{.messages}, or
+\code{.headline} values in which case they behave just like a \code{comment()}.
 }
 \examples{
 library(dplyr)
