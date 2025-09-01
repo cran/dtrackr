@@ -710,14 +710,14 @@ metadata for later reuse.</p>
 tagged data for all 4 points in the pipeline:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>() <span class="sc">%&gt;%</span> tidyr<span class="sc">::</span><span class="fu">unnest</span>(.content)</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 7</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt;   .tag                .count .total .strata        treat mean_height mean_weight</span></span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                &lt;int&gt;  &lt;int&gt; &lt;chr&gt;          &lt;fct&gt; &lt;chr&gt;       &lt;chr&gt;      </span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort         128    128 &quot;&quot;             &lt;NA&gt;  &lt;NA&gt;        &lt;NA&gt;       </span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 2 study cohort            43     89 &quot;treat:placeb… plac… &lt;NA&gt;        &lt;NA&gt;       </span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 3 study cohort            46     89 &quot;treat:rIFN-g&quot; rIFN… &lt;NA&gt;        &lt;NA&gt;       </span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients     36     74 &quot;treat:placeb… plac… 145.58 ± 2… 45.46 ± 23…</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients     38     74 &quot;treat:rIFN-g&quot; rIFN… 143.14 ± 2… 40.70 ± 20…</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 6 final set               74     74 &quot;&quot;             &lt;NA&gt;  &lt;NA&gt;        &lt;NA&gt;</span></span></code></pre></div>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt;   .tag                .count .total .strata   treat   mean_height    mean_weight</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                &lt;int&gt;  &lt;int&gt; &lt;chr&gt;     &lt;fct&gt;   &lt;chr&gt;          &lt;chr&gt;      </span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort         128    128 &quot;&quot;        &lt;NA&gt;    &lt;NA&gt;           &lt;NA&gt;       </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; 2 study cohort            43     89 &quot;placebo&quot; placebo &lt;NA&gt;           &lt;NA&gt;       </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; 3 study cohort            46     89 &quot;rIFN-g&quot;  rIFN-g  &lt;NA&gt;           &lt;NA&gt;       </span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients     36     74 &quot;placebo&quot; placebo 145.58 ± 29.10 45.46 ± 23…</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients     38     74 &quot;rIFN-g&quot;  rIFN-g  143.14 ± 25.12 40.70 ± 20…</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 6 final set               74     74 &quot;&quot;        &lt;NA&gt;    &lt;NA&gt;           &lt;NA&gt;</span></span></code></pre></div>
 <p>More often though you will want to retrieve specific values from
 specific points for the results text for example:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>initialSet <span class="ot">=</span> demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(<span class="at">.tag =</span> <span class="st">&quot;initial cohort&quot;</span>, <span class="at">.glue =</span> <span class="st">&quot;{.count} patients&quot;</span>)</span>
@@ -736,8 +736,8 @@ analysis.</p>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="at">sysDate =</span> <span class="fu">Sys.Date</span>()</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    <span class="co"># we could have included any number of other parameters here from the global environment</span></span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">pull</span>(.label)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; treat:placebo: 36/74 (48.6%) patients on 2024-10-21, with a mean height of 145.58 ± 29.10</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; treat:rIFN-g: 38/74 (51.4%) patients on 2024-10-21, with a mean height of 143.14 ± 25.12</span></span></code></pre></div>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; placebo: 36/74 (48.6%) patients on 2025-09-01, with a mean height of 145.58 ± 29.10</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; rIFN-g: 38/74 (51.4%) patients on 2025-09-01, with a mean height of 143.14 ± 25.12</span></span></code></pre></div>
 <p>Sometimes it will be necessary to operate on all tagged content at
 once. This is possible but be aware that the content available depends
 somewhat on where the tag was set in the pipeline so not all fields will
@@ -747,14 +747,14 @@ point in the pipeline. <code>.count</code> is the number of cases in
 each strata.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> <span class="fu">tagged</span>(<span class="at">.glue =</span> <span class="st">&quot;{.count}/{.total} patients&quot;</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   .tag                .strata         .label          </span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;           &lt;glue&gt;          </span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort      &quot;&quot;              128/128 patients</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 2 study cohort        &quot;treat:placebo&quot; 43/89 patients  </span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 3 study cohort        &quot;treat:rIFN-g&quot;  46/89 patients  </span></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients &quot;treat:placebo&quot; 36/74 patients  </span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients &quot;treat:rIFN-g&quot;  38/74 patients  </span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 6 final set           &quot;&quot;              74/74 patients</span></span></code></pre></div>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;   .tag                .strata   .label          </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;     &lt;glue&gt;          </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 1 initial cohort      &quot;&quot;        128/128 patients</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 2 study cohort        &quot;placebo&quot; 43/89 patients  </span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 3 study cohort        &quot;rIFN-g&quot;  46/89 patients  </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 4 qualifying patients &quot;placebo&quot; 36/74 patients  </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 5 qualifying patients &quot;rIFN-g&quot;  38/74 patients  </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; 6 final set           &quot;&quot;        74/74 patients</span></span></code></pre></div>
 <p>For comparing inclusions and exclusions at different stages in the
 pipeline using tags the following example may be useful:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>demo_data <span class="sc">%&gt;%</span> </span>

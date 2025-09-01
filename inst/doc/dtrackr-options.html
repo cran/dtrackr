@@ -344,32 +344,57 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1>Global configuration</h1>
 <p>Most of the behaviour of <code>dtrackr</code> can be specified at the
 individual call level using the <code>.headline</code> and
-<code>.messages</code> glue specifications to define a format. Sometimes
+<code>.messages</code> glue specifications to define a format, or as an
+option for <code>flowchart()</code> to define formatting. Sometimes
 however this is annoying to do for all the stages in a flow chart and a
 global configuration of behaviour is desirable.</p>
+</div>
+<div id="formatting-options" class="section level1">
+<h1>Formatting options</h1>
+<p>Setting the following global options will override the defaults for
+all future flowcharts. These settings are applied when the data is
+rendered so can be changed after the pipeline has executed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">options</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="at">dtrackr.fontname =</span> <span class="st">&quot;Calibri&quot;</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">dtrackr.fontsize =</span> <span class="dv">12</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">dtrackr.colour =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">dtrackr.fill =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">dtrackr.rounded =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="at">dtrackr.direction =</span> <span class="st">&quot;LR&quot;</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="at">dtrackr.bgcolour =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<p>Any normal R colours can be used including <code>transparent</code>
+or the colours can be specified in hex.</p>
+</div>
+<div id="recording-options" class="section level1">
+<h1>Recording options</h1>
+<p>These options are applied as the data is being processed through a
+pipeline. They can’t be changed retrospectively without re-running the
+pipeline.</p>
 <div id="naming-conventions-for-groups" class="section level2">
 <h2>Naming conventions for groups</h2>
 <p>One of the areas where default behaviour may be undesirable is the
 naming of groups. The default setting combines the group name
 <code>{.group}</code> and the group value <code>{.value}</code> into a
 concatenated colon separated string as demonstrated below:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># these are the defaults</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{.group}:{.value}&quot;</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;; &quot;</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>)</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="fu">group_by</span>(treat) <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,<span class="at">.add =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># these are the defaults</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{.group}:{.value}&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;; &quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="fu">group_by</span>(treat) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,<span class="at">.add =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -536,8 +561,8 @@ concatenated colon separated string as demonstrated below:</p>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># reset options </span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 <p>In particular in situations like this where you are faceting on
 factors or strings, disposing of the group name may make this clearer.
 In the following example we only include the group value, force it to
@@ -545,26 +570,26 @@ lower case, and use a comma to separate multiple facets. We have used
 manual override of the messages in the grouping stages, by providing a
 <code>.messages</code> parameter, to specify what we are faceting by in
 a more natural way:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># only include the group value in the description of the group</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by {tolower(.cols)}&quot;</span> <span class="co">#.cols contains a csv string of the grouping variables</span></span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># only include the group value in the description of the group</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="fu">group_by</span>(treat, <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="fu">group_by</span>(sex,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by {tolower(.cols)}&quot;</span> <span class="co">#.cols contains a csv string of the grouping variables</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -731,8 +756,8 @@ a more natural way:</p>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># reset options </span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 <p>N.B. this setting affects the “strata” label of the group, which in
 turn affects the flowchart branching. If this is not unique from one
 group to another strange behaviours will be observed.</p>
@@ -743,31 +768,31 @@ group to another strange behaviours will be observed.</p>
 the flowchart above the “583 items” labels are generated by the default
 message setting, and the headings for the groups by the default headline
 setting. In this example we change these to alter the default text.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">dtrackr.default_message =</span> <span class="st">&quot;containing {.count} patients&quot;</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;subgroup: {.strata}&quot;</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>)</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    treat,</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>    sex,</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by gender&quot;</span></span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
-<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
-<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">dtrackr.strata_glue=</span><span class="st">&quot;{tolower(.value)}&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">dtrackr.strata_sep=</span><span class="st">&quot;, &quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">dtrackr.default_message =</span> <span class="st">&quot;containing {.count} patients&quot;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;subgroup: {.strata}&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    treat,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>    sex,</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>    <span class="at">.add =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;by gender&quot;</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="fu">comment</span>(</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="fu">c</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>    <span class="st">&quot;{.count} patients&quot;</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>    <span class="st">&quot;{sprintf(&#39;%1.0f&#39;,.count/.total*100)}% of the total&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -936,37 +961,39 @@ setting. In this example we change these to alter the default text.</p>
 </g>
 </svg>
 
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># N.b. this setting includes some unwanted headlines in the ungrouped stages of</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># the flow chart. If a headline evaluates to &quot;&quot; then the headline is suppressed</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># and we can get rid of unwanted headlines. An example of doing this is as</span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># follows:</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co"># options(dtrackr.default_headline = &quot;{ifelse(.strata != &#39;&#39;, glue::glue(&#39;subgroup: {.strata}&#39;), &#39;&#39;)}&quot;)</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co"># reset options </span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># N.b. this setting includes some unwanted headlines in the ungrouped stages of</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># the flow chart. If a headline evaluates to &quot;&quot; then the headline is suppressed</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co"># and we can get rid of unwanted headlines. An example of doing this is as</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># follows:</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># options(dtrackr.default_headline = &quot;{ifelse(.strata != &#39;&#39;, glue::glue(&#39;subgroup: {.strata}&#39;), &#39;&#39;)}&quot;)</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 </div>
 <div id="subgroup-count" class="section level2">
 <h2>Subgroup count</h2>
 <p>Subgroup counts are a slightly neater way of doing this. Their
 default layout can be modified using
 <code>dtrackr.default_count_subgroup</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;{.strata}&quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">dtrackr.default_count_subgroup =</span> <span class="st">&quot;{tolower(.name)}: {.count}/{.subtotal}&quot;</span></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    treat,</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="fu">count_subgroup</span>(</span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>    sex</span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">dtrackr.default_headline =</span> <span class="st">&quot;{.strata}&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">dtrackr.default_count_subgroup =</span> <span class="st">&quot;{tolower(.name)}: {.count}/{.subtotal}&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>surv_ex <span class="ot">=</span> survival<span class="sc">::</span>cgd <span class="sc">%&gt;%</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="fu">group_by</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    treat,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="at">.messages =</span> <span class="st">&quot;case or control&quot;</span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="fu">comment</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="fu">count_subgroup</span>(</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>    sex</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  <span class="fu">ungroup</span>() </span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>surv_ex <span class="sc">%&gt;%</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.40.1 (20161225.0304)
@@ -1003,14 +1030,14 @@ default layout can be modified using
 <!-- 2&#45;&gt;3 -->
 <g id="edge6" class="edge">
 <title>2:s-&gt;3</title>
-<path fill="none" stroke="#000000" d="M51.4004,-145.4C51.4004,-145.4 51.4004,-132.8477 51.4004,-132.8477" />
-<polygon fill="#000000" stroke="#000000" points="53.1505,-132.8477 51.4004,-127.8477 49.6505,-132.8478 53.1505,-132.8477"></polygon>
+<path fill="none" stroke="#000000" d="M48.5092,-145.4C48.5092,-145.4 48.5092,-132.8477 48.5092,-132.8477" />
+<polygon fill="#000000" stroke="#000000" points="50.2593,-132.8477 48.5092,-127.8477 46.7593,-132.8478 50.2593,-132.8477"></polygon>
 </g>
 <!-- 2&#45;&gt;4 -->
 <g id="edge5" class="edge">
 <title>2:s-&gt;4</title>
-<path fill="none" stroke="#000000" d="M95.3464,-145.4C95.3464,-145.4 95.3464,-132.8477 95.3464,-132.8477" />
-<polygon fill="#000000" stroke="#000000" points="97.0965,-132.8477 95.3464,-127.8477 93.5965,-132.8478 97.0965,-132.8477"></polygon>
+<path fill="none" stroke="#000000" d="M98.0114,-145.4C98.0114,-145.4 98.0114,-132.8477 98.0114,-132.8477" />
+<polygon fill="#000000" stroke="#000000" points="99.7615,-132.8477 98.0114,-127.8477 96.2615,-132.8478 99.7615,-132.8477"></polygon>
 </g>
 <!-- 1&#45;&gt;2 -->
 <g id="edge7" class="edge">
@@ -1028,7 +1055,7 @@ default layout can be modified using
 <g id="node2" class="node">
 <title>5</title>
 <polygon fill="#ffffff" stroke="#000000" points="66.8633,-79.6 .0455,-79.6 .0455,-41.6 66.8633,-41.6 66.8633,-79.6"></polygon>
-<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo</text>
+<text text-anchor="start" x="7" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
 <text text-anchor="start" x="7" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 100/120</text>
 <text text-anchor="start" x="7" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 20/120</text>
 </g>
@@ -1036,23 +1063,23 @@ default layout can be modified using
 <g id="node3" class="node">
 <title>6</title>
 <polygon fill="#ffffff" stroke="#000000" points="143.9177,-79.6 80.9911,-79.6 80.9911,-41.6 143.9177,-41.6 143.9177,-79.6"></polygon>
-<text text-anchor="start" x="88.2236" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g</text>
+<text text-anchor="start" x="88.2236" y="-66.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rIFN-g</text>
 <text text-anchor="start" x="88.2236" y="-58.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">male: 68/83</text>
 <text text-anchor="start" x="88.2236" y="-50.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">female: 15/83</text>
 </g>
 <!-- 3 -->
 <g id="node4" class="node">
 <title>3</title>
-<polygon fill="#ffffff" stroke="#000000" points="63.6933,-127.6 3.2155,-127.6 3.2155,-97.6 63.6933,-97.6 63.6933,-127.6"></polygon>
-<text text-anchor="start" x="10.3352" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:placebo</text>
-<text text-anchor="start" x="10.3352" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">120 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="57.6291,-127.6 9.2797,-127.6 9.2797,-97.6 57.6291,-97.6 57.6291,-127.6"></polygon>
+<text text-anchor="start" x="16.1176" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">placebo</text>
+<text text-anchor="start" x="16.1176" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">120 items</text>
 </g>
 <!-- 4 -->
 <g id="node5" class="node">
 <title>4</title>
-<polygon fill="#ffffff" stroke="#000000" points="139.8409,-127.6 85.0679,-127.6 85.0679,-97.6 139.8409,-97.6 139.8409,-127.6"></polygon>
-<text text-anchor="start" x="92.0112" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">treat:rIFN-g</text>
-<text text-anchor="start" x="92.0112" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">83 items</text>
+<polygon fill="#ffffff" stroke="#000000" points="134.6814,-127.6 90.2274,-127.6 90.2274,-97.6 134.6814,-97.6 134.6814,-127.6"></polygon>
+<text text-anchor="start" x="97.3412" y="-114.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">rIFN-g</text>
+<text text-anchor="start" x="97.3412" y="-106.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">83 items</text>
 </g>
 <!-- 2 -->
 <g id="node6" class="node">
@@ -1069,8 +1096,8 @@ default layout can be modified using
 </g>
 </svg>
 
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># reset options </span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># reset options </span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
 </div>
 <div id="exclusions" class="section level2">
 <h2>Exclusions</h2>
@@ -1079,7 +1106,7 @@ debugging. This behaviour can be added to any pipeline with the
 <code>capture_exclusions()</code> function. Alternatively it can be
 globally enabled with the following option. Usual caveats about
 performance apply.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.exclusions=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.exclusions=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="reporting-exclusions-which-do-nothing" class="section level2">
 <h2>Reporting exclusions which do nothing</h2>
@@ -1088,7 +1115,7 @@ triggered, or is not triggered for a particular subgroup. In this case
 the default is not to show the zero items that were excluded. However
 sometimes it is reassuring to know that an filter was applied even if it
 results in nothing:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.show_zero_exclusions=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.show_zero_exclusions=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="maximum-groupings" class="section level2">
 <h2>Maximum groupings</h2>
@@ -1104,14 +1131,33 @@ data is quickly ungrouped (e.g.
 <code>timeseries %&gt;% group_by(date) %&gt;% summarise(count = n())</code>).
 The most number of groups that <code>dtrackr</code> will attempt to keep
 track of is configurable but defaults to 16:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.max_supported_groupings =</span> <span class="dv">16</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.max_supported_groupings =</span> <span class="dv">16</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.hidden_steps =</span> <span class="st">&quot;&lt; hidden steps &gt;&quot;</span>)</span></code></pre></div>
+<!-- N.B. the need to do grouping for fine scale filtering is somewhat mitigated by -->
+<!-- the `dplyr` functions `.by` parameter. If this is used rather than a `group_by` -->
+<!-- then the behaviour is not tracked by group. This results in a more natural  -->
+<!-- history graph and flowchart. In this case `group_by` is reserved for major  -->
+<!-- groupings only. -->
+<!-- ```{r} -->
+<!-- ggplot2::diamonds %>%  -->
+<!--   track() %>% -->
+<!--   group_by(cut) %>% -->
+<!--   # count_subgroup(.subgroup = color) %>% -->
+<!--   status(av = mean(price), color=first(color), .by=color, .messages = "{sprintf('%1.0f',av)}: {color}") %>% -->
+<!--   flowchart() -->
+<!--   # exclude_all( -->
+<!--   #   mean(price) <  -->
+<!--   #   .by = color -->
+<!--   # ) -->
+<!--   # glimpse() -->
+<!-- ``` -->
 </div>
 <div id="verbose-output" class="section level2">
 <h2>Verbose output</h2>
 <p>Various messages about what <code>dtrackr</code> is doing are
 produced but suppressed by default. They can be enabled with the
 following flag.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.verbose=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.verbose=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 </div>
 

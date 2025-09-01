@@ -157,6 +157,15 @@ tmp %>% excluded()
 
 
 ## -----------------------------------------------------------------------------
+tmp %>% flowchart(
+  fill = "blue", rounded=TRUE, fontname="Calibri", 
+  rankdir = "LR", fontsize = 10, colour = "white", bgcolour="grey10")
+
+## -----------------------------------------------------------------------------
+# Grab the dot source, for manual editing:
+cat(tmp %>% p_get_as_dot())
+
+## -----------------------------------------------------------------------------
 tmp2 = tmp %>% p_get()
 
 # the nodes, .id is a graph unique identifier
@@ -164,7 +173,4 @@ tmp2$nodes %>% glimpse()
 
 # the edges, .to and .from are foreign keys for .id
 tmp2$edges %>% glimpse()
-
-## -----------------------------------------------------------------------------
-cat(tmp %>% p_get_as_dot())
 

@@ -7,8 +7,8 @@
 p_slice_sample(
   .data,
   ...,
-  .messages = c("{.count.in} before", "{.count.out} after"),
-  .headline = "slice data"
+  .messages = c("subset data", "{.count.in} before", "{.count.out} after"),
+  .headline = .defaultHeadline()
 )
 }
 \arguments{
@@ -93,5 +93,5 @@ iris \%>\%
   history()
 }
 \seealso{
-dplyr::slice_sample()
+\code{\link[dplyr:slice]{dplyr::slice_sample()}}
 }

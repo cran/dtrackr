@@ -7,8 +7,8 @@
 p_slice_max(
   .data,
   ...,
-  .messages = c("{.count.in} before", "{.count.out} after"),
-  .headline = "slice data"
+  .messages = c("subset data", "{.count.in} before", "{.count.out} after"),
+  .headline = .defaultHeadline()
 )
 }
 \arguments{
@@ -104,5 +104,5 @@ iris \%>\%
 
 }
 \seealso{
-dplyr::slice_max()
+\code{\link[dplyr:slice]{dplyr::slice_max()}}
 }

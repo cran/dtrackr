@@ -40,9 +40,9 @@ See \code{\link[dplyr:group_by]{dplyr::ungroup()}}.
 library(dplyr)
 library(dtrackr)
 
-tmp = iris \%>\% group_by(Species) \%>\% comment("A test")
-tmp \%>\% ungroup(.messages="{.count} items in combined") \%>\% history()
+tmp = iris \%>\% dplyr::group_by(Species) \%>\% comment("A test")
+tmp \%>\% dplyr::ungroup(.messages="{.count} items in combined") \%>\% history()
 }
 \seealso{
-dplyr::ungroup()
+\code{\link[dplyr:group_by]{dplyr::ungroup()}}
 }

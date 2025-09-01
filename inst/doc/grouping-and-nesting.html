@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>dtrackr - Grouping, Nesting and Long format data</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">dtrackr - Grouping, Nesting and Long format
+data</h1>
+
+
+
+<div id="long-format-data" class="section level2">
+<h2>Long format data</h2>
+<p><code>dtrackr</code> assumes a tidy data paradigm where one row of
+data is relevant to one logical entity, whether it be cars, irises,
+diamonds, or anything else. This is not always the case, if for example
+the data you are processing comes from a join of data sets. Here we
+simulate a set of patients, test samples, and test results in a
+hypothetical trial:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>age_cats <span class="ot">=</span> <span class="fu">factor</span>(<span class="fu">sprintf</span>(<span class="st">&quot;%02d-%02d&quot;</span>,<span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">80</span>,<span class="dv">5</span>),<span class="fu">seq</span>(<span class="dv">4</span>,<span class="dv">84</span>,<span class="dv">5</span>)))</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># A set of synthetic patients:</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>patients <span class="ot">=</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">patient_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">age_category =</span> <span class="fu">sample</span>(age_cats,<span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="at">ethnicity =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  <span class="at">gender =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;Male&quot;</span>,<span class="st">&quot;Female&quot;</span>), <span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>),</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;Cases&quot;</span>,<span class="st">&quot;Controls&quot;</span>), <span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>) </span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># each patient is going to have a random selection of tests</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>tests <span class="ot">=</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="at">test_id =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="at">patient_id =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,<span class="dv">1000</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="at">test_type =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;FBC&quot;</span>,<span class="st">&quot;LFT&quot;</span>,<span class="st">&quot;Electrolytes&quot;</span>), <span class="dv">1000</span>, <span class="at">replace=</span><span class="cn">TRUE</span>),</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="at">test_date =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-01-01&quot;</span>)<span class="sc">+</span><span class="fu">sample.int</span>(<span class="dv">50</span>, <span class="dv">1000</span>, <span class="at">replace=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>)</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co"># and each test a random selection of results consisting of components and</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co"># values:</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>tests <span class="ot">=</span> tests <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>  <span class="at">result =</span> purrr<span class="sc">::</span><span class="fu">map</span>(test_type, <span class="sc">~</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>    .x <span class="sc">==</span> <span class="st">&quot;FBC&quot;</span> <span class="sc">~</span> <span class="fu">list</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>      <span class="at">component =</span> <span class="fu">c</span>(<span class="st">&quot;HB&quot;</span>,<span class="st">&quot;platelets&quot;</span>,<span class="st">&quot;WCC&quot;</span>),</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>      <span class="at">value =</span> <span class="fu">c</span>( <span class="fu">runif</span>(<span class="dv">1</span>,<span class="fl">13.5</span>,<span class="dv">15</span>), <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">100</span>,<span class="dv">1000</span>), <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">30</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>    )),</span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>    .x <span class="sc">==</span> <span class="st">&quot;LFT&quot;</span> <span class="sc">~</span> <span class="fu">list</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>      <span class="at">component =</span> <span class="fu">c</span>(<span class="st">&quot;AST&quot;</span>,<span class="st">&quot;GGT&quot;</span>),</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>      <span class="at">value =</span> <span class="fu">c</span>( <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">100</span>), <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">100</span>))</span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>    )),</span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>    .x <span class="sc">==</span> <span class="st">&quot;Electrolytes&quot;</span> <span class="sc">~</span> <span class="fu">list</span>(tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>      <span class="at">component =</span> <span class="fu">c</span>(<span class="st">&quot;NA&quot;</span>,<span class="st">&quot;K&quot;</span>,<span class="st">&quot;Glucose&quot;</span>),</span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>      <span class="at">value =</span> <span class="fu">c</span>( <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">130</span>,<span class="dv">150</span>), <span class="fu">runif</span>(<span class="dv">1</span>,<span class="fl">3.3</span>,<span class="fl">5.2</span>), <span class="fu">runif</span>(<span class="dv">1</span>,<span class="dv">50</span>,<span class="dv">150</span>))</span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>    ))</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>  ))</span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>)</span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>data <span class="ot">=</span> patients <span class="sc">%&gt;%</span> <span class="fu">inner_join</span>(</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>  tests <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(result) <span class="sc">%&gt;%</span> <span class="fu">unnest</span>(result),</span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>  <span class="at">by=</span><span class="st">&quot;patient_id&quot;</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>)</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>data <span class="sc">%&gt;%</span> <span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## Rows: 2,654
+## Columns: 10
+## $ patient_id   &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, …
+## $ age_category &lt;fct&gt; 10-14, 10-14, 10-14, 10-14, 10-14, 10-14, 10-14, 10-14, 1…
+## $ ethnicity    &lt;int&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 6, 6, 6, 6, …
+## $ gender       &lt;chr&gt; &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;…
+## $ group        &lt;chr&gt; &quot;Cases&quot;, &quot;Cases&quot;, &quot;Cases&quot;, &quot;Cases&quot;, &quot;Cases&quot;, &quot;Cases&quot;, &quot;Ca…
+## $ test_id      &lt;int&gt; 272, 272, 446, 446, 684, 684, 684, 685, 685, 685, 781, 78…
+## $ test_type    &lt;chr&gt; &quot;LFT&quot;, &quot;LFT&quot;, &quot;LFT&quot;, &quot;LFT&quot;, &quot;Electrolytes&quot;, &quot;Electrolytes…
+## $ test_date    &lt;date&gt; 2025-02-18, 2025-02-18, 2025-01-15, 2025-01-15, 2025-02-…
+## $ component    &lt;chr&gt; &quot;AST&quot;, &quot;GGT&quot;, &quot;AST&quot;, &quot;GGT&quot;, &quot;NA&quot;, &quot;K&quot;, &quot;Glucose&quot;, &quot;HB&quot;, &quot;…
+## $ value        &lt;dbl&gt; 51.800040, 80.631694, 85.141485, 10.422086, 138.213790, 4…</code></pre>
+<p>We might have an objective to prepare this data set for analysis but
+have inclusion or exclusion criteria that apply at different levels. We
+might have patients who need to be excluded as too young or old, or
+specific test results that were taken at the wrong time, or patients who
+have evidence of diabetes, or exclude specific test results that are out
+of range. All of this we need to do while stratified by the control
+group status.</p>
+<p>To achieve this we use nesting to collapse the data frame into one
+row per patient, one row per test or one row per test result, depending
+on what we are trying to exclude. This allows <code>dtrackr</code> to
+dynamically change what it regards as a single countable thing,
+depending on the context of the pipeline.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>processed <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="co"># the data is originally long format with one row per test result:</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">track</span>(<span class="st">&quot;{.count} test results&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">maybe_diabetic =</span> <span class="fu">any</span>(component <span class="sc">==</span> <span class="st">&quot;Glucose&quot;</span> <span class="sc">&amp;</span> value<span class="sc">&gt;</span><span class="dv">130</span>), <span class="at">.by =</span> patient_id) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">test_panel =</span> <span class="fu">c</span>(component,value), <span class="at">.messages=</span><span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  </span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="co"># Now the data is long format with one row per test:</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} tests&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">tests =</span> <span class="fu">starts_with</span>(<span class="st">&quot;test_&quot;</span>), <span class="at">.messages=</span><span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  </span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="co"># and now long format with one row per patient:</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} patients&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} patients&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>  </span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>  <span class="co"># these exclusions are at the patient level</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>  <span class="fu">exclude_all</span>(</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>    <span class="at">.headline =</span> <span class="st">&quot;people&quot;</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>    maybe_diabetic <span class="sc">~</span> <span class="st">&quot;{.excluded} diabetics&quot;</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>    age_category <span class="sc">%in%</span> age_cats[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="sc">~</span> <span class="st">&quot;{.excluded} under 20&quot;</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>  </span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>  <span class="co"># these are now back at the test level</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>  <span class="fu">unnest</span>(tests) <span class="sc">%&gt;%</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} tests&quot;</span>,<span class="at">.headline =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>  <span class="fu">exclude_all</span>(</span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>    <span class="at">.headline =</span> <span class="st">&quot;tests&quot;</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>    test_date <span class="sc">&lt;</span> <span class="st">&quot;2025-01-07&quot;</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} with invalid dates&quot;</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  <span class="fu">count_subgroup</span>(test_type, <span class="at">.headline =</span> <span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>  </span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>  <span class="co"># and finally at the granular test result level</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>  <span class="fu">unnest</span>(test_panel) <span class="sc">%&gt;%</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>  <span class="fu">exclude_all</span>(</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>    <span class="at">.headline =</span> <span class="st">&quot;results&quot;</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>    component <span class="sc">==</span> <span class="st">&quot;HB&quot;</span> <span class="sc">&amp;</span> value <span class="sc">&lt;</span> <span class="dv">14</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} invalid Hb results&quot;</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>    component <span class="sc">==</span> <span class="st">&quot;K&quot;</span> <span class="sc">&amp;</span> value <span class="sc">&lt;</span> <span class="fl">3.5</span> <span class="sc">~</span> <span class="st">&quot;{.excluded} haemolysed K+&quot;</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a>  <span class="fu">group_by</span>(test_type, <span class="at">.add=</span><span class="cn">TRUE</span>, <span class="at">.messages=</span><span class="st">&quot;By tests&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a>  <span class="fu">count_subgroup</span>(component, <span class="at">.headline =</span> <span class="st">&quot;{test_type}&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a>  <span class="fu">ungroup</span>(<span class="at">.messages =</span> <span class="st">&quot;{.count} eligible results&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">test_panel =</span> <span class="fu">c</span>(component,value), <span class="at">.messages=</span><span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} eligible tests&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a>  <span class="fu">nest</span>(<span class="at">tests =</span> <span class="fu">starts_with</span>(<span class="st">&quot;test_&quot;</span>), <span class="at">.messages=</span><span class="st">&quot;&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;{.count} eligible patients&quot;</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a>  </span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a>processed <span class="sc">%&gt;%</span></span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="424.800pt" height="439.943pt" viewBox="0 0 424.800 439.943" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.797 0.797) rotate(0) translate(4 548.000)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-547.6 529.0112,-547.6 529.0112,4 -4,4"></polygon>
+<!-- 26&#45;&gt;27 -->
+<g id="edge1" class="edge">
+<title>26:s-&gt;27</title>
+<path fill="none" stroke="#000000" d="M260.0064,-41.4C260.0064,-41.4 260.0064,-28.4987 260.0064,-28.4987" />
+<polygon fill="#000000" stroke="#000000" points="261.7565,-28.4987 260.0064,-23.4987 258.2565,-28.4987 261.7565,-28.4987"></polygon>
+</g>
+<!-- 25&#45;&gt;26 -->
+<g id="edge2" class="edge">
+<title>25:s-&gt;26</title>
+<path fill="none" stroke="#000000" d="M260.0064,-83C260.0064,-83 260.0064,-70.0987 260.0064,-70.0987" />
+<polygon fill="#000000" stroke="#000000" points="261.7565,-70.0987 260.0064,-65.0987 258.2565,-70.0987 261.7565,-70.0987"></polygon>
+</g>
+<!-- 19&#45;&gt;25 -->
+<g id="edge8" class="edge">
+<title>19:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M39.0064,-124.8C39.0064,-124.8 39.0064,-91 39.0064,-91 39.0064,-91 214.7286,-91 214.7286,-91" />
+<polygon fill="#000000" stroke="#000000" points="214.7286,-92.7501 219.7286,-91 214.7285,-89.2501 214.7286,-92.7501"></polygon>
+</g>
+<!-- 20&#45;&gt;25 -->
+<g id="edge7" class="edge">
+<title>20:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M131.0064,-124.8C131.0064,-124.8 131.0064,-98 131.0064,-98 131.0064,-98 214.5439,-98 214.5439,-98" />
+<polygon fill="#000000" stroke="#000000" points="214.544,-99.7501 219.5439,-98 214.5439,-96.2501 214.544,-99.7501"></polygon>
+</g>
+<!-- 21&#45;&gt;25 -->
+<g id="edge6" class="edge">
+<title>21:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M234.9496,-128.8C234.9496,-128.8 234.9496,-111.8216 234.9496,-111.8216" />
+<polygon fill="#000000" stroke="#000000" points="236.6997,-111.8216 234.9496,-106.8216 233.1997,-111.8216 236.6997,-111.8216"></polygon>
+</g>
+<!-- 22&#45;&gt;25 -->
+<g id="edge5" class="edge">
+<title>22:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M282.0616,-124.8C282.0616,-124.8 282.0616,-111.7777 282.0616,-111.7777" />
+<polygon fill="#000000" stroke="#000000" points="283.8117,-111.7777 282.0616,-106.7777 280.3117,-111.7778 283.8117,-111.7777"></polygon>
+</g>
+<!-- 23&#45;&gt;25 -->
+<g id="edge4" class="edge">
+<title>23:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M395.0064,-124.8C395.0064,-124.8 395.0064,-98 395.0064,-98 395.0064,-98 305.1453,-98 305.1453,-98" />
+<polygon fill="#000000" stroke="#000000" points="305.1454,-96.2501 300.1453,-98 305.1453,-99.7501 305.1454,-96.2501"></polygon>
+</g>
+<!-- 24&#45;&gt;25 -->
+<g id="edge3" class="edge">
+<title>24:s-&gt;25</title>
+<path fill="none" stroke="#000000" d="M481.0064,-128.8C481.0064,-128.8 481.0064,-91 481.0064,-91 481.0064,-91 305.2842,-91 305.2842,-91" />
+<polygon fill="#000000" stroke="#000000" points="305.2843,-89.2501 300.2842,-91 305.2842,-92.7501 305.2843,-89.2501"></polygon>
+</g>
+<!-- 17&#45;&gt;19 -->
+<g id="edge14" class="edge">
+<title>17:s-&gt;19</title>
+<path fill="none" stroke="#000000" d="M161.0064,-200C161.0064,-200 39.0064,-200 39.0064,-200 39.0064,-200 39.0064,-175.8476 39.0064,-175.8476" />
+<polygon fill="#000000" stroke="#000000" points="40.7565,-175.8476 39.0064,-170.8476 37.2565,-175.8477 40.7565,-175.8476"></polygon>
+</g>
+<!-- 17&#45;&gt;20 -->
+<g id="edge13" class="edge">
+<title>17:s-&gt;20</title>
+<path fill="none" stroke="#000000" d="M155.008,-188.6C155.008,-188.6 155.008,-176.0603 155.008,-176.0603" />
+<polygon fill="#000000" stroke="#000000" points="156.7581,-176.0603 155.008,-171.0603 153.2581,-176.0604 156.7581,-176.0603"></polygon>
+</g>
+<!-- 17&#45;&gt;21 -->
+<g id="edge12" class="edge">
+<title>17:s-&gt;21</title>
+<path fill="none" stroke="#000000" d="M161.0064,-196C161.0064,-196 195.0072,-196 195.0072,-196 195.0072,-196 195.0072,-171.8499 195.0072,-171.8499" />
+<polygon fill="#000000" stroke="#000000" points="196.7573,-171.8499 195.0072,-166.8499 193.2573,-171.85 196.7573,-171.8499"></polygon>
+</g>
+<!-- 18&#45;&gt;22 -->
+<g id="edge11" class="edge">
+<title>18:s-&gt;22</title>
+<path fill="none" stroke="#000000" d="M380.0064,-204C380.0064,-204 338.5072,-204 338.5072,-204 338.5072,-204 338.5072,-175.9832 338.5072,-175.9832" />
+<polygon fill="#000000" stroke="#000000" points="340.2573,-175.9831 338.5072,-170.9832 336.7573,-175.9832 340.2573,-175.9831"></polygon>
+</g>
+<!-- 18&#45;&gt;23 -->
+<g id="edge10" class="edge">
+<title>18:s-&gt;23</title>
+<path fill="none" stroke="#000000" d="M380.0064,-188.6C380.0064,-188.6 380.0064,-176.0603 380.0064,-176.0603" />
+<polygon fill="#000000" stroke="#000000" points="381.7565,-176.0603 380.0064,-171.0603 378.2565,-176.0604 381.7565,-176.0603"></polygon>
+</g>
+<!-- 18&#45;&gt;24 -->
+<g id="edge9" class="edge">
+<title>18:s-&gt;24</title>
+<path fill="none" stroke="#000000" d="M380.0064,-200C380.0064,-200 481.0064,-200 481.0064,-200 481.0064,-200 481.0064,-171.9409 481.0064,-171.9409" />
+<polygon fill="#000000" stroke="#000000" points="482.7565,-171.9409 481.0064,-166.9409 479.2565,-171.941 482.7565,-171.9409"></polygon>
+</g>
+<!-- 13&#45;&gt;17 -->
+<g id="edge16" class="edge">
+<title>13:s-&gt;17</title>
+<path fill="none" stroke="#000000" d="M161.0064,-230.8C161.0064,-230.8 161.0064,-217.5358 161.0064,-217.5358" />
+<polygon fill="#000000" stroke="#000000" points="162.7565,-217.5358 161.0064,-212.5358 159.2565,-217.5359 162.7565,-217.5358"></polygon>
+</g>
+<!-- 13&#45;&gt;15 -->
+<g id="edge18" class="edge">
+<title>13:e-&gt;15</title>
+<path fill="none" stroke="#000000" d="M206.0064,-251C206.0064,-251 214.8045,-251 214.8045,-251" />
+<polygon fill="#000000" stroke="#000000" points="214.8045,-252.7501 219.8045,-251 214.8045,-249.2501 214.8045,-252.7501"></polygon>
+</g>
+<!-- 14&#45;&gt;18 -->
+<g id="edge15" class="edge">
+<title>14:s-&gt;18</title>
+<path fill="none" stroke="#000000" d="M380.0064,-230.8C380.0064,-230.8 380.0064,-217.5358 380.0064,-217.5358" />
+<polygon fill="#000000" stroke="#000000" points="381.7565,-217.5358 380.0064,-212.5358 378.2565,-217.5359 381.7565,-217.5358"></polygon>
+</g>
+<!-- 14&#45;&gt;16 -->
+<g id="edge17" class="edge">
+<title>14:e-&gt;16</title>
+<path fill="none" stroke="#000000" d="M425.0064,-251C425.0064,-251 433.8045,-251 433.8045,-251" />
+<polygon fill="#000000" stroke="#000000" points="433.8045,-252.7501 438.8045,-251 433.8045,-249.2501 433.8045,-252.7501"></polygon>
+</g>
+<!-- 9&#45;&gt;13 -->
+<g id="edge20" class="edge">
+<title>9:s-&gt;13</title>
+<path fill="none" stroke="#000000" d="M161.0064,-294.2C161.0064,-294.2 161.0064,-278.4968 161.0064,-278.4968" />
+<polygon fill="#000000" stroke="#000000" points="162.7565,-278.4968 161.0064,-273.4968 159.2565,-278.4969 162.7565,-278.4968"></polygon>
+</g>
+<!-- 9&#45;&gt;11 -->
+<g id="edge22" class="edge">
+<title>9:e-&gt;11</title>
+<path fill="none" stroke="#000000" d="M184.0064,-306C184.0064,-306 192.8045,-306 192.8045,-306" />
+<polygon fill="#000000" stroke="#000000" points="192.8045,-307.7501 197.8045,-306 192.8045,-304.2501 192.8045,-307.7501"></polygon>
+</g>
+<!-- 10&#45;&gt;14 -->
+<g id="edge19" class="edge">
+<title>10:s-&gt;14</title>
+<path fill="none" stroke="#000000" d="M380.0064,-294.2C380.0064,-294.2 380.0064,-278.4968 380.0064,-278.4968" />
+<polygon fill="#000000" stroke="#000000" points="381.7565,-278.4968 380.0064,-273.4968 378.2565,-278.4969 381.7565,-278.4968"></polygon>
+</g>
+<!-- 10&#45;&gt;12 -->
+<g id="edge21" class="edge">
+<title>10:e-&gt;12</title>
+<path fill="none" stroke="#000000" d="M403.0064,-306C403.0064,-306 411.8045,-306 411.8045,-306" />
+<polygon fill="#000000" stroke="#000000" points="411.8045,-307.7501 416.8045,-306 411.8045,-304.2501 411.8045,-307.7501"></polygon>
+</g>
+<!-- 5&#45;&gt;9 -->
+<g id="edge24" class="edge">
+<title>5:s-&gt;9</title>
+<path fill="none" stroke="#000000" d="M161.0064,-343.2C161.0064,-343.2 161.0064,-322.907 161.0064,-322.907" />
+<polygon fill="#000000" stroke="#000000" points="162.7565,-322.907 161.0064,-317.907 159.2565,-322.9071 162.7565,-322.907"></polygon>
+</g>
+<!-- 5&#45;&gt;7 -->
+<g id="edge26" class="edge">
+<title>5:e-&gt;7</title>
+<path fill="none" stroke="#000000" d="M188.0064,-358C188.0064,-358 196.7588,-358 196.7588,-358" />
+<polygon fill="#000000" stroke="#000000" points="196.7588,-359.7501 201.7588,-358 196.7587,-356.2501 196.7588,-359.7501"></polygon>
+</g>
+<!-- 6&#45;&gt;10 -->
+<g id="edge23" class="edge">
+<title>6:s-&gt;10</title>
+<path fill="none" stroke="#000000" d="M380.0064,-343.2C380.0064,-343.2 380.0064,-322.907 380.0064,-322.907" />
+<polygon fill="#000000" stroke="#000000" points="381.7565,-322.907 380.0064,-317.907 378.2565,-322.9071 381.7565,-322.907"></polygon>
+</g>
+<!-- 6&#45;&gt;8 -->
+<g id="edge25" class="edge">
+<title>6:e-&gt;8</title>
+<path fill="none" stroke="#000000" d="M407.0064,-358C407.0064,-358 415.7588,-358 415.7588,-358" />
+<polygon fill="#000000" stroke="#000000" points="415.7588,-359.7501 420.7588,-358 415.7587,-356.2501 415.7588,-359.7501"></polygon>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="edge28" class="edge">
+<title>4:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M263.0064,-407C263.0064,-407 161.0064,-407 161.0064,-407 161.0064,-407 161.0064,-378.3731 161.0064,-378.3731" />
+<polygon fill="#000000" stroke="#000000" points="162.7565,-378.3731 161.0064,-373.3731 159.2565,-378.3732 162.7565,-378.3731"></polygon>
+</g>
+<!-- 4&#45;&gt;6 -->
+<g id="edge27" class="edge">
+<title>4:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M291.2358,-395C291.2358,-395 291.2358,-358 291.2358,-358 291.2358,-358 348.3723,-358 348.3723,-358" />
+<polygon fill="#000000" stroke="#000000" points="348.3723,-359.7501 353.3723,-358 348.3723,-356.2501 348.3723,-359.7501"></polygon>
+</g>
+<!-- 3&#45;&gt;4 -->
+<g id="edge29" class="edge">
+<title>3:s-&gt;4</title>
+<path fill="none" stroke="#000000" d="M263.0064,-436.6C263.0064,-436.6 263.0064,-423.6987 263.0064,-423.6987" />
+<polygon fill="#000000" stroke="#000000" points="264.7565,-423.6987 263.0064,-418.6987 261.2565,-423.6987 264.7565,-423.6987"></polygon>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge30" class="edge">
+<title>2:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M263.0064,-478.2C263.0064,-478.2 263.0064,-465.2987 263.0064,-465.2987" />
+<polygon fill="#000000" stroke="#000000" points="264.7565,-465.2987 263.0064,-460.2987 261.2565,-465.2987 264.7565,-465.2987"></polygon>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge31" class="edge">
+<title>1:s-&gt;2</title>
+<path fill="none" stroke="#000000" d="M263.0064,-519.8C263.0064,-519.8 263.0064,-506.8987 263.0064,-506.8987" />
+<polygon fill="#000000" stroke="#000000" points="264.7565,-506.8987 263.0064,-501.8987 261.2565,-506.8987 264.7565,-506.8987"></polygon>
+</g>
+<!-- 27 -->
+<g id="node1" class="node">
+<title>27</title>
+<polygon fill="#ffffff" stroke="#000000" points="300.2476,-23.4033 219.7652,-23.4033 219.7652,-.1967 300.2476,-.1967 300.2476,-23.4033"></polygon>
+<text text-anchor="start" x="226.886" y="-9.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">41 eligible patients</text>
+</g>
+<!-- 26 -->
+<g id="node2" class="node">
+<title>26</title>
+<polygon fill="#ffffff" stroke="#000000" points="296.5788,-65.0033 223.434,-65.0033 223.434,-41.7967 296.5788,-41.7967 296.5788,-65.0033"></polygon>
+<text text-anchor="start" x="230.2208" y="-51" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">349 eligible tests</text>
+</g>
+<!-- 25 -->
+<g id="node3" class="node">
+<title>25</title>
+<polygon fill="#ffffff" stroke="#000000" points="300.2403,-106.6033 219.7725,-106.6033 219.7725,-83.3967 300.2403,-83.3967 300.2403,-106.6033"></polygon>
+<text text-anchor="start" x="226.8896" y="-92.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">858 eligible results</text>
+</g>
+<!-- 19 -->
+<g id="node4" class="node">
+<title>19</title>
+<polygon fill="#ffffff" stroke="#000000" points="78.0192,-170.8 -.0064,-170.8 -.0064,-124.8 78.0192,-124.8 78.0192,-170.8"></polygon>
+<text text-anchor="start" x="7" y="-157.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Electrolytes</text>
+<text text-anchor="start" x="7" y="-149.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Glucose: 57 items</text>
+<text text-anchor="start" x="7" y="-141.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">K: 50 items</text>
+<text text-anchor="start" x="7" y="-133.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">NA: 57 items</text>
+</g>
+<!-- 20 -->
+<g id="node5" class="node">
+<title>20</title>
+<polygon fill="#ffffff" stroke="#000000" points="170.4661,-170.8 91.5467,-170.8 91.5467,-124.8 170.4661,-124.8 170.4661,-170.8"></polygon>
+<text text-anchor="start" x="98.7772" y="-157.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">FBC</text>
+<text text-anchor="start" x="98.7772" y="-149.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">HB: 35 items</text>
+<text text-anchor="start" x="98.7772" y="-141.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">WCC: 65 items</text>
+<text text-anchor="start" x="98.7772" y="-133.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">platelets: 65 items</text>
+</g>
+<!-- 21 -->
+<g id="node6" class="node">
+<title>21</title>
+<polygon fill="#ffffff" stroke="#000000" points="250.0128,-166.8 184,-166.8 184,-128.8 250.0128,-128.8 250.0128,-166.8"></polygon>
+<text text-anchor="start" x="191.0032" y="-153.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">LFT</text>
+<text text-anchor="start" x="191.0032" y="-145.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">AST: 63 items</text>
+<text text-anchor="start" x="191.0032" y="-137.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">GGT: 63 items</text>
+</g>
+<!-- 22 -->
+<g id="node7" class="node">
+<title>22</title>
+<polygon fill="#ffffff" stroke="#000000" points="342.0192,-170.8 263.9936,-170.8 263.9936,-124.8 342.0192,-124.8 342.0192,-170.8"></polygon>
+<text text-anchor="start" x="271" y="-157.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Electrolytes</text>
+<text text-anchor="start" x="271" y="-149.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Glucose: 40 items</text>
+<text text-anchor="start" x="271" y="-141.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">K: 38 items</text>
+<text text-anchor="start" x="271" y="-133.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">NA: 40 items</text>
+</g>
+<!-- 23 -->
+<g id="node8" class="node">
+<title>23</title>
+<polygon fill="#ffffff" stroke="#000000" points="434.4661,-170.8 355.5467,-170.8 355.5467,-124.8 434.4661,-124.8 434.4661,-170.8"></polygon>
+<text text-anchor="start" x="362.7772" y="-157.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">FBC</text>
+<text text-anchor="start" x="362.7772" y="-149.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">HB: 37 items</text>
+<text text-anchor="start" x="362.7772" y="-141.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">WCC: 62 items</text>
+<text text-anchor="start" x="362.7772" y="-133.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">platelets: 62 items</text>
+</g>
+<!-- 24 -->
+<g id="node9" class="node">
+<title>24</title>
+<polygon fill="#ffffff" stroke="#000000" points="514.0128,-166.8 448,-166.8 448,-128.8 514.0128,-128.8 514.0128,-166.8"></polygon>
+<text text-anchor="start" x="455.0032" y="-153.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">LFT</text>
+<text text-anchor="start" x="455.0032" y="-145.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">AST: 62 items</text>
+<text text-anchor="start" x="455.0032" y="-137.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">GGT: 62 items</text>
+</g>
+<!-- 17 -->
+<g id="node10" class="node">
+<title>17</title>
+<polygon fill="#ffffff" stroke="#000000" points="182.4608,-212.2033 139.552,-212.2033 139.552,-188.9967 182.4608,-188.9967 182.4608,-212.2033"></polygon>
+<text text-anchor="start" x="146.7804" y="-198.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">By tests</text>
+</g>
+<!-- 18 -->
+<g id="node11" class="node">
+<title>18</title>
+<polygon fill="#ffffff" stroke="#000000" points="401.4608,-212.2033 358.552,-212.2033 358.552,-188.9967 401.4608,-188.9967 401.4608,-212.2033"></polygon>
+<text text-anchor="start" x="365.7804" y="-198.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">By tests</text>
+</g>
+<!-- 13 -->
+<g id="node12" class="node">
+<title>13</title>
+<polygon fill="#ffffff" stroke="#000000" points="206.016,-273.1005 115.9968,-273.1005 115.9968,-230.4995 206.016,-230.4995 206.016,-273.1005"></polygon>
+<text text-anchor="start" x="123.0016" y="-259" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Electrolytes: 57 items</text>
+<text text-anchor="start" x="123.0016" y="-249.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">FBC: 65 items</text>
+<text text-anchor="start" x="123.0016" y="-239.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">LFT: 63 items</text>
+</g>
+<!-- 14 -->
+<g id="node13" class="node">
+<title>14</title>
+<polygon fill="#ffffff" stroke="#000000" points="425.016,-273.1005 334.9968,-273.1005 334.9968,-230.4995 425.016,-230.4995 425.016,-273.1005"></polygon>
+<text text-anchor="start" x="342.0016" y="-259" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">Electrolytes: 40 items</text>
+<text text-anchor="start" x="342.0016" y="-249.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">FBC: 62 items</text>
+<text text-anchor="start" x="342.0016" y="-239.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">LFT: 62 items</text>
+</g>
+<!-- 15 -->
+<g id="node14" class="node">
+<title>15</title>
+<polygon fill="#cccccc" stroke="#000000" points="306.016,-270.8 219.9968,-270.8 219.9968,-232.8 306.016,-232.8 306.016,-270.8"></polygon>
+<text text-anchor="start" x="227.0016" y="-257.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">results</text>
+<text text-anchor="start" x="227.0016" y="-249.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">30 invalid Hb results</text>
+<text text-anchor="start" x="227.0016" y="-241.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7 haemolysed K+</text>
+</g>
+<!-- 16 -->
+<g id="node15" class="node">
+<title>16</title>
+<polygon fill="#cccccc" stroke="#000000" points="525.016,-270.8 438.9968,-270.8 438.9968,-232.8 525.016,-232.8 525.016,-270.8"></polygon>
+<text text-anchor="start" x="446.0016" y="-257.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">results</text>
+<text text-anchor="start" x="446.0016" y="-249.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">25 invalid Hb results</text>
+<text text-anchor="start" x="446.0016" y="-241.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">2 haemolysed K+</text>
+</g>
+<!-- 9 -->
+<g id="node16" class="node">
+<title>9</title>
+<polygon fill="#ffffff" stroke="#000000" points="184.4671,-317.8033 137.5457,-317.8033 137.5457,-294.5967 184.4671,-294.5967 184.4671,-317.8033"></polygon>
+<text text-anchor="start" x="144.7772" y="-303.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">205 tests</text>
+</g>
+<!-- 10 -->
+<g id="node17" class="node">
+<title>10</title>
+<polygon fill="#ffffff" stroke="#000000" points="403.4671,-317.8033 356.5457,-317.8033 356.5457,-294.5967 403.4671,-294.5967 403.4671,-317.8033"></polygon>
+<text text-anchor="start" x="363.7772" y="-303.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">184 tests</text>
+</g>
+<!-- 11 -->
+<g id="node18" class="node">
+<title>11</title>
+<polygon fill="#cccccc" stroke="#000000" points="284.0232,-321.2 197.9896,-321.2 197.9896,-291.2 284.0232,-291.2 284.0232,-321.2"></polygon>
+<text text-anchor="start" x="204.998" y="-308" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">tests</text>
+<text text-anchor="start" x="204.998" y="-300" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 with invalid dates</text>
+</g>
+<!-- 12 -->
+<g id="node19" class="node">
+<title>12</title>
+<polygon fill="#cccccc" stroke="#000000" points="503.0232,-321.2 416.9896,-321.2 416.9896,-291.2 503.0232,-291.2 503.0232,-321.2"></polygon>
+<text text-anchor="start" x="423.998" y="-308" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">tests</text>
+<text text-anchor="start" x="423.998" y="-300" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 with invalid dates</text>
+</g>
+<!-- 5 -->
+<g id="node20" class="node">
+<title>5</title>
+<polygon fill="#ffffff" stroke="#000000" points="187.6346,-373.2 134.3782,-373.2 134.3782,-343.2 187.6346,-343.2 187.6346,-373.2"></polygon>
+<text text-anchor="start" x="141.4424" y="-360" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Cases</text>
+<text text-anchor="start" x="141.4424" y="-352" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">53 patients</text>
+</g>
+<!-- 6 -->
+<g id="node21" class="node">
+<title>6</title>
+<polygon fill="#ffffff" stroke="#000000" points="406.6346,-373.2 353.3782,-373.2 353.3782,-343.2 406.6346,-343.2 406.6346,-373.2"></polygon>
+<text text-anchor="start" x="360.4424" y="-360" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Controls</text>
+<text text-anchor="start" x="360.4424" y="-352" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">47 patients</text>
+</g>
+<!-- 7 -->
+<g id="node22" class="node">
+<title>7</title>
+<polygon fill="#cccccc" stroke="#000000" points="258.1945,-377.2 201.8183,-377.2 201.8183,-339.2 258.1945,-339.2 258.1945,-377.2"></polygon>
+<text text-anchor="start" x="208.6628" y="-364" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">people</text>
+<text text-anchor="start" x="208.6628" y="-356" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">20 diabetics</text>
+<text text-anchor="start" x="208.6628" y="-348" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">15 under 20</text>
+</g>
+<!-- 8 -->
+<g id="node23" class="node">
+<title>8</title>
+<polygon fill="#cccccc" stroke="#000000" points="477.1945,-377.2 420.8183,-377.2 420.8183,-339.2 477.1945,-339.2 477.1945,-377.2"></polygon>
+<text text-anchor="start" x="427.6628" y="-364" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">people</text>
+<text text-anchor="start" x="427.6628" y="-356" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">23 diabetics</text>
+<text text-anchor="start" x="427.6628" y="-348" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">13 under 20</text>
+</g>
+<!-- 4 -->
+<g id="node24" class="node">
+<title>4</title>
+<polygon fill="#ffffff" stroke="#000000" points="298.4073,-418.6033 227.6055,-418.6033 227.6055,-395.3967 298.4073,-395.3967 298.4073,-418.6033"></polygon>
+<text text-anchor="start" x="234.556" y="-404.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by group</text>
+</g>
+<!-- 3 -->
+<g id="node25" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="291.5832,-460.2033 234.4296,-460.2033 234.4296,-436.9967 291.5832,-436.9967 291.5832,-460.2033"></polygon>
+<text text-anchor="start" x="241.2188" y="-446.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">100 patients</text>
+</g>
+<!-- 2 -->
+<g id="node26" class="node">
+<title>2</title>
+<polygon fill="#ffffff" stroke="#000000" points="288.4121,-501.8033 237.6007,-501.8033 237.6007,-478.5967 288.4121,-478.5967 288.4121,-501.8033"></polygon>
+<text text-anchor="start" x="244.5536" y="-487.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">1000 tests</text>
+</g>
+<!-- 1 -->
+<g id="node27" class="node">
+<title>1</title>
+<polygon fill="#ffffff" stroke="#000000" points="299.1919,-543.4033 226.8209,-543.4033 226.8209,-520.1967 299.1919,-520.1967 299.1919,-543.4033"></polygon>
+<text text-anchor="start" x="233.664" y="-529.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">2654 test results</text>
+</g>
+</g>
+</svg>
+
+</div>
+<div id="maximum-groupings" class="section level2">
+<h2>Maximum groupings</h2>
+<p>Going back to the original example data, in a slightly contrived
+example let’s assume we want to exclude age categories that don’t have a
+close gender match between cases and controls. We have to create a lot
+of small groups to count.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="fu">group_by</span>(age_category, gender, group) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n_distinct</span>(patient_id)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> n, <span class="at">names_from =</span> group) <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">abs</span>(Cases<span class="sc">-</span>Controls) <span class="sc">&lt;=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;age_category&#39;, &#39;gender&#39;. You can override
+## using the `.groups` argument.</code></pre>
+<pre><code>## Rows: 18
+## Columns: 4
+## Groups: age_category, gender [18]
+## $ age_category &lt;fct&gt; 00-04, 00-04, 05-09, 10-14, 15-19, 25-29, 30-34, 35-39, 4…
+## $ gender       &lt;chr&gt; &quot;Female&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Female&quot;, &quot;Female&quot;, &quot;Fe…
+## $ Cases        &lt;int&gt; 2, 2, 1, 3, 2, 1, 1, 3, 2, 1, 2, 1, 2, 1, 3, 2, 1, 2
+## $ Controls     &lt;int&gt; 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 3, 1, 2, 2, 1, 2</code></pre>
+<p>If we were to try and monitor this data frame through the pipeline
+there would be a problem with the flowchart because too many groups are
+generated. This causes performance and legibility issues for the
+resulting graph and is a result of an interim stage of the data pipeline
+where grouping is used to do fine scale summarisation operation. The
+most number of groups that <code>dtrackr</code> will attempt to keep
+track of is configurable but defaults to 16, and if the number of groups
+exceeds that it will pause tracking, until the number of groups is
+restored to a lower number, at which point it will start following
+again. A “&lt; hidden steps &gt;” message is inserted into the graph
+when this happens but this can be changed, or disabled altogether with
+<code>options(dtrackr.hidden_steps = &quot;&quot;)</code>. <code>dtrackr</code>
+does not by default warn the user of this unless the
+<code>options(dtrackr.verbose=TRUE)</code> is set.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>old <span class="ot">=</span> <span class="fu">options</span>(<span class="at">dtrackr.verbose=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="fu">track</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="fu">c</span>(<span class="st">&quot;{.count} items&quot;</span>,<span class="st">&quot;before pause&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  </span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="co"># the tracking is paused on this next step as the number of groups becomes &gt;16</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="fu">group_by</span>(age_category, group, <span class="at">.add=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="st">&quot;This message is not tracked&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n_distinct</span>(patient_id)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> n, <span class="at">names_from =</span> group) <span class="sc">%&gt;%</span></span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">abs</span>(Cases<span class="sc">-</span>Controls) <span class="sc">&lt;=</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  </span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  <span class="co"># the tracking is automatically resumed at this point as the grouping has</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>  <span class="co"># returned to manageable levels.</span></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>  <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>  <span class="fu">comment</span>(<span class="fu">c</span>(<span class="st">&quot;{.count} summarised rows&quot;</span>,<span class="st">&quot;after resume&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>  <span class="fu">flowchart</span>()</span></code></pre></div>
+<pre><code>## • This group_by() has created more than the maximum number of supported groupings (16) which will likely impact performance. We have paused tracking the dataframe.
+## • To change this limit set the option &#39;dtrackr.max_supported_groupings&#39;.
+## • Automatically resuming tracking.</code></pre>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="194.000pt" height="268.000pt" viewBox="0 0 194.000 268.000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.000 1.000) rotate(0) translate(4 264.000)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-264.4 189.5564,-264.4 189.5564,4 -4,4"></polygon>
+<!-- 6&#45;&gt;7 -->
+<g id="edge2" class="edge">
+<title>6:s-&gt;7</title>
+<path fill="none" stroke="#000000" d="M71.998,-55.8C71.998,-55.8 71.998,-43.2622 71.998,-43.2622" />
+<polygon fill="#000000" stroke="#000000" points="73.7481,-43.2622 71.998,-38.2622 70.2481,-43.2623 73.7481,-43.2622"></polygon>
+</g>
+<!-- 6&#45;&gt;8 -->
+<g id="edge1" class="edge">
+<title>6:s-&gt;8</title>
+<path fill="none" stroke="#000000" d="M116.8938,-55.8C116.8938,-55.8 116.8938,-43.2622 116.8938,-43.2622" />
+<polygon fill="#000000" stroke="#000000" points="118.6439,-43.2622 116.8938,-38.2622 115.1439,-43.2623 118.6439,-43.2622"></polygon>
+</g>
+<!-- 5&#45;&gt;6 -->
+<g id="edge3" class="edge">
+<title>5:s-&gt;6</title>
+<path fill="none" stroke="#000000" d="M93.89,-97.4C93.89,-97.4 93.89,-84.4987 93.89,-84.4987" />
+<polygon fill="#000000" stroke="#000000" points="95.6401,-84.4987 93.89,-79.4987 92.1401,-84.4987 95.6401,-84.4987"></polygon>
+</g>
+<!-- 3&#45;&gt;5 -->
+<g id="edge5" class="edge">
+<title>3:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M72.2766,-139.2C72.2766,-139.2 72.2766,-126.1777 72.2766,-126.1777" />
+<polygon fill="#000000" stroke="#000000" points="74.0267,-126.1777 72.2766,-121.1777 70.5267,-126.1778 74.0267,-126.1777"></polygon>
+</g>
+<!-- 4&#45;&gt;5 -->
+<g id="edge4" class="edge">
+<title>4:s-&gt;5</title>
+<path fill="none" stroke="#000000" d="M116.0034,-139.2C116.0034,-139.2 116.0034,-126.1777 116.0034,-126.1777" />
+<polygon fill="#000000" stroke="#000000" points="117.7535,-126.1777 116.0034,-121.1777 114.2535,-126.1778 117.7535,-126.1777"></polygon>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge7" class="edge">
+<title>2:s-&gt;3</title>
+<path fill="none" stroke="#000000" d="M71.7248,-195C71.7248,-195 71.7248,-182.4622 71.7248,-182.4622" />
+<polygon fill="#000000" stroke="#000000" points="73.4749,-182.4622 71.7248,-177.4622 69.9749,-182.4623 73.4749,-182.4622"></polygon>
+</g>
+<!-- 2&#45;&gt;4 -->
+<g id="edge6" class="edge">
+<title>2:s-&gt;4</title>
+<path fill="none" stroke="#000000" d="M116.5552,-195C116.5552,-195 116.5552,-182.4622 116.5552,-182.4622" />
+<polygon fill="#000000" stroke="#000000" points="118.3053,-182.4622 116.5552,-177.4622 114.8053,-182.4623 118.3053,-182.4622"></polygon>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge8" class="edge">
+<title>1:s-&gt;2</title>
+<path fill="none" stroke="#000000" d="M93.89,-236.6C93.89,-236.6 93.89,-223.6987 93.89,-223.6987" />
+<polygon fill="#000000" stroke="#000000" points="95.6401,-223.6987 93.89,-218.6987 92.1401,-223.6987 95.6401,-223.6987"></polygon>
+</g>
+<!-- 7 -->
+<g id="node1" class="node">
+<title>7</title>
+<polygon fill="#ffffff" stroke="#000000" points="87.6703,-38 .1097,-38 .1097,0 87.6703,0 87.6703,-38"></polygon>
+<text text-anchor="start" x="7" y="-24.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Female</text>
+<text text-anchor="start" x="7" y="-16.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">11 summarised rows</text>
+<text text-anchor="start" x="7" y="-8.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">after resume</text>
+</g>
+<!-- 8 -->
+<g id="node2" class="node">
+<title>8</title>
+<polygon fill="#ffffff" stroke="#000000" points="185.7235,-38 102.0565,-38 102.0565,0 185.7235,0 185.7235,-38"></polygon>
+<text text-anchor="start" x="109.2236" y="-24.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Male</text>
+<text text-anchor="start" x="109.2236" y="-16.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">7 summarised rows</text>
+<text text-anchor="start" x="109.2236" y="-8.8" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">after resume</text>
+</g>
+<!-- 6 -->
+<g id="node3" class="node">
+<title>6</title>
+<polygon fill="#ffffff" stroke="#000000" points="131.7388,-79.4033 56.0412,-79.4033 56.0412,-56.1967 131.7388,-56.1967 131.7388,-79.4033"></polygon>
+<text text-anchor="start" x="63.216" y="-65.4" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by gender</text>
+</g>
+<!-- 5 -->
+<g id="node4" class="node">
+<title>5</title>
+<polygon fill="#e6e6e6" stroke="#000000" points="130.5309,-121.0033 57.2491,-121.0033 57.2491,-97.7967 130.5309,-97.7967 130.5309,-121.0033"></polygon>
+<text text-anchor="start" x="64.3196" y="-107" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">&lt; hidden steps &gt;</text>
+</g>
+<!-- 3 -->
+<g id="node5" class="node">
+<title>3</title>
+<polygon fill="#ffffff" stroke="#000000" points="87.078,-177.2 26.702,-177.2 26.702,-139.2 87.078,-139.2 87.078,-177.2"></polygon>
+<text text-anchor="start" x="33.5464" y="-164" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Female</text>
+<text text-anchor="start" x="33.5464" y="-156" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">1255 items</text>
+<text text-anchor="start" x="33.5464" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">before pause</text>
+</g>
+<!-- 4 -->
+<g id="node6" class="node">
+<title>4</title>
+<polygon fill="#ffffff" stroke="#000000" points="162.078,-177.2 101.702,-177.2 101.702,-139.2 162.078,-139.2 162.078,-177.2"></polygon>
+<text text-anchor="start" x="108.5464" y="-164" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="8.00" fill="#000000">Male</text>
+<text text-anchor="start" x="108.5464" y="-156" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">1399 items</text>
+<text text-anchor="start" x="108.5464" y="-148" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">before pause</text>
+</g>
+<!-- 2 -->
+<g id="node7" class="node">
+<title>2</title>
+<polygon fill="#ffffff" stroke="#000000" points="131.7388,-218.6033 56.0412,-218.6033 56.0412,-195.3967 131.7388,-195.3967 131.7388,-218.6033"></polygon>
+<text text-anchor="start" x="63.216" y="-204.6" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">stratify by gender</text>
+</g>
+<!-- 1 -->
+<g id="node8" class="node">
+<title>1</title>
+<polygon fill="#ffffff" stroke="#000000" points="120.5109,-260.2033 67.2691,-260.2033 67.2691,-236.9967 120.5109,-236.9967 120.5109,-260.2033"></polygon>
+<text text-anchor="start" x="74.3296" y="-246.2" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#000000">2654 items</text>
+</g>
+</g>
+</svg>
+
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">options</span>(old)</span></code></pre></div>
+<p>By default this behaviour is triggered if we get to 16 subgroups.
+This can be changed by setting the option:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">dtrackr.max_supported_groupings =</span> <span class="dv">16</span>)</span></code></pre></div>
+<p>Pausing and unpausing the tracking can also be done manually by
+calling <code>dtrackr::pause()</code> and
+<code>dtrackr::resume()</code>. This is a fairly experimental feature,
+and I don’t expect it to be heavily used.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

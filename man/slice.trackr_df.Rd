@@ -7,8 +7,8 @@
 \method{slice}{trackr_df}(
   .data,
   ...,
-  .messages = c("{.count.in} before", "{.count.out} after"),
-  .headline = "slice data"
+  .messages = c("subset data", "{.count.in} before", "{.count.out} after"),
+  .headline = .defaultHeadline()
 )
 }
 \arguments{
@@ -88,5 +88,5 @@ iris \%>\% track() \%>\% slice(51:100) \%>\% history()
 
 }
 \seealso{
-dplyr::slice()
+\code{\link[dplyr:slice]{dplyr::slice()}}
 }

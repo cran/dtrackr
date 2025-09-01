@@ -100,7 +100,7 @@ old = options(
   dtrackr.default_count_subgroup = "{tolower(.name)}: {.count}/{.subtotal}"
 )
 
-survival::cgd %>%
+surv_ex = survival::cgd %>%
   track() %>%
   group_by(
     treat,
@@ -110,7 +110,9 @@ survival::cgd %>%
   count_subgroup(
     sex
   ) %>%
-  ungroup() %>%
+  ungroup() 
+
+surv_ex %>%
   flowchart()
 
 

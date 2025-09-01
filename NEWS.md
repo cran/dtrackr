@@ -1,5 +1,19 @@
 # NEWS
 
+# dtrackr 0.5.0
+
+* support for `tidyr::nest` and `tidyr::unnest` to handle long format data
+* improvements in support for `tidyr::pivot_wider` and `tidyr::pivot_longer`
+* issue raised with `tidyr` in their implementation of `unnest` and workaround
+  described in the examples for `dtrackr::unnest.trackr_df`
+* added support for configuring fonts, colours and orientation of dot graph.
+* better support for pausing dataframe tracking when number of groups exceeds
+  configured threshold.
+* updated vignettes to demonstrate new options, and approaches to working with
+  long format data.
+* TODO: (future version) exclusions in joins
+* TODO: (future version) column level tracking (prototyped in 0.2.5)
+
 # dtrackr 0.4.6
 
 * fixed un-escaped braces in documentation for CRAN.
@@ -9,9 +23,6 @@
 
 * Support for `reframe` as alternative to `summarise` for `dplyr` 1.1.0
 * remove `tidyverse` suggests dependency.
-* TODO: (future version) exclusions in joins
-* TODO: (future version) better support for long format dataframes
-* TODO: (future version) column level tracking (prototyped in 0.2.5)
 
 # dtrackr 0.4.3
 

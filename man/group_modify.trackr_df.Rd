@@ -60,12 +60,12 @@ is also available (if grouped) for reporting See \code{\link[dplyr:group_map]{dp
 library(dplyr)
 library(dtrackr)
 
-tmp = iris \%>\% track() \%>\% group_by(Species)
-tmp \%>\% group_modify(
-      function(d,g,...) { return(tibble::tibble(x=runif(10))) },
+tmp = iris \%>\% track() \%>\% dplyr::group_by(Species)
+tmp \%>\% dplyr::group_modify(
+      function(d,g,...) { return(tibble::tibble(x=stats::runif(10))) },
       .messages="{.count.in} in, {.count.out} out"
 ) \%>\% history()
 }
 \seealso{
-dplyr::group_modify()
+\code{\link[dplyr:group_map]{dplyr::group_modify()}}
 }
